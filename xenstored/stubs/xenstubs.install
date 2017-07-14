@@ -1,0 +1,27 @@
+lib: [
+  "_build/install/default/lib/xenstubs/META" {"META"}
+  "_build/install/default/lib/xenstubs/opam" {"opam"}
+  "_build/install/default/lib/xenstubs/select.cmi"
+  "_build/install/default/lib/xenstubs/select.cmx"
+  "_build/install/default/lib/xenstubs/select.cmt"
+  "_build/install/default/lib/xenstubs/select.cmti"
+  "_build/install/default/lib/xenstubs/select.mli"
+  "_build/install/default/lib/xenstubs/syslog.cmi"
+  "_build/install/default/lib/xenstubs/syslog.cmx"
+  "_build/install/default/lib/xenstubs/syslog.cmt"
+  "_build/install/default/lib/xenstubs/syslog.cmti"
+  "_build/install/default/lib/xenstubs/syslog.mli"
+  "_build/install/default/lib/xenstubs/systemd.cmi"
+  "_build/install/default/lib/xenstubs/systemd.cmx"
+  "_build/install/default/lib/xenstubs/systemd.cmt"
+  "_build/install/default/lib/xenstubs/systemd.cmti"
+  "_build/install/default/lib/xenstubs/systemd.mli"
+  "_build/install/default/lib/xenstubs/xenstubs.cma"
+  "_build/install/default/lib/xenstubs/libxenstubs_stubs.a"
+  "_build/install/default/lib/xenstubs/xenstubs.cmxa"
+  "_build/install/default/lib/xenstubs/xenstubs.a"
+  "_build/install/default/lib/xenstubs/xenstubs.cmxs"
+]
+stublibs: [
+  "_build/install/default/lib/stublibs/dllxenstubs_stubs.so"
+]

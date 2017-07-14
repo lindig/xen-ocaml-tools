@@ -1,0 +1,23 @@
+
+(jbuild_version 1)
+
+(executables
+  ((names 
+   (send_debug_keys 
+    dmesg 
+    list_domains 
+    raise_exception 
+    xtl))
+  (public_names 
+   (send_debug_keys 
+    dmesg 
+    list_domains 
+    raise_exception
+    xtl))
+  (libraries       
+   (unix 
+    xenlight 
+    xentoollog))))
+
+
+

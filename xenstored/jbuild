@@ -1,0 +1,16 @@
+(jbuild_version 1)
+
+(executable
+ ((name xenstored)
+  (public_name oxenstored)
+  (package oxenstored)
+  (libraries       
+   (unix 
+    xenbus 
+    xenmmap 
+    xenctrl 
+    xeneventchn 
+    xenstubs))))
+
+
+

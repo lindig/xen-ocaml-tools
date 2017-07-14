@@ -1,0 +1,14 @@
+(jbuild_version 1)
+
+(library
+ ((name            xenctrl)
+  (public_name      xenctrl)
+  (libraries       (unix xenmmap))
+  (c_names         (xenctrl_stubs))
+  (c_flags         ())
+  (c_library_flags (-lxenctrl 
+                    -lxenguest
+                    -lxencall
+                    -lxenforeignmemory
+                    -lxengnttab
+                    -lxentoollog))))

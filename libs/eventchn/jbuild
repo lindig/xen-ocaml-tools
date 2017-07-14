@@ -1,0 +1,9 @@
+(jbuild_version 1)
+
+(library
+  ((name            xeneventchn)
+   (public_name     xeneventchn)
+   (libraries       (unix))
+   (c_names         (xeneventchn_stubs))
+   (c_flags         ())
+   (c_library_flags (-lxenevtchn))))

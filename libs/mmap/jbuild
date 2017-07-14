@@ -1,0 +1,8 @@
+(jbuild_version 1)
+
+(library
+ ((name               xenmmap)
+  (public_name        xenmmap)
+  (libraries          (unix))
+  (c_names            (xenmmap_stubs))
+  (install_c_headers  (mmap_stubs))))
