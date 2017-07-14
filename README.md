@@ -12,11 +12,24 @@ This code currently builds on a Debian system with these packages
 installed:
 
 * libxen-dev
+* libsystemd-dev
 * opam
+* m4
+
+The above list is most likely incomplete. I'm hoping to provide a Docker
+container with all dependencies.
+
+To actually build the code, run:
 
 ```
+$ opam init
+$ eval `opam config env`
+$ opam install jbuilder
 $ jbuilder build
 ```
+
+If you are an OCaml developer, you most likely have [Opam] already
+installed and configured.
 
 ## Changes
 
@@ -29,8 +42,6 @@ Some small changes were required:
   directory of its own. Again, this was required to meet [jbuilder]
   restrictions.
 
-The above list is most likely incomplete. I'm hoping to provide a Docker
-container with all dependencies.
 
 ## Todo
 
