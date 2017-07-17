@@ -1,4 +1,6 @@
 
+[![Build Status](https://travis-ci.org/lindig/xen-ocaml-tools.svg?branch=master)](https://travis-ci.org/lindig/xen-ocaml-tools)
+
 # OCaml Xen Tools - Work in Progress
 
 This is the OCaml code that is part of the [Xen] hypervisor but ported
