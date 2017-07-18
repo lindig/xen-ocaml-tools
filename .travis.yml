@@ -7,4 +7,4 @@ services:
 before_install:
 - docker build -t xen/ocaml .
 script:
-- docker run -t -v $PWD:/mnt xen/ocaml /bin/sh -c "cp -r /mnt/ . && cd mnt && jbuilder build"
+- bash -ex travis.sh
