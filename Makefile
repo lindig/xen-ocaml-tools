@@ -16,3 +16,6 @@ clean:
 
 docker: Dockerfile
 	docker build -t $(NAME) .
+
+inside: docker
+	sh travis.sh
