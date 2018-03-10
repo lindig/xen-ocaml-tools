@@ -1,3 +1,6 @@
+# 
+# generate type defintions from xentoollog.h 
+#
 
 GENERATED_FILES += xentoollog.ml 
 GENERATED_FILES += xentoollog.mli 
