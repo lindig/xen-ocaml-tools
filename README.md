@@ -17,14 +17,12 @@ installed:
 * libsystemd-dev
 * opam
 * m4
+* opam (the OCaml package manager)
 
 To actually build the code, run:
 
 ```
-$ opam init
-$ eval `opam config env`
-$ opam install jbuilder
-$ jbuilder build
+$ make
 ```
 
 If you are an OCaml developer, you most likely have [Opam] already
@@ -33,13 +31,10 @@ installed and configured.
 ## Building with Docker
 
 A Dockerfile exists mainly for running continuous integration on Travis
-but it can be used to compile the project also locally. This setup does
-not use Opam for installing jbuilder but clones and builds it locally
-first.
+but it can be used to compile the project also locally. 
 
 ```
-$ docker build -t xen/ocaml .
-$ ./travis.sh
+$ make inside
 ```
 
 ## Changes
@@ -52,6 +47,10 @@ Some small changes were required:
 * For oxenstored, stub C code has been moved into a library and
   directory of its own. Again, this was required to meet [jbuilder]
   restrictions.
+
+* The xl library is currently not being built because it depends heavily
+  on the Xen version and relies on code generated from files beyond the
+  Xen header files. I would hope to enable this again.
 
 ## Todo
 
