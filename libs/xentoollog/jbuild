@@ -8,3 +8,4 @@
    (install_c_headers (caml_xentoollog))
    (c_flags           ())
    (c_library_flags   (-lxentoollog))))
+
