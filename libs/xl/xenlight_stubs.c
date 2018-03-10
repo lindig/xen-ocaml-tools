@@ -417,7 +417,7 @@ static char *String_option_val(value v)
 	CAMLreturnT(char *, s);
 }
 
-#include "_libxl_types.h"
+#include "_libxl_types.inc"
 
 void async_callback(libxl_ctx *ctx, int rc, void *for_callback)
 {

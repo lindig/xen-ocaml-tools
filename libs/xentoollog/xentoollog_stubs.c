@@ -50,7 +50,7 @@ static char * dup_String_val(value s)
 	return c;
 }
 
-#include "_xtl_levels.h"
+#include "_xtl_levels.inc"
 
 /* Option type support as per http://www.linux-nantes.org/~fmonnier/ocaml/ocaml-wrapping-c.php */
 #define Val_none Val_int(0)
