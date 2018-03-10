@@ -14,7 +14,7 @@
     xen-list-domains
     xen-raise-exception
     xen-xtl))
-  (package xentest)
+  (package xen-test)
   (libraries
    (unix
     xenlight

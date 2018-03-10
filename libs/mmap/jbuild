@@ -2,7 +2,7 @@
 
 (library
  ((name               xenmmap)
-  (public_name        xenmmap)
+  (public_name        xen-mmap)
   (libraries          (unix))
   (c_names            (xenmmap_stubs))
   (install_c_headers  (mmap_stubs))))

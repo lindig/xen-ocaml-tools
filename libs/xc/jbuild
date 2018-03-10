@@ -2,7 +2,7 @@
 
 (library
  ((name            xenctrl)
-  (public_name      xenctrl)
+  (public_name      xen-ctrl)
   (libraries       (unix xenmmap))
   (c_names         (xenctrl_stubs))
   (c_flags         ())

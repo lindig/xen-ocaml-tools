@@ -2,8 +2,8 @@
 
 (executable
  ((name xenstored)
-  (public_name oxenstored)
-  (package oxenstored)
+  (public_name xenstored)
+  (package xen-stored)
   (libraries       
    (unix 
     xenbus 
