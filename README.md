@@ -1,17 +1,23 @@
 
 [![Build Status](https://travis-ci.org/lindig/xen-ocaml-tools.svg?branch=master)](https://travis-ci.org/lindig/xen-ocaml-tools)
 
-# OCaml Xen Tools - Work in Progress
+# OCaml Xen Tools outside Xen
 
-This is the OCaml code that is part of the [Xen] hypervisor but ported
-to the [jbuilder] build system -- see also its [manual]). The goal is to
-package this code as a collection of [Opam] packages to make it more
-accessible for OCaml developers. This is work in progress.
+This is an experiment to explore building the [OCaml] tools that are
+part of [Xen] independently using jbuilder/[dune] and [Opam]. Goals are:
+
+* make this code more accessible for [OCaml] developers
+* gain access to the [Opam] eco system for this code base
+* simplify development
+
+The master branch is derived from [Xen
+4.8.3](https://blog.xenproject.org/2018/01/24/xen-project-4-8-3-is-available/).
 
 ## Building
 
-This code currently builds on a Debian system with these packages
-installed:
+The code assumes that [Xen] is installed such that header files and
+libraries are available. This code currently builds on a Debian system
+with these packages installed:
 
 * libxen-dev
 * libsystemd-dev
@@ -37,30 +43,32 @@ but it can be used to compile the project also locally.
 $ make inside
 ```
 
-## Changes
+## Changes and Compromises
 
 Some small changes were required:
 
 * The original code used `*.inc` files for C header files and this 
-  suffix is not recognised by [jbuilder] so it was changed to `*.h`.
+  suffix is not recognised by [dune] so it was changed to `*.h`.
 
 * For oxenstored, stub C code has been moved into a library and
-  directory of its own. Again, this was required to meet [jbuilder]
+  directory of its own. Again, this was required to meet [dune]
   restrictions.
 
-* The xl library is currently not being built because it depends heavily
-  on the Xen version and relies on code generated from files beyond the
-  Xen header files. I would hope to enable this again.
+* The build depends on auto-generated code that is derived from header
+  files and an interface defintion that is only present in the [Xen]
+  source tree. These files have been pre-generated but the repository
+  contains Makefiles and sources to re-generate them. This is the most
+  version-dependent link between [Xen] and this code. 
 
 ## Todo
 
 * Write Opam files
-* Hook up code generation - a small part of the code is auto-generated
+* Support a configure step
 
 
 [OCaml]:      https://www.ocam.org/
 [Xen]:        http://xenbits.xen.org/
-[jbuilder]:   https://github.com/janestreet/jbuilder
+[dune]:       https://github.com/ocaml/dune
 [manual]:     https://jbuilder.readthedocs.io/en/latest/
 [Opam]:       https://opam.ocaml.org/
 
