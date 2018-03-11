@@ -118,7 +118,9 @@ let parse_config filename =
 		("access-log-special-ops", Config.Set_bool Logging.access_log_special_ops);
 		("allow-debug", Config.Set_bool Process.allow_debug);
 		("ring-scan-interval", Config.Set_int ring_scan_interval);
-		("pid-file", Config.Set_string pidfile); ] in
+		("pid-file", Config.Set_string pidfile);
+		("xenstored-kva", Config.Set_string Domains.xenstored_kva);
+		("xenstored-port", Config.Set_string Domains.xenstored_port); ] in
 	begin try Config.read filename options (fun _ _ -> raise Not_found)
 	with
 	| Config.Error err -> List.iter (fun (k, e) ->
@@ -213,7 +215,7 @@ let to_channel store cons chan =
 	(* dump the store *)
 	Store.dump_fct store (fun path node ->
 		let name, perms, value = Store.Node.unpack node in
-		let fullpath = (Store.Path.to_string path) ^ "/" ^ name in
+		let fullpath = Store.Path.to_string (Store.Path.of_path_and_name path name) in
 		let permstr = Perms.Node.to_string perms in
 		fprintf chan "store,%s,%s,%s\n" (hexify fullpath) (hexify permstr) (hexify value)
 	);
@@ -286,8 +288,11 @@ let _ =
 
 	let quit = ref false in
 
-	if cf.restart then (
-		DB.from_file store domains cons (Paths.xen_run_stored ^ "/db");
+	Logging.init_xenstored_log();
+
+	let filename = Paths.xen_run_stored ^ "/db" in
+	if cf.restart && Sys.file_exists filename then (
+		DB.from_file store domains cons filename;
 		Event.bind_dom_exc_virq eventchn
 	) else (
 		if !Disk.enable then (
@@ -312,7 +317,6 @@ let _ =
 	Sys.set_signal Sys.sigusr1 (Sys.Signal_handle (fun i -> sigusr1_handler store));
 	Sys.set_signal Sys.sigpipe Sys.Signal_ignore;
 
-	Logging.init_xenstored_log();
 	if cf.activate_access_log then begin
 		let post_rotate () = DB.to_file store cons (Paths.xen_run_stored ^ "/db") in
 		Logging.init_access_log post_rotate

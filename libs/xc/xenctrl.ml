@@ -28,6 +28,34 @@ type vcpuinfo =
 	cpumap: int32;
 }
 
+type xen_arm_arch_domainconfig =
+{
+	gic_version: int;
+	nr_spis: int;
+	clock_frequency: int32;
+}
+
+type x86_arch_emulation_flags =
+	| X86_EMU_LAPIC
+	| X86_EMU_HPET
+	| X86_EMU_PM
+	| X86_EMU_RTC
+	| X86_EMU_IOAPIC
+	| X86_EMU_PIC
+	| X86_EMU_VGA
+	| X86_EMU_IOMMU
+	| X86_EMU_PIT
+	| X86_EMU_USE_PIRQ
+
+type xen_x86_arch_domainconfig =
+{
+	emulation_flags: x86_arch_emulation_flags list;
+}
+
+type arch_domainconfig =
+	| ARM of xen_arm_arch_domainconfig
+	| X86 of xen_x86_arch_domainconfig
+
 type domaininfo =
 {
 	domid             : domid;
@@ -46,6 +74,7 @@ type domaininfo =
 	max_vcpu_id       : int;
 	ssidref           : int32;
 	handle            : int array;
+	arch_config       : arch_domainconfig;
 }
 
 type sched_control =
@@ -97,14 +126,6 @@ exception Error of string
 
 type handle
 
-(* this is only use by coredumping *)
-external sizeof_core_header: unit -> int
-       = "stub_sizeof_core_header"
-external sizeof_vcpu_guest_context: unit -> int
-       = "stub_sizeof_vcpu_guest_context"
-external sizeof_xen_pfn: unit -> int = "stub_sizeof_xen_pfn"
-(* end of use *)
-
 external interface_open: unit -> handle = "stub_xc_interface_open"
 external interface_close: handle -> unit = "stub_xc_interface_close"
 
@@ -114,7 +135,7 @@ let with_intf f =
 	interface_close xc;
 	r
 
-external _domain_create: handle -> int32 -> domain_create_flag list -> int array -> domid
+external _domain_create: handle -> int32 -> domain_create_flag list -> int array -> arch_domainconfig -> domid
        = "stub_xc_domain_create"
 
 let int_array_of_uuid_string s =
@@ -218,15 +239,10 @@ external domain_cpuid_set: handle -> domid -> (int64 * (int64 option))
        = "stub_xc_domain_cpuid_set"
 external domain_cpuid_apply_policy: handle -> domid -> unit
        = "stub_xc_domain_cpuid_apply_policy"
-external cpuid_check: handle -> (int64 * (int64 option)) -> string option array -> (bool * string option array)
-       = "stub_xc_cpuid_check"
 
 external map_foreign_range: handle -> domid -> int
                          -> nativeint -> Xenmmap.mmap_interface
        = "stub_map_foreign_range"
-
-external domain_get_pfn_list: handle -> domid -> nativeint -> nativeint array
-       = "stub_xc_domain_get_pfn_list"
 
 external domain_assign_device: handle -> domid -> (int * int * int * int) -> unit
        = "stub_xc_domain_assign_device"
@@ -247,84 +263,6 @@ external get_cpu_featureset : handle -> featureset_index -> int64 array = "stub_
 
 external watchdog : handle -> int -> int32 -> int
   = "stub_xc_watchdog"
-
-(* core dump structure *)
-type core_magic = Magic_hvm | Magic_pv
-
-type core_header = {
-	xch_magic: core_magic;
-	xch_nr_vcpus: int;
-	xch_nr_pages: nativeint;
-	xch_index_offset: int64;
-	xch_ctxt_offset: int64;
-	xch_pages_offset: int64;
-}
-
-external marshall_core_header: core_header -> string = "stub_marshall_core_header"
-
-(* coredump *)
-let coredump xch domid fd =
-	let dump s =
-		let wd = Unix.write fd s 0 (String.length s) in
-		if wd <> String.length s then
-			failwith "error while writing";
-		in
-
-	let info = domain_getinfo xch domid in
-
-	let nrpages = info.total_memory_pages in
-	let ctxt = Array.make info.max_vcpu_id None in
-	let nr_vcpus = ref 0 in
-	for i = 0 to info.max_vcpu_id - 1
-	do
-		ctxt.(i) <- try
-			let v = vcpu_context_get xch domid i in
-			incr nr_vcpus;
-			Some v
-			with _ -> None
-	done;
-
-	(* FIXME page offset if not rounded to sup *)
-	let page_offset =
-		Int64.add
-			(Int64.of_int (sizeof_core_header () +
-			 (sizeof_vcpu_guest_context () * !nr_vcpus)))
-			(Int64.of_nativeint (
-				Nativeint.mul
-					(Nativeint.of_int (sizeof_xen_pfn ()))
-					nrpages)
-				)
-		in
-
-	let header = {
-		xch_magic = if info.hvm_guest then Magic_hvm else Magic_pv;
-		xch_nr_vcpus = !nr_vcpus;
-		xch_nr_pages = nrpages;
-		xch_ctxt_offset = Int64.of_int (sizeof_core_header ());
-		xch_index_offset = Int64.of_int (sizeof_core_header ()
-					+ sizeof_vcpu_guest_context ());
-		xch_pages_offset = page_offset;
-	} in
-
-	dump (marshall_core_header header);
-	for i = 0 to info.max_vcpu_id - 1
-	do
-		match ctxt.(i) with
-		| None -> ()
-		| Some ctxt_i -> dump ctxt_i
-	done;
-	let pfns = domain_get_pfn_list xch domid nrpages in
-	if Array.length pfns <> Nativeint.to_int nrpages then
-		failwith "could not get the page frame list";
-
-	let page_size = Xenmmap.getpagesize () in
-	for i = 0 to Nativeint.to_int nrpages - 1
-	do
-		let page = map_foreign_range xch domid page_size pfns.(i) in
-		let data = Xenmmap.read page 0 page_size in
-		Xenmmap.unmap page;
-		dump data
-	done
 
 (* ** Misc ** *)
 
