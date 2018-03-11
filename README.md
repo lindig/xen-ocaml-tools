@@ -21,7 +21,6 @@ with these packages installed:
 
 * libxen-dev
 * libsystemd-dev
-* opam
 * m4
 * opam (the OCaml package manager)
 
