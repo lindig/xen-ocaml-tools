@@ -50,12 +50,12 @@ Some small changes were required:
 * The original code used `*.inc` files for C header files and this 
   suffix is not recognised by [dune] so it was changed to `*.h`.
 
-* For oxenstored, stub C code has been moved into a library and
+* For xenstored, stub C code has been moved into a library and
   directory of its own. Again, this was required to meet [dune]
   restrictions.
 
 * The build depends on auto-generated code that is derived from header
-  files and an interface defintion that is only present in the [Xen]
+  files and an interface definition that is only present in the [Xen]
   source tree. These files have been pre-generated but the repository
   contains Makefiles and sources to re-generate them. This is the most
   version-dependent link between [Xen] and this code. 
