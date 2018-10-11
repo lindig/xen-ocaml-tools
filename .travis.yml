@@ -8,4 +8,4 @@ before_install:
 - make docker
 script:
 - chmod -R a+w .
-- bash -ex travis.sh
+- bash -ex tools/travis.sh

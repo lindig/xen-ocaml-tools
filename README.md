@@ -10,8 +10,7 @@ part of [Xen] independently using jbuilder/[dune] and [Opam]. Goals are:
 * gain access to the [Opam] eco system for this code base
 * simplify development
 
-The master branch is derived from [Xen
-4.8.3](https://blog.xenproject.org/2018/01/24/xen-project-4-8-3-is-available/).
+The master branch is derived from Xen 4.8.4.
 
 ## Building
 
@@ -62,8 +61,6 @@ Some small changes were required:
 ## Todo
 
 * Write Opam files
-* Support a configure step
-
 
 [OCaml]:      https://www.ocam.org/
 [Xen]:        http://xenbits.xen.org/

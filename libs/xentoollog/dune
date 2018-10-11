@@ -1,7 +1,7 @@
 
 (library
  (name              xentoollog)
- (public_name       xen-toollog)
+ (public_name       xen.toollog)
  (libraries         unix)
  (c_names           xentoollog_stubs)
  (install_c_headers caml_xentoollog)

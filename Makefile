@@ -8,7 +8,7 @@ NAME = lindig/xen-tools
 
 .PHONY: all clean
 
-(all:
+all:
 	dune build
 
 clean:
@@ -19,3 +19,5 @@ docker: Dockerfile
 
 inside: docker
 	sh travis.sh
+
+

@@ -2,7 +2,7 @@
 (executable
  (name xenstored)
  (public_name xenstored)
- (package xen-stored)
+ (package xenstored)
  (libraries
   unix
   xenbus

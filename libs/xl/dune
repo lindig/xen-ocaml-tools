@@ -1,7 +1,7 @@
 
 (library
   (name            xenlight)
-  (public_name     xen-light)
+  (public_name     xen.light)
   (libraries       unix xentoollog)
   (c_names         xenlight_stubs)
   (c_flags         -Wno-unused -Wno-declaration-after-statement)

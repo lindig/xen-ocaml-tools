@@ -13,7 +13,7 @@
   xen-list-domains
   xen-raise-exception
   xen-xtl)
- (package xen-test)
+ (package xen)
  (libraries
   unix
   xenlight
