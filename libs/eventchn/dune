@@ -1,0 +1,7 @@
+
+(library
+ (name            xeneventchn)
+ (public_name     xen-eventchn)
+ (libraries       unix)
+ (c_names         xeneventchn_stubs)
+ (c_library_flags -lxenevtchn))

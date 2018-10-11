@@ -1,4 +1,4 @@
-FROM ocaml/opam:debian-9_ocaml-4.04.2
+FROM ocaml/opam2:debian-9-ocaml-4.06
 RUN sudo apt-get update
 RUN sudo apt-get install -y m4 libxen-dev libsystemd-dev
-RUN opam install jbuilder
+RUN opam install dune

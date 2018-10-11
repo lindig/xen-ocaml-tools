@@ -1,9 +1,0 @@
-(jbuild_version 1)
-
-(library
-  ((name            xenbus)
-   (public_name     xen-bus)
-   (libraries       (unix xenmmap))
-   (c_names         (xenbus_stubs xs_ring_stubs))
-   (c_flags         ())
-   (c_library_flags (-lxenctrl))))

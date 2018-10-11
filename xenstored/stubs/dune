@@ -1,0 +1,7 @@
+
+(library
+ (name            xenstubs)
+ (wrapped         false)
+ (libraries       unix)
+ (c_names         syslog_stubs systemd_stubs select_stubs)
+ (c_library_flags -lsystemd))

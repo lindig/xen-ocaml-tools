@@ -1,0 +1,7 @@
+
+(library
+ (name            xenbus)
+ (public_name     xen-bus)
+ (libraries       unix xenmmap)
+ (c_names         xenbus_stubs xs_ring_stubs)
+ (c_library_flags -lxenctrl))

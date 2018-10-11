@@ -1,0 +1,15 @@
+
+(executable
+ (name xenstored)
+ (public_name xenstored)
+ (package xen-stored)
+ (libraries
+  unix
+  xenbus
+  xenmmap
+  xenctrl
+  xeneventchn
+  xenstubs))
+
+
+

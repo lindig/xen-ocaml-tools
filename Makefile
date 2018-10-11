@@ -8,11 +8,11 @@ NAME = lindig/xen-tools
 
 .PHONY: all clean
 
-all:
-	jbuilder build
+(all:
+	dune build
 
 clean:
-	jbuilder clean
+	dune clean
 
 docker: Dockerfile
 	docker build -t $(NAME) .

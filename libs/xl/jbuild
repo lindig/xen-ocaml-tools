@@ -1,9 +1,0 @@
-(jbuild_version 1)
-
-(library
-  ((name            xenlight)
-   (public_name     xen-light)
-   (libraries       (unix xentoollog))
-   (c_names         (xenlight_stubs))
-   (c_flags         (-Wno-unused -Wno-declaration-after-statement))
-   (c_library_flags (-lxenlight -lxlutil))))

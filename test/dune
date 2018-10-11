@@ -1,0 +1,23 @@
+
+
+(executables
+ (names
+  send_debug_keys
+  dmesg
+  list_domains
+  raise_exception
+  xtl)
+ (public_names
+  xen-send-debug-keys
+  xen-dmesg
+  xen-list-domains
+  xen-raise-exception
+  xen-xtl)
+ (package xen-test)
+ (libraries
+  unix
+  xenlight
+  xentoollog))
+
+
+
