@@ -58,7 +58,6 @@ type domain_type =
 	 | DOMAIN_TYPE_INVALID
 	 | DOMAIN_TYPE_HVM
 	 | DOMAIN_TYPE_PV
-	 | DOMAIN_TYPE_PVH
 
 val string_of_domain_type : domain_type -> string
 
@@ -90,6 +89,7 @@ type device_model_version =
 	 | DEVICE_MODEL_VERSION_UNKNOWN
 	 | DEVICE_MODEL_VERSION_QEMU_XEN_TRADITIONAL
 	 | DEVICE_MODEL_VERSION_QEMU_XEN
+	 | DEVICE_MODEL_VERSION_NONE
 
 val string_of_device_model_version : device_model_version -> string
 
@@ -98,7 +98,6 @@ type console_type =
 	 | CONSOLE_TYPE_UNKNOWN
 	 | CONSOLE_TYPE_SERIAL
 	 | CONSOLE_TYPE_PV
-	 | CONSOLE_TYPE_VUART
 
 val string_of_console_type : console_type -> string
 
@@ -110,7 +109,6 @@ type disk_format =
 	 | DISK_FORMAT_VHD
 	 | DISK_FORMAT_RAW
 	 | DISK_FORMAT_EMPTY
-	 | DISK_FORMAT_QED
 
 val string_of_disk_format : disk_format -> string
 
@@ -198,7 +196,6 @@ type scheduler =
 	 | SCHEDULER_CREDIT2
 	 | SCHEDULER_ARINC653
 	 | SCHEDULER_RTDS
-	 | SCHEDULER_NULL
 
 val string_of_scheduler : scheduler -> string
 
@@ -239,7 +236,6 @@ type viridian_enlightenment =
 	 | VIRIDIAN_ENLIGHTENMENT_REFERENCE_TSC
 	 | VIRIDIAN_ENLIGHTENMENT_HCALL_REMOTE_TLB_FLUSH
 	 | VIRIDIAN_ENLIGHTENMENT_APIC_ASSIST
-	 | VIRIDIAN_ENLIGHTENMENT_CRASH_CTL
 
 val string_of_viridian_enlightenment : viridian_enlightenment -> string
 
@@ -257,13 +253,6 @@ type checkpointed_stream =
 	 | CHECKPOINTED_STREAM_COLO
 
 val string_of_checkpointed_stream : checkpointed_stream -> string
-
-(* libxl_vuart_type interface *)
-type vuart_type = 
-	 | VUART_TYPE_UNKNOWN
-	 | VUART_TYPE_SBSA_UART
-
-val string_of_vuart_type : vuart_type -> string
 
 (* libxl_ioport_range interface *)
 module Ioport_range : sig
@@ -443,6 +432,7 @@ module Domain_create_info : sig
 		poolid : int32;
 		pool_name : string option;
 		run_hotplug_scripts : bool option;
+		pvh : bool option;
 		driver_domain : bool option;
 	}
 	val default : ctx -> unit -> t
@@ -455,7 +445,6 @@ module Domain_restore_params : sig
 		checkpointed_stream : int;
 		stream_version : int32;
 		colo_proxy_script : string option;
-		userspace_colo_proxy : bool option;
 	}
 	val default : ctx -> unit -> t
 end
@@ -493,9 +482,9 @@ module Domain_sched_params : sig
 		cap : int;
 		period : int;
 		budget : int;
-		extratime : int;
 		slice : int;
 		latency : int;
+		extratime : int;
 	}
 	val default : ctx -> unit -> t
 	external get : ctx -> domid -> t = "stub_xl_domain_sched_params_get"
@@ -532,15 +521,6 @@ module Rdm_reserve : sig
 	val default : ctx -> unit -> t
 end
 
-(* libxl_altp2m_mode interface *)
-type altp2m_mode = 
-	 | ALTP2M_MODE_DISABLED
-	 | ALTP2M_MODE_MIXED
-	 | ALTP2M_MODE_EXTERNAL
-	 | ALTP2M_MODE_LIMITED
-
-val string_of_altp2m_mode : altp2m_mode -> string
-
 (* libxl_domain_build_info interface *)
 module Domain_build_info : sig
 
@@ -553,7 +533,6 @@ module Domain_build_info : sig
 			acpi : bool option;
 			acpi_s3 : bool option;
 			acpi_s4 : bool option;
-			acpi_laptop_slate : bool option;
 			nx : bool option;
 			viridian : bool option;
 			viridian_enable : bool array;
@@ -590,7 +569,6 @@ module Domain_build_info : sig
 			serial_list : string list;
 			rdm : Rdm_reserve.t;
 			rdm_mem_boundary_memkb : int64;
-			mca_caps : int64;
 	}
 	
 	type type_pv =
@@ -605,19 +583,10 @@ module Domain_build_info : sig
 			e820_host : bool option;
 	}
 	
-	type type_pvh =
-	{
-			pvshim : bool option;
-			pvshim_path : string option;
-			pvshim_cmdline : string option;
-			pvshim_extra : string option;
-	}
-	
-	type type__union = Hvm of type_hvm | Pv of type_pv | Pvh of type_pvh | Invalid
+	type type__union = Hvm of type_hvm | Pv of type_pv | Invalid
 	
 	type arch_arm__anon = {
 		gic_version : gic_version;
-		vuart : vuart_type;
 	}
 	
 	type t =
@@ -642,8 +611,6 @@ module Domain_build_info : sig
 		cpuid : unit;
 		blkdev_start : string option;
 		vnuma_nodes : Vnode_info.t array;
-		max_grant_frames : int32;
-		max_maptrack_frames : int32;
 		device_model_version : device_model_version;
 		device_model_stubdomain : bool option;
 		device_model : string option;
@@ -664,15 +631,8 @@ module Domain_build_info : sig
 		ramdisk : string option;
 		device_tree : string option;
 		acpi : bool option;
-		bootloader : string option;
-		bootloader_args : string list;
-		timer_mode : timer_mode;
-		nested_hvm : bool option;
-		apic : bool option;
-		dm_restrict : bool option;
 		xl_type : type__union;
 		arch_arm : arch_arm__anon;
-		altp2m : altp2m_mode;
 	}
 	val default : ctx -> ?xl_type:domain_type -> unit -> t
 end
@@ -760,54 +720,6 @@ module Device_nic : sig
 		rate_interval_usecs : int32;
 		gatewaydev : string option;
 		coloft_forwarddev : string option;
-		colo_sock_mirror_id : string option;
-		colo_sock_mirror_ip : string option;
-		colo_sock_mirror_port : string option;
-		colo_sock_compare_pri_in_id : string option;
-		colo_sock_compare_pri_in_ip : string option;
-		colo_sock_compare_pri_in_port : string option;
-		colo_sock_compare_sec_in_id : string option;
-		colo_sock_compare_sec_in_ip : string option;
-		colo_sock_compare_sec_in_port : string option;
-		colo_sock_compare_notify_id : string option;
-		colo_sock_compare_notify_ip : string option;
-		colo_sock_compare_notify_port : string option;
-		colo_sock_redirector0_id : string option;
-		colo_sock_redirector0_ip : string option;
-		colo_sock_redirector0_port : string option;
-		colo_sock_redirector1_id : string option;
-		colo_sock_redirector1_ip : string option;
-		colo_sock_redirector1_port : string option;
-		colo_sock_redirector2_id : string option;
-		colo_sock_redirector2_ip : string option;
-		colo_sock_redirector2_port : string option;
-		colo_filter_mirror_queue : string option;
-		colo_filter_mirror_outdev : string option;
-		colo_filter_redirector0_queue : string option;
-		colo_filter_redirector0_indev : string option;
-		colo_filter_redirector0_outdev : string option;
-		colo_filter_redirector1_queue : string option;
-		colo_filter_redirector1_indev : string option;
-		colo_filter_redirector1_outdev : string option;
-		colo_compare_pri_in : string option;
-		colo_compare_sec_in : string option;
-		colo_compare_out : string option;
-		colo_compare_notify_dev : string option;
-		colo_sock_sec_redirector0_id : string option;
-		colo_sock_sec_redirector0_ip : string option;
-		colo_sock_sec_redirector0_port : string option;
-		colo_sock_sec_redirector1_id : string option;
-		colo_sock_sec_redirector1_ip : string option;
-		colo_sock_sec_redirector1_port : string option;
-		colo_filter_sec_redirector0_queue : string option;
-		colo_filter_sec_redirector0_indev : string option;
-		colo_filter_sec_redirector0_outdev : string option;
-		colo_filter_sec_redirector1_queue : string option;
-		colo_filter_sec_redirector1_indev : string option;
-		colo_filter_sec_redirector1_outdev : string option;
-		colo_filter_sec_rewriter0_queue : string option;
-		colo_checkpoint_host : string option;
-		colo_checkpoint_port : string option;
 	}
 	val default : ctx -> unit -> t
 	external add : ctx -> t -> domid -> ?async:'a -> unit -> unit = "stub_xl_device_nic_add"
@@ -924,20 +836,6 @@ module Device_vtpm : sig
 	val default : ctx -> unit -> t
 end
 
-(* libxl_device_p9 interface *)
-module Device_p9 : sig
-	type t =
-	{
-		backend_domid : domid;
-		backend_domname : string option;
-		tag : string option;
-		path : string option;
-		security_model : string option;
-		devid : devid;
-	}
-	val default : ctx -> unit -> t
-end
-
 (* libxl_device_channel interface *)
 module Device_channel : sig
 
@@ -959,30 +857,6 @@ module Device_channel : sig
 	val default : ctx -> ?connection:channel_connection -> unit -> t
 end
 
-(* libxl_connector_param interface *)
-module Connector_param : sig
-	type t =
-	{
-		id : string option;
-		width : int32;
-		height : int32;
-	}
-	val default : ctx -> unit -> t
-end
-
-(* libxl_device_vdispl interface *)
-module Device_vdispl : sig
-	type t =
-	{
-		backend_domid : domid;
-		backend_domname : string option;
-		devid : devid;
-		be_alloc : bool;
-		connectors : Connector_param.t array;
-	}
-	val default : ctx -> unit -> t
-end
-
 (* libxl_domain_config interface *)
 module Domain_config : sig
 	type t =
@@ -997,8 +871,6 @@ module Domain_config : sig
 		vfbs : Device_vfb.t array;
 		vkbs : Device_vkb.t array;
 		vtpms : Device_vtpm.t array;
-		p9s : Device_p9.t array;
-		vdispls : Device_vdispl.t array;
 		channels : Device_channel.t array;
 		usbctrls : Device_usbctrl.t array;
 		usbdevs : Device_usbdev.t array;
@@ -1096,7 +968,6 @@ module Physinfo : sig
 		outstanding_pages : int64;
 		sharing_freed_pages : int64;
 		sharing_used_frames : int64;
-		max_possible_mfn : int64;
 		nr_nodes : int32;
 		hw_cap : int32 array;
 		cap_hvm : bool;
@@ -1104,37 +975,6 @@ module Physinfo : sig
 	}
 	val default : ctx -> unit -> t
 	external get : ctx -> t = "stub_xl_physinfo_get"
-end
-
-(* libxl_connectorinfo interface *)
-module Connectorinfo : sig
-	type t =
-	{
-		id : string option;
-		width : int32;
-		height : int32;
-		req_evtch : int;
-		req_rref : int;
-		evt_evtch : int;
-		evt_rref : int;
-	}
-	val default : ctx -> unit -> t
-end
-
-(* libxl_vdisplinfo interface *)
-module Vdisplinfo : sig
-	type t =
-	{
-		backend : string option;
-		backend_id : int32;
-		frontend : string option;
-		frontend_id : int32;
-		devid : devid;
-		state : int;
-		be_alloc : bool;
-		connectors : Connectorinfo.t array;
-	}
-	val default : ctx -> unit -> t
 end
 
 (* libxl_numainfo interface *)
@@ -1203,7 +1043,6 @@ module Domain_remus_info : sig
 		netbufscript : string option;
 		diskbuf : bool option;
 		colo : bool option;
-		userspace_colo_proxy : bool option;
 	}
 	val default : ctx -> unit -> t
 end
@@ -1263,8 +1102,6 @@ type psr_cbm_type =
 	 | PSR_CBM_TYPE_L3_CBM
 	 | PSR_CBM_TYPE_L3_CBM_CODE
 	 | PSR_CBM_TYPE_L3_CBM_DATA
-	 | PSR_CBM_TYPE_L2_CBM
-	 | PSR_CBM_TYPE_MBA_THRTL
 
 val string_of_psr_cbm_type : psr_cbm_type -> string
 
@@ -1278,40 +1115,6 @@ module Psr_cat_info : sig
 		cdp_enabled : bool;
 	}
 	val default : ctx -> unit -> t
-end
-
-(* libxl_psr_feat_type interface *)
-type psr_feat_type = 
-	 | PSR_FEAT_TYPE_CAT
-	 | PSR_FEAT_TYPE_MBA
-
-val string_of_psr_feat_type : psr_feat_type -> string
-
-(* libxl_psr_hw_info interface *)
-module Psr_hw_info : sig
-
-	type type_cat =
-	{
-			cos_max : int32;
-			cbm_len : int32;
-			cdp_enabled : bool;
-	}
-	
-	type type_mba =
-	{
-			cos_max : int32;
-			thrtl_max : int32;
-			linear : bool;
-	}
-	
-	type type__union = Cat of type_cat | Mba of type_mba
-	
-	type t =
-	{
-		id : int32;
-		xl_type : type__union;
-	}
-	val default : ctx -> ?xl_type:psr_feat_type -> unit -> t
 end
 
 (* END OF AUTO-GENERATED CODE *)

@@ -417,7 +417,7 @@ static char *String_option_val(value v)
 	CAMLreturnT(char *, s);
 }
 
-#include "_libxl_types.inc"
+#include "_libxl_types.h"
 
 void async_callback(libxl_ctx *ctx, int rc, void *for_callback)
 {
@@ -734,8 +734,9 @@ value stub_xl_device_nic_list(value ctx, value domid)
 		Field(list, 1) = temp;
 		temp = list;
 		Store_field(list, 0, Val_device_nic(&c_list[i]));
+		libxl_device_nic_dispose(&c_list[i]);
 	}
-	libxl_device_nic_list_free(c_list, nb);
+	free(c_list);
 
 	CAMLreturn(list);
 }
@@ -762,8 +763,9 @@ value stub_xl_device_disk_list(value ctx, value domid)
 		Field(list, 1) = temp;
 		temp = list;
 		Store_field(list, 0, Val_device_disk(&c_list[i]));
+		libxl_device_disk_dispose(&c_list[i]);
 	}
-	libxl_device_disk_list_free(c_list, nb);
+	free(c_list);
 
 	CAMLreturn(list);
 }

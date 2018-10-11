@@ -63,13 +63,11 @@ type domain_type =
 	 | DOMAIN_TYPE_INVALID
 	 | DOMAIN_TYPE_HVM
 	 | DOMAIN_TYPE_PV
-	 | DOMAIN_TYPE_PVH
 
 let string_of_domain_type = function
 	| DOMAIN_TYPE_INVALID -> "INVALID"
 	| DOMAIN_TYPE_HVM -> "HVM"
 	| DOMAIN_TYPE_PV -> "PV"
-	| DOMAIN_TYPE_PVH -> "PVH"
 
 (* libxl_rdm_reserve_strategy implementation *)
 type rdm_reserve_strategy = 
@@ -107,24 +105,24 @@ type device_model_version =
 	 | DEVICE_MODEL_VERSION_UNKNOWN
 	 | DEVICE_MODEL_VERSION_QEMU_XEN_TRADITIONAL
 	 | DEVICE_MODEL_VERSION_QEMU_XEN
+	 | DEVICE_MODEL_VERSION_NONE
 
 let string_of_device_model_version = function
 	| DEVICE_MODEL_VERSION_UNKNOWN -> "UNKNOWN"
 	| DEVICE_MODEL_VERSION_QEMU_XEN_TRADITIONAL -> "QEMU_XEN_TRADITIONAL"
 	| DEVICE_MODEL_VERSION_QEMU_XEN -> "QEMU_XEN"
+	| DEVICE_MODEL_VERSION_NONE -> "NONE"
 
 (* libxl_console_type implementation *)
 type console_type = 
 	 | CONSOLE_TYPE_UNKNOWN
 	 | CONSOLE_TYPE_SERIAL
 	 | CONSOLE_TYPE_PV
-	 | CONSOLE_TYPE_VUART
 
 let string_of_console_type = function
 	| CONSOLE_TYPE_UNKNOWN -> "UNKNOWN"
 	| CONSOLE_TYPE_SERIAL -> "SERIAL"
 	| CONSOLE_TYPE_PV -> "PV"
-	| CONSOLE_TYPE_VUART -> "VUART"
 
 (* libxl_disk_format implementation *)
 type disk_format = 
@@ -134,7 +132,6 @@ type disk_format =
 	 | DISK_FORMAT_VHD
 	 | DISK_FORMAT_RAW
 	 | DISK_FORMAT_EMPTY
-	 | DISK_FORMAT_QED
 
 let string_of_disk_format = function
 	| DISK_FORMAT_UNKNOWN -> "UNKNOWN"
@@ -143,7 +140,6 @@ let string_of_disk_format = function
 	| DISK_FORMAT_VHD -> "VHD"
 	| DISK_FORMAT_RAW -> "RAW"
 	| DISK_FORMAT_EMPTY -> "EMPTY"
-	| DISK_FORMAT_QED -> "QED"
 
 (* libxl_disk_backend implementation *)
 type disk_backend = 
@@ -265,7 +261,6 @@ type scheduler =
 	 | SCHEDULER_CREDIT2
 	 | SCHEDULER_ARINC653
 	 | SCHEDULER_RTDS
-	 | SCHEDULER_NULL
 
 let string_of_scheduler = function
 	| SCHEDULER_UNKNOWN -> "UNKNOWN"
@@ -274,7 +269,6 @@ let string_of_scheduler = function
 	| SCHEDULER_CREDIT2 -> "CREDIT2"
 	| SCHEDULER_ARINC653 -> "ARINC653"
 	| SCHEDULER_RTDS -> "RTDS"
-	| SCHEDULER_NULL -> "NULL"
 
 (* libxl_shutdown_reason implementation *)
 type shutdown_reason = 
@@ -327,7 +321,6 @@ type viridian_enlightenment =
 	 | VIRIDIAN_ENLIGHTENMENT_REFERENCE_TSC
 	 | VIRIDIAN_ENLIGHTENMENT_HCALL_REMOTE_TLB_FLUSH
 	 | VIRIDIAN_ENLIGHTENMENT_APIC_ASSIST
-	 | VIRIDIAN_ENLIGHTENMENT_CRASH_CTL
 
 let string_of_viridian_enlightenment = function
 	| VIRIDIAN_ENLIGHTENMENT_BASE -> "BASE"
@@ -336,7 +329,6 @@ let string_of_viridian_enlightenment = function
 	| VIRIDIAN_ENLIGHTENMENT_REFERENCE_TSC -> "REFERENCE_TSC"
 	| VIRIDIAN_ENLIGHTENMENT_HCALL_REMOTE_TLB_FLUSH -> "HCALL_REMOTE_TLB_FLUSH"
 	| VIRIDIAN_ENLIGHTENMENT_APIC_ASSIST -> "APIC_ASSIST"
-	| VIRIDIAN_ENLIGHTENMENT_CRASH_CTL -> "CRASH_CTL"
 
 (* libxl_hdtype implementation *)
 type hdtype = 
@@ -357,15 +349,6 @@ let string_of_checkpointed_stream = function
 	| CHECKPOINTED_STREAM_NONE -> "NONE"
 	| CHECKPOINTED_STREAM_REMUS -> "REMUS"
 	| CHECKPOINTED_STREAM_COLO -> "COLO"
-
-(* libxl_vuart_type implementation *)
-type vuart_type = 
-	 | VUART_TYPE_UNKNOWN
-	 | VUART_TYPE_SBSA_UART
-
-let string_of_vuart_type = function
-	| VUART_TYPE_UNKNOWN -> "UNKNOWN"
-	| VUART_TYPE_SBSA_UART -> "SBSA_UART"
 
 (* libxl_ioport_range implementation *)
 module Ioport_range = struct
@@ -545,6 +528,7 @@ module Domain_create_info = struct
 		poolid : int32;
 		pool_name : string option;
 		run_hotplug_scripts : bool option;
+		pvh : bool option;
 		driver_domain : bool option;
 	}
 	external default : ctx -> unit -> t = "stub_libxl_domain_create_info_init"
@@ -557,7 +541,6 @@ module Domain_restore_params = struct
 		checkpointed_stream : int;
 		stream_version : int32;
 		colo_proxy_script : string option;
-		userspace_colo_proxy : bool option;
 	}
 	external default : ctx -> unit -> t = "stub_libxl_domain_restore_params_init"
 end
@@ -595,9 +578,9 @@ module Domain_sched_params = struct
 		cap : int;
 		period : int;
 		budget : int;
-		extratime : int;
 		slice : int;
 		latency : int;
+		extratime : int;
 	}
 	external default : ctx -> unit -> t = "stub_libxl_domain_sched_params_init"
 	external get : ctx -> domid -> t = "stub_xl_domain_sched_params_get"
@@ -637,19 +620,6 @@ module Rdm_reserve = struct
 	external default : ctx -> unit -> t = "stub_libxl_rdm_reserve_init"
 end
 
-(* libxl_altp2m_mode implementation *)
-type altp2m_mode = 
-	 | ALTP2M_MODE_DISABLED
-	 | ALTP2M_MODE_MIXED
-	 | ALTP2M_MODE_EXTERNAL
-	 | ALTP2M_MODE_LIMITED
-
-let string_of_altp2m_mode = function
-	| ALTP2M_MODE_DISABLED -> "DISABLED"
-	| ALTP2M_MODE_MIXED -> "MIXED"
-	| ALTP2M_MODE_EXTERNAL -> "EXTERNAL"
-	| ALTP2M_MODE_LIMITED -> "LIMITED"
-
 (* libxl_domain_build_info implementation *)
 module Domain_build_info = struct
 
@@ -662,7 +632,6 @@ module Domain_build_info = struct
 			acpi : bool option;
 			acpi_s3 : bool option;
 			acpi_s4 : bool option;
-			acpi_laptop_slate : bool option;
 			nx : bool option;
 			viridian : bool option;
 			viridian_enable : bool array;
@@ -699,7 +668,6 @@ module Domain_build_info = struct
 			serial_list : string list;
 			rdm : Rdm_reserve.t;
 			rdm_mem_boundary_memkb : int64;
-			mca_caps : int64;
 	}
 	
 	type type_pv =
@@ -714,19 +682,10 @@ module Domain_build_info = struct
 			e820_host : bool option;
 	}
 	
-	type type_pvh =
-	{
-			pvshim : bool option;
-			pvshim_path : string option;
-			pvshim_cmdline : string option;
-			pvshim_extra : string option;
-	}
-	
-	type type__union = Hvm of type_hvm | Pv of type_pv | Pvh of type_pvh | Invalid
+	type type__union = Hvm of type_hvm | Pv of type_pv | Invalid
 	
 	type arch_arm__anon = {
 		gic_version : gic_version;
-		vuart : vuart_type;
 	}
 	
 	type t =
@@ -751,8 +710,6 @@ module Domain_build_info = struct
 		cpuid : unit;
 		blkdev_start : string option;
 		vnuma_nodes : Vnode_info.t array;
-		max_grant_frames : int32;
-		max_maptrack_frames : int32;
 		device_model_version : device_model_version;
 		device_model_stubdomain : bool option;
 		device_model : string option;
@@ -773,15 +730,8 @@ module Domain_build_info = struct
 		ramdisk : string option;
 		device_tree : string option;
 		acpi : bool option;
-		bootloader : string option;
-		bootloader_args : string list;
-		timer_mode : timer_mode;
-		nested_hvm : bool option;
-		apic : bool option;
-		dm_restrict : bool option;
 		xl_type : type__union;
 		arch_arm : arch_arm__anon;
-		altp2m : altp2m_mode;
 	}
 	external default : ctx -> ?xl_type:domain_type -> unit -> t = "stub_libxl_domain_build_info_init"
 end
@@ -869,54 +819,6 @@ module Device_nic = struct
 		rate_interval_usecs : int32;
 		gatewaydev : string option;
 		coloft_forwarddev : string option;
-		colo_sock_mirror_id : string option;
-		colo_sock_mirror_ip : string option;
-		colo_sock_mirror_port : string option;
-		colo_sock_compare_pri_in_id : string option;
-		colo_sock_compare_pri_in_ip : string option;
-		colo_sock_compare_pri_in_port : string option;
-		colo_sock_compare_sec_in_id : string option;
-		colo_sock_compare_sec_in_ip : string option;
-		colo_sock_compare_sec_in_port : string option;
-		colo_sock_compare_notify_id : string option;
-		colo_sock_compare_notify_ip : string option;
-		colo_sock_compare_notify_port : string option;
-		colo_sock_redirector0_id : string option;
-		colo_sock_redirector0_ip : string option;
-		colo_sock_redirector0_port : string option;
-		colo_sock_redirector1_id : string option;
-		colo_sock_redirector1_ip : string option;
-		colo_sock_redirector1_port : string option;
-		colo_sock_redirector2_id : string option;
-		colo_sock_redirector2_ip : string option;
-		colo_sock_redirector2_port : string option;
-		colo_filter_mirror_queue : string option;
-		colo_filter_mirror_outdev : string option;
-		colo_filter_redirector0_queue : string option;
-		colo_filter_redirector0_indev : string option;
-		colo_filter_redirector0_outdev : string option;
-		colo_filter_redirector1_queue : string option;
-		colo_filter_redirector1_indev : string option;
-		colo_filter_redirector1_outdev : string option;
-		colo_compare_pri_in : string option;
-		colo_compare_sec_in : string option;
-		colo_compare_out : string option;
-		colo_compare_notify_dev : string option;
-		colo_sock_sec_redirector0_id : string option;
-		colo_sock_sec_redirector0_ip : string option;
-		colo_sock_sec_redirector0_port : string option;
-		colo_sock_sec_redirector1_id : string option;
-		colo_sock_sec_redirector1_ip : string option;
-		colo_sock_sec_redirector1_port : string option;
-		colo_filter_sec_redirector0_queue : string option;
-		colo_filter_sec_redirector0_indev : string option;
-		colo_filter_sec_redirector0_outdev : string option;
-		colo_filter_sec_redirector1_queue : string option;
-		colo_filter_sec_redirector1_indev : string option;
-		colo_filter_sec_redirector1_outdev : string option;
-		colo_filter_sec_rewriter0_queue : string option;
-		colo_checkpoint_host : string option;
-		colo_checkpoint_port : string option;
 	}
 	external default : ctx -> unit -> t = "stub_libxl_device_nic_init"
 	external add : ctx -> t -> domid -> ?async:'a -> unit -> unit = "stub_xl_device_nic_add"
@@ -1038,20 +940,6 @@ module Device_vtpm = struct
 	external default : ctx -> unit -> t = "stub_libxl_device_vtpm_init"
 end
 
-(* libxl_device_p9 implementation *)
-module Device_p9 = struct
-	type t =
-	{
-		backend_domid : domid;
-		backend_domname : string option;
-		tag : string option;
-		path : string option;
-		security_model : string option;
-		devid : devid;
-	}
-	external default : ctx -> unit -> t = "stub_libxl_device_p9_init"
-end
-
 (* libxl_device_channel implementation *)
 module Device_channel = struct
 
@@ -1073,30 +961,6 @@ module Device_channel = struct
 	external default : ctx -> ?connection:channel_connection -> unit -> t = "stub_libxl_device_channel_init"
 end
 
-(* libxl_connector_param implementation *)
-module Connector_param = struct
-	type t =
-	{
-		id : string option;
-		width : int32;
-		height : int32;
-	}
-	external default : ctx -> unit -> t = "stub_libxl_connector_param_init"
-end
-
-(* libxl_device_vdispl implementation *)
-module Device_vdispl = struct
-	type t =
-	{
-		backend_domid : domid;
-		backend_domname : string option;
-		devid : devid;
-		be_alloc : bool;
-		connectors : Connector_param.t array;
-	}
-	external default : ctx -> unit -> t = "stub_libxl_device_vdispl_init"
-end
-
 (* libxl_domain_config implementation *)
 module Domain_config = struct
 	type t =
@@ -1111,8 +975,6 @@ module Domain_config = struct
 		vfbs : Device_vfb.t array;
 		vkbs : Device_vkb.t array;
 		vtpms : Device_vtpm.t array;
-		p9s : Device_p9.t array;
-		vdispls : Device_vdispl.t array;
 		channels : Device_channel.t array;
 		usbctrls : Device_usbctrl.t array;
 		usbdevs : Device_usbdev.t array;
@@ -1210,7 +1072,6 @@ module Physinfo = struct
 		outstanding_pages : int64;
 		sharing_freed_pages : int64;
 		sharing_used_frames : int64;
-		max_possible_mfn : int64;
 		nr_nodes : int32;
 		hw_cap : int32 array;
 		cap_hvm : bool;
@@ -1218,37 +1079,6 @@ module Physinfo = struct
 	}
 	external default : ctx -> unit -> t = "stub_libxl_physinfo_init"
 	external get : ctx -> t = "stub_xl_physinfo_get"
-end
-
-(* libxl_connectorinfo implementation *)
-module Connectorinfo = struct
-	type t =
-	{
-		id : string option;
-		width : int32;
-		height : int32;
-		req_evtch : int;
-		req_rref : int;
-		evt_evtch : int;
-		evt_rref : int;
-	}
-	external default : ctx -> unit -> t = "stub_libxl_connectorinfo_init"
-end
-
-(* libxl_vdisplinfo implementation *)
-module Vdisplinfo = struct
-	type t =
-	{
-		backend : string option;
-		backend_id : int32;
-		frontend : string option;
-		frontend_id : int32;
-		devid : devid;
-		state : int;
-		be_alloc : bool;
-		connectors : Connectorinfo.t array;
-	}
-	external default : ctx -> unit -> t = "stub_libxl_vdisplinfo_init"
 end
 
 (* libxl_numainfo implementation *)
@@ -1317,7 +1147,6 @@ module Domain_remus_info = struct
 		netbufscript : string option;
 		diskbuf : bool option;
 		colo : bool option;
-		userspace_colo_proxy : bool option;
 	}
 	external default : ctx -> unit -> t = "stub_libxl_domain_remus_info_init"
 end
@@ -1385,16 +1214,12 @@ type psr_cbm_type =
 	 | PSR_CBM_TYPE_L3_CBM
 	 | PSR_CBM_TYPE_L3_CBM_CODE
 	 | PSR_CBM_TYPE_L3_CBM_DATA
-	 | PSR_CBM_TYPE_L2_CBM
-	 | PSR_CBM_TYPE_MBA_THRTL
 
 let string_of_psr_cbm_type = function
 	| PSR_CBM_TYPE_UNKNOWN -> "UNKNOWN"
 	| PSR_CBM_TYPE_L3_CBM -> "L3_CBM"
 	| PSR_CBM_TYPE_L3_CBM_CODE -> "L3_CBM_CODE"
 	| PSR_CBM_TYPE_L3_CBM_DATA -> "L3_CBM_DATA"
-	| PSR_CBM_TYPE_L2_CBM -> "L2_CBM"
-	| PSR_CBM_TYPE_MBA_THRTL -> "MBA_THRTL"
 
 (* libxl_psr_cat_info implementation *)
 module Psr_cat_info = struct
@@ -1406,42 +1231,6 @@ module Psr_cat_info = struct
 		cdp_enabled : bool;
 	}
 	external default : ctx -> unit -> t = "stub_libxl_psr_cat_info_init"
-end
-
-(* libxl_psr_feat_type implementation *)
-type psr_feat_type = 
-	 | PSR_FEAT_TYPE_CAT
-	 | PSR_FEAT_TYPE_MBA
-
-let string_of_psr_feat_type = function
-	| PSR_FEAT_TYPE_CAT -> "CAT"
-	| PSR_FEAT_TYPE_MBA -> "MBA"
-
-(* libxl_psr_hw_info implementation *)
-module Psr_hw_info = struct
-
-	type type_cat =
-	{
-			cos_max : int32;
-			cbm_len : int32;
-			cdp_enabled : bool;
-	}
-	
-	type type_mba =
-	{
-			cos_max : int32;
-			thrtl_max : int32;
-			linear : bool;
-	}
-	
-	type type__union = Cat of type_cat | Mba of type_mba
-	
-	type t =
-	{
-		id : int32;
-		xl_type : type__union;
-	}
-	external default : ctx -> ?xl_type:psr_feat_type -> unit -> t = "stub_libxl_psr_hw_info_init"
 end
 
 (* END OF AUTO-GENERATED CODE *)
