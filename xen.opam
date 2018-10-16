@@ -1,4 +1,5 @@
 opam-version: "2.0"
+synopsis: "OCaml bindings for the Xen hypervisor"
 maintainer: "lindig@gmail.com"
 authors: "lindig@gmail.com"
 homepage: "https://github.com/lindig/xen-ocaml-tools"
@@ -8,6 +9,6 @@ depends: [
   "dune" {build}
   "base-unix"
 ]
-build: ["dune" "build" "-p" name]
+build: ["dune" "build" "-p" name "-j" jobs "--profile=release"]
 depexts: ["m4" "libxen-dev" "libsystemd-dev"] {os-distribution = "debian"}
 dev-repo: "git+https://github.com/lindig/xen-ocaml-tools.git"

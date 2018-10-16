@@ -9,15 +9,13 @@ NAME = lindig/xen-tools
 .PHONY: all clean
 
 all:
-	dune build
+	dune build --profile=dev
 
 clean:
 	dune clean
 
 docker: Dockerfile
-	docker build -t $(NAME) .
+	docker build -t $(NAME) -f tools/Dockerfile
 
-inside: docker
-	sh travis.sh
 
 
