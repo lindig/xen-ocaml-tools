@@ -10,7 +10,8 @@ part of [Xen] independently using jbuilder/[dune] and [Opam]. Goals are:
 * gain access to the [Opam] eco system for this code base
 * simplify development
 
-The master branch is derived from Xen 4.8.4.
+The master branch is derived from Xen 4.8.4 plus backports for
+safe-string compatibility.
 
 ## Building
 
@@ -22,24 +23,17 @@ with these packages installed:
 * libsystemd-dev
 * m4
 * opam (the OCaml package manager)
+* dune (the OCaml build tool - it can be installed from Opam)
 
 To actually build the code, run:
 
-```
+```sh
+$ opam install dune
 $ make
 ```
 
 If you are an OCaml developer, you most likely have [Opam] already
 installed and configured.
-
-## Building with Docker
-
-A Dockerfile exists mainly for running continuous integration on Travis
-but it can be used to compile the project also locally. 
-
-```
-$ make inside
-```
 
 ## Changes and Compromises
 
@@ -54,13 +48,8 @@ Some small changes were required:
 
 * The build depends on auto-generated code that is derived from header
   files and an interface definition that is only present in the [Xen]
-  source tree. These files have been pre-generated but the repository
-  contains Makefiles and sources to re-generate them. This is the most
-  version-dependent link between [Xen] and this code. 
-
-## Todo
-
-* Write Opam files
+  source tree. These files have been pre-generated. See tools/import.sh
+  for this step.
 
 [OCaml]:      https://www.ocam.org/
 [Xen]:        http://xenbits.xen.org/
@@ -68,4 +57,4 @@ Some small changes were required:
 [manual]:     https://jbuilder.readthedocs.io/en/latest/
 [Opam]:       https://opam.ocaml.org/
 
-
+<!-- vim: et -->
