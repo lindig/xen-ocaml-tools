@@ -77,15 +77,54 @@ xenstored/utils.ml
 xenstored/xenstored.ml
 '
 
-EXTRA='
-libxl/idl.py
-libxl/libxl_types.idl
-libs/toollog/include/xentoollog.h
-'
-
 (cd $XENROOT/tools/ocaml && tar cf - $FILES) | tar xf -
 (cd xenstored; mv select* syslog* systemd* stubs/)
 
-# This needs more work as files are not in the right place
-# Also might want to do some patching right here
-(cd $XENROOT/tools && tar cf - $EXTRA) | tar xf -
+cp $XENROOT/tools/libxl/idl.py libs/xl
+cp $XENROOT/tools/libxl/libxl_types.idl libs/xl
+cp $XENROOT/tools/libs/toollog/include/xentoollog.h libs/xentoollog
+
+patch -p1 <<EOF
+diff --git b/libs/xentoollog/genlevels.py a/libs/xentoollog/genlevels.py
+index 8c233c5..098c481 100755
+--- b/libs/xentoollog/genlevels.py
++++ a/libs/xentoollog/genlevels.py
+@@ -3,7 +3,7 @@
+ import sys
+
+ def read_levels():
+-	f = open('../../../libs/toollog/include/xentoollog.h', 'r')
++	f = open('xentoollog.h', 'r')
+
+ 	levels = []
+ 	record = False
+diff --git b/libs/xentoollog/xentoollog_stubs.c a/libs/xentoollog/xentoollog_stubs.c
+index aadc3d1..087edfe 100644
+--- b/libs/xentoollog/xentoollog_stubs.c
++++ a/libs/xentoollog/xentoollog_stubs.c
+@@ -50,7 +50,7 @@ static char * dup_String_val(value s)
+ 	return c;
+ }
+
+-#include "_xtl_levels.inc"
++#include "_xtl_levels.h"
+
+ /* Option type support as per http://www.linux-nantes.org/~fmonnier/ocaml/ocaml-wrapping-c.php */
+ #define Val_none Val_int(0)
+diff --git b/libs/xl/xenlight_stubs.c a/libs/xl/xenlight_stubs.c
+index 98b52b9..8d2c33d 100644
+--- b/libs/xl/xenlight_stubs.c
++++ a/libs/xl/xenlight_stubs.c
+@@ -417,7 +417,7 @@ static char *String_option_val(value v)
+ 	CAMLreturnT(char *, s);
+ }
+
+-#include "_libxl_types.inc"
++#include "_libxl_types.h"
+
+ void async_callback(libxl_ctx *ctx, int rc, void *for_callback)
+ {
+EOF
+
+(cd libs/xl; ./pregen.sh)
+(cd libs/xentoollog/; ./pregen.sh)
