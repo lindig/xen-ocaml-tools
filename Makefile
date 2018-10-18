@@ -6,7 +6,7 @@
 
 NAME = lindig/xen-tools
 
-.PHONY: all clean
+.PHONY: all clean docker
 
 all:
 	dune build --profile=dev
@@ -14,8 +14,9 @@ all:
 clean:
 	dune clean
 
-docker: Dockerfile
+docker: tools/Dockerfile
 	docker build -t $(NAME) -f tools/Dockerfile
+	docker run --rm -tv $$PWD:/mnt $(NAME) "cd /mnt && make"
 
 
 
