@@ -11,6 +11,6 @@ depends: [
   "base-unix"
   "xen"
 ]
-build: ["dune" "build" "-p" name "-j" jobs "--profile=release"]
+build: ["dune" "build" "-p" name "-j" jobs]
 depexts: ["m4" "libxen-dev" "libsystemd-dev"] {os-distribution = "debian"}
 dev-repo: "git+https://github.com/lindig/xen-ocaml-tools.git"
