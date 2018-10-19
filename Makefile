@@ -15,8 +15,8 @@ clean:
 	dune clean
 
 docker: tools/Dockerfile
-	docker build -t $(NAME) -f tools/Dockerfile
-	docker run --rm -tv $$PWD:/mnt $(NAME) "cd /mnt && make"
+	docker build -t $(NAME) -f tools/Dockerfile .
+	docker run --rm -tv $(PWD):/mnt $(NAME) bash -c "cd /mnt; make"
 
 
 
