@@ -6,6 +6,6 @@ script: bash -ex .travis-docker.sh
 env:
   global:
     - PACKAGE=xen
-    - PINS="xen:. xenopsd:."
+    - PINS="xen:. xenstored:."
   matrix:
     - DISTRO="debian-9-ocaml-4.06"
