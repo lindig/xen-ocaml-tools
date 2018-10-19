@@ -5,10 +5,10 @@
  (package xenstored)
  (libraries
   unix
-  xenbus
-  xenmmap
-  xenctrl
-  xeneventchn
+  xen.bus
+  xen.mmap
+  xen.ctrl
+  xen.eventchn
   xenstubs))
 
 
