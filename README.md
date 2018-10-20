@@ -51,6 +51,12 @@ Some small changes were required:
   source tree. These files have been pre-generated. See tools/import.sh
   for this step.
 
+## Todo
+
+* Define depext for more distributions in Opam files
+* Use more distros in Travis matrix
+* Create branches for more recent releases
+
 [OCaml]:      https://www.ocam.org/
 [Xen]:        http://xenbits.xen.org/
 [dune]:       https://github.com/ocaml/dune
