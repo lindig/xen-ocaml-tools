@@ -48,8 +48,8 @@ Some small changes were required:
 
 * The build depends on auto-generated code that is derived from header
   files and an interface definition that is only present in the [Xen]
-  source tree. These files have been pre-generated. See tools/import.sh
-  for this step.
+  source tree. These files have been pre-generated. See
+  [tools/import.sh](tools/import.sh) for this step.
 
 ## Todo
 
@@ -63,4 +63,4 @@ Some small changes were required:
 [manual]:     https://jbuilder.readthedocs.io/en/latest/
 [Opam]:       https://opam.ocaml.org/
 
-<!-- vim: et -->
+<!-- vim: set et -->
