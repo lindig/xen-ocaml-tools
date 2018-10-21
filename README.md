@@ -7,8 +7,10 @@ This is an experiment to explore building the [OCaml] tools that are
 part of [Xen] independently using jbuilder/[dune] and [Opam]. Goals are:
 
 * make this code more accessible for [OCaml] developers
-* gain access to the [Opam] eco system for this code base
+* gain access to the [Opam] ecosystem for this code base
 * simplify development
+* provide two [Opam] packages: [xen.opam](xen.opam) for library bindings
+  and [xenstored.opam](xenstored.opam) for the xenstore daemon.
 
 The master branch is derived from Xen 4.8.4 plus backports for
 safe-string compatibility.
