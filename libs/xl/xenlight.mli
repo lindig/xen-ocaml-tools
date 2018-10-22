@@ -533,6 +533,7 @@ module Domain_build_info : sig
 			acpi : bool option;
 			acpi_s3 : bool option;
 			acpi_s4 : bool option;
+			acpi_laptop_slate : bool option;
 			nx : bool option;
 			viridian : bool option;
 			viridian_enable : bool array;
@@ -544,7 +545,6 @@ module Domain_build_info : sig
 			timer_mode : timer_mode;
 			nested_hvm : bool option;
 			altp2m : bool option;
-			system_firmware : string option;
 			smbios_firmware : string option;
 			acpi_firmware : string option;
 			hdtype : hdtype;
@@ -630,7 +630,6 @@ module Domain_build_info : sig
 		cmdline : string option;
 		ramdisk : string option;
 		device_tree : string option;
-		acpi : bool option;
 		xl_type : type__union;
 		arch_arm : arch_arm__anon;
 	}
@@ -1017,15 +1016,6 @@ module Sched_credit_params : sig
 	type t =
 	{
 		tslice_ms : int;
-		ratelimit_us : int;
-	}
-	val default : ctx -> unit -> t
-end
-
-(* libxl_sched_credit2_params interface *)
-module Sched_credit2_params : sig
-	type t =
-	{
 		ratelimit_us : int;
 	}
 	val default : ctx -> unit -> t

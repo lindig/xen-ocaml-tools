@@ -28,6 +28,18 @@ type vcpuinfo =
 	cpumap: int32;
 }
 
+type runstateinfo = {
+  state : int32;
+  missed_changes: int32;
+  state_entry_time : int64;
+  time0 : int64;
+  time1 : int64;
+  time2 : int64;
+  time3 : int64;
+  time4 : int64;
+  time5 : int64;
+}
+
 type domaininfo =
 {
 	domid             : domid;
@@ -154,6 +166,8 @@ external domain_getinfo: handle -> domid -> domaininfo= "stub_xc_domain_getinfo"
 
 external domain_get_vcpuinfo: handle -> int -> int -> vcpuinfo
        = "stub_xc_vcpu_getinfo"
+external domain_get_runstate_info : handle -> int -> runstateinfo
+  = "stub_xc_get_runstate_info"
 
 external domain_ioport_permission: handle -> domid -> int -> int -> bool -> unit
        = "stub_xc_domain_ioport_permission"
@@ -227,6 +241,10 @@ external domain_deassign_device: handle -> domid -> (int * int * int * int) -> u
 external domain_test_assign_device: handle -> domid -> (int * int * int * int) -> bool
        = "stub_xc_domain_test_assign_device"
 
+(** check if some hvm domain got pv driver or not *)
+external hvm_check_pvdriver: handle -> domid -> bool
+       = "stub_xc_hvm_check_pvdriver"
+
 external version: handle -> version = "stub_xc_version_version"
 external version_compile_info: handle -> compile_info
        = "stub_xc_version_compile_info"
@@ -236,6 +254,10 @@ external version_capabilities: handle -> string =
 
 type featureset_index = Featureset_raw | Featureset_host | Featureset_pv | Featureset_hvm
 external get_cpu_featureset : handle -> featureset_index -> int64 array = "stub_xc_get_cpu_featureset"
+external get_featureset : handle -> featureset_index -> int64 array = "stub_xc_get_cpu_featureset"
+
+external upgrade_oldstyle_featuremask: handle -> int64 array -> bool -> int64 array = "stub_upgrade_oldstyle_featuremask"
+external oldstyle_featuremask: handle -> int64 array = "stub_oldstyle_featuremask"
 
 external watchdog : handle -> int -> int32 -> int
   = "stub_xc_watchdog"

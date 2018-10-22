@@ -652,6 +652,7 @@ module Domain_build_info = struct
 			acpi : bool option;
 			acpi_s3 : bool option;
 			acpi_s4 : bool option;
+			acpi_laptop_slate : bool option;
 			nx : bool option;
 			viridian : bool option;
 			viridian_enable : bool array;
@@ -663,7 +664,6 @@ module Domain_build_info = struct
 			timer_mode : timer_mode;
 			nested_hvm : bool option;
 			altp2m : bool option;
-			system_firmware : string option;
 			smbios_firmware : string option;
 			acpi_firmware : string option;
 			hdtype : hdtype;
@@ -749,7 +749,6 @@ module Domain_build_info = struct
 		cmdline : string option;
 		ramdisk : string option;
 		device_tree : string option;
-		acpi : bool option;
 		xl_type : type__union;
 		arch_arm : arch_arm__anon;
 	}
@@ -1144,15 +1143,6 @@ module Sched_credit_params = struct
 		ratelimit_us : int;
 	}
 	external default : ctx -> unit -> t = "stub_libxl_sched_credit_params_init"
-end
-
-(* libxl_sched_credit2_params implementation *)
-module Sched_credit2_params = struct
-	type t =
-	{
-		ratelimit_us : int;
-	}
-	external default : ctx -> unit -> t = "stub_libxl_sched_credit2_params_init"
 end
 
 (* libxl_domain_remus_info implementation *)

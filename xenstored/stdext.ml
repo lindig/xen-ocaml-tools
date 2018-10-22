@@ -69,6 +69,11 @@ let fold_left f accu string =
 let startswith prefix x =
 	let x_l = String.length x and prefix_l = String.length prefix in
 	prefix_l <= x_l && String.sub x 0 prefix_l  = prefix
+
+(** True if string 'x' ends with suffix 'suffix' *)
+let endswith suffix x =
+ 	let x_l = String.length x and suffix_l = String.length suffix in
+ 	suffix_l <= x_l && String.sub x (x_l - suffix_l) suffix_l = suffix
 end
 
 module Unixext = struct
@@ -122,7 +127,7 @@ let pidfile_write filename =
 		let pid = Unix.getpid () in
 		let buf = string_of_int pid ^ "\n" in
 		let len = String.length buf in
-		if Unix.write fd (Bytes.unsafe_of_string buf) 0 len <> len
+		if Unix.write_substring fd buf 0 len <> len
 		then failwith "pidfile_write failed";
 	)
 	(fun () -> Unix.close fd)

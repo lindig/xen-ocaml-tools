@@ -363,7 +363,7 @@ let transaction_replay c t doms cons =
 				false
 			)
 		(fun () ->
-			ignore @@ Connection.end_transaction c tid None
+			Connection.end_transaction c tid None
 		)
 
 let do_watch con t domains cons data =
@@ -381,7 +381,7 @@ let do_unwatch con t domains cons data =
 		| [node; token; ""]   -> node, token
 		| _                   -> raise Invalid_Cmd_Args
 		in
-	ignore @@ Connections.del_watch cons con node token
+	Connections.del_watch cons con node token
 
 let do_transaction_start con t domains cons data =
 	if Transaction.get_id t <> Transaction.none then
@@ -422,9 +422,10 @@ let do_introduce con t domains cons data =
 		| _                         -> raise Invalid_Cmd_Args;
 		in
 	let dom =
-		if Domains.exist domains domid then
+		if Domains.exist domains domid then begin
+			Connections.fire_spec_watches cons "@introduceDomain";
 			Domains.find domains domid
-		else try
+		end else try
 			let ndom = Xenctrl.with_intf (fun xc ->
 				Domains.create xc domains domid mfn port) in
 			Connections.add_domain cons ndom;

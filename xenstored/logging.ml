@@ -154,7 +154,7 @@ let make_syslog_logger facility =
 		Syslog.log facility level s in
 	{ stop = nothing; restart = nothing; rotate = nothing; write=write }
 
-let xenstored_log_destination = ref (File (Paths.xen_log_dir ^ "/xenstored.log"))
+let xenstored_log_destination = ref (File "/var/log/xenstored.log")
 let xenstored_log_level = ref Warn
 let xenstored_log_nb_files = ref 10
 let xenstored_log_nb_lines = ref 13215
@@ -253,16 +253,14 @@ let string_of_access_type = function
 	*)
 
 let sanitize_data data =
-	let data = Bytes.copy data in
-	for i = 0 to Bytes.length data - 1
-	do
-		if Bytes.get data i = '\000' then
-			Bytes.set data i ' '
-	done;
-	String.escaped (Bytes.unsafe_to_string data)
+	let data = String.init
+		(String.length data)
+		(fun i -> let c = data.[i] in if c = '\000' then ' ' else c)
+	in
+	String.escaped data
 
 let activate_access_log = ref true
-let access_log_destination = ref (File (Paths.xen_log_dir ^ "/xenstored-access.log"))
+let access_log_destination = ref (File "/var/log/xenstored-access.log")
 let access_log_nb_files = ref 20
 let access_log_nb_lines = ref 13215
 let access_log_nb_chars = ref 180
@@ -285,18 +283,29 @@ let init_access_log post_rotate = match !access_log_destination with
 	| Syslog facility ->
 		access_logger := Some (make_syslog_logger facility)
 
+let censor_private_data access_type data =
+       let key_is_private k =
+              String.startswith "/local/domain" k &&
+                   (String.endswith "/data/set_clipboard" k ||
+                   String.endswith "/data/report_clipboard" k) ||
+                   k = "data/report_clipboard"
+       in
+       match access_type, String.split ~limit:2 ' ' data with
+       | XbOp Xenbus.Xb.Op.Write, k :: _ when key_is_private k ->
+                       sprintf "%s [omitted]" k
+       | _ -> data
+
 let access_logging ~con ~tid ?(data="") ~level access_type =
         try
 		maybe
 			(fun logger ->
 				let date = string_of_date() in
 				let tid = string_of_tid ~con tid in
+				let data = sanitize_data data in
+				let censored_data = censor_private_data access_type data in
 				let access_type = string_of_access_type access_type in
-				(* we can use unsafe_of_string here as the sanitize_data function
-				   immediately makes a copy of the data and operates on that. *)
-				let data = sanitize_data (Bytes.unsafe_of_string data) in
 				let prefix = prefix !access_log_destination date in
-				let msg = Printf.sprintf "%s %s %s %s" prefix tid access_type data in
+				let msg = Printf.sprintf "%s %s %s %s" prefix tid access_type censored_data in
 				logger.write ~level msg)
 			!access_logger
 	with _ -> ()
