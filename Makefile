@@ -1,6 +1,6 @@
 # vim: set noet ts=8:
 #
-# This Makefile is not called from Opam but only used for 
+# This Makefile is not called from Opam but only used for
 # convenience during development
 #
 
@@ -10,6 +10,9 @@ NAME = lindig/xen-tools
 
 all:
 	dune build --profile=dev
+
+profile:
+	dune build --profile=profile
 
 clean:
 	dune clean

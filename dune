@@ -1,4 +1,7 @@
 (env
+ (profile
+  (ocamlopt_flags (:standard -p -w -27-32-52-33-34-37-39))
+  (flags (:standard -w -27-32-52-33-34-37-39)))
  (dev
   (flags (:standard -w -27-32-52-33-34-37-39)))
  (release
