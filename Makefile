@@ -11,14 +11,18 @@ PATCHLEVEL   	= v7.0.5
 
 PATCHES 	= ssh://git@code.citrite.net/xs/xen.pg.git
 XEN     	= https://xenbits.xen.org/git-http/xen.git
+JOBS 		= $$(getconf _NPROCESSORS_ONLN)
 
 .PHONY: all clean docker
 
 all:
-	dune build --profile=dev
+	dune build -j $(JOBS) --profile=release
+
+build:
+	dune build -j $(JOBS) --profile=dev
 
 profile:
-	dune build --profile=gprof
+	dune build -j $(JOBS) --profile=gprof
 
 clean:
 	dune clean
@@ -29,8 +33,10 @@ docker: tools/Dockerfile
 
 import:
 	test -d xen || git clone $(XEN) xen
-	test -d patches || git clone $(PATCHES) patches
+	git -C xen fetch origin
 	git -C xen checkout $(XEN_VERSION)
+	test -d patches || git clone $(PATCHES) patches
+	git -C patches fetch origin
 	git -C patches checkout $(PATCHLEVEL)
 	cd xen;	sed -e 's/#.*$$//' -e '/^ *$$/d' ../patches/master/series \
 	  | while read f; do  patch -p1 < ../patches/master/$$f; done
