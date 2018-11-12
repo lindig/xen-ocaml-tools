@@ -18,7 +18,7 @@ all:
 	dune build --profile=dev
 
 profile:
-	dune build --profile=profile
+	dune build --profile=gprof
 
 clean:
 	dune clean
