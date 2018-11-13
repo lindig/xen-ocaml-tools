@@ -117,7 +117,7 @@ let cleanup xc doms =
 	) !dead_dom;
 	!notify, !dead_dom
 
-let resume doms domid =
+let resume _doms _domid =
 	()
 
 let create xc doms domid mfn port =

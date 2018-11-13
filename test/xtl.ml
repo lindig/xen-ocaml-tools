@@ -11,7 +11,7 @@ let stdio_vmessage min_level level errno ctx msg =
 		flush stdout;
 	end
 
-let stdio_progress ctx what percent dne total =
+let stdio_progress _ctx what percent dne total =
 	let nl = if dne = total then "\n" else "" in
 	printf "\rProgress %s %d%% (%Ld/%Ld)%s" what percent dne total nl;
 	flush stdout
@@ -35,6 +35,6 @@ let () =
     ("-q", Arg.Unit (fun () -> debug_level := Critical), "Quiet");
   ] in
   let usage_msg = "usage: xtl [OPTIONS]" in
-  Arg.parse speclist (fun s -> ()) usage_msg;
+  Arg.parse speclist (fun _ -> ()) usage_msg;
 
   do_test !debug_level
