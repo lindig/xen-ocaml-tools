@@ -72,6 +72,8 @@ class Type(object):
         self.autogenerate_init_fn = kwargs.setdefault('autogenerate_init_fn', False)
 
         self.check_default_fn = kwargs.setdefault('check_default_fn', None)
+        self.copy_deprecated_fn = kwargs.setdefault('copy_deprecated_fn',
+                                                    None)
 
         if self.typename is not None and not self.private:
             self.json_gen_fn = kwargs.setdefault('json_gen_fn', self.typename + "_gen_json")
@@ -193,6 +195,7 @@ class Field(object):
         self.const = kwargs.setdefault('const', False)
         self.enumname = kwargs.setdefault('enumname', None)
         self.init_val = kwargs.setdefault('init_val', None)
+        self.deprecated_by = kwargs.setdefault('deprecated_by', None)
 
 class Aggregate(Type):
     """A type containing a collection of other types"""
@@ -302,7 +305,8 @@ string = Builtin("char *", namespace = None, copy_fn = "libxl_string_copy", disp
                  json_gen_fn = "libxl__string_gen_json",
                  json_parse_type = "JSON_STRING | JSON_NULL",
                  json_parse_fn = "libxl__string_parse_json",
-                 autogenerate_json = False)
+                 autogenerate_json = False,
+                 check_default_fn="libxl__string_is_default")
 
 class Array(Type):
     """An array of the same type"""

@@ -84,6 +84,7 @@ static int domain_type_val (libxl_ctx *ctx, libxl_domain_type *c_val, value v)
 	    case 0: *c_val = LIBXL_DOMAIN_TYPE_INVALID; break;
 	    case 1: *c_val = LIBXL_DOMAIN_TYPE_HVM; break;
 	    case 2: *c_val = LIBXL_DOMAIN_TYPE_PV; break;
+	    case 3: *c_val = LIBXL_DOMAIN_TYPE_PVH; break;
 	    default: failwith_xl(ERROR_FAIL, "cannot convert value to libxl_domain_type"); break;
 	}
 	CAMLreturn(0);
@@ -98,6 +99,7 @@ static value Val_domain_type (libxl_domain_type domain_type_c)
 	    case LIBXL_DOMAIN_TYPE_INVALID: domain_type_ocaml = Val_int(0); break;
 	    case LIBXL_DOMAIN_TYPE_HVM: domain_type_ocaml = Val_int(1); break;
 	    case LIBXL_DOMAIN_TYPE_PV: domain_type_ocaml = Val_int(2); break;
+	    case LIBXL_DOMAIN_TYPE_PVH: domain_type_ocaml = Val_int(3); break;
 	    default: failwith_xl(ERROR_FAIL, "cannot convert value from libxl_domain_type"); break;
 	}
 	CAMLreturn(domain_type_ocaml);
@@ -194,7 +196,6 @@ static int device_model_version_val (libxl_ctx *ctx, libxl_device_model_version 
 	    case 0: *c_val = LIBXL_DEVICE_MODEL_VERSION_UNKNOWN; break;
 	    case 1: *c_val = LIBXL_DEVICE_MODEL_VERSION_QEMU_XEN_TRADITIONAL; break;
 	    case 2: *c_val = LIBXL_DEVICE_MODEL_VERSION_QEMU_XEN; break;
-	    case 3: *c_val = LIBXL_DEVICE_MODEL_VERSION_NONE; break;
 	    default: failwith_xl(ERROR_FAIL, "cannot convert value to libxl_device_model_version"); break;
 	}
 	CAMLreturn(0);
@@ -209,7 +210,6 @@ static value Val_device_model_version (libxl_device_model_version device_model_v
 	    case LIBXL_DEVICE_MODEL_VERSION_UNKNOWN: device_model_version_ocaml = Val_int(0); break;
 	    case LIBXL_DEVICE_MODEL_VERSION_QEMU_XEN_TRADITIONAL: device_model_version_ocaml = Val_int(1); break;
 	    case LIBXL_DEVICE_MODEL_VERSION_QEMU_XEN: device_model_version_ocaml = Val_int(2); break;
-	    case LIBXL_DEVICE_MODEL_VERSION_NONE: device_model_version_ocaml = Val_int(3); break;
 	    default: failwith_xl(ERROR_FAIL, "cannot convert value from libxl_device_model_version"); break;
 	}
 	CAMLreturn(device_model_version_ocaml);
@@ -224,6 +224,7 @@ static int console_type_val (libxl_ctx *ctx, libxl_console_type *c_val, value v)
 	    case 0: *c_val = LIBXL_CONSOLE_TYPE_UNKNOWN; break;
 	    case 1: *c_val = LIBXL_CONSOLE_TYPE_SERIAL; break;
 	    case 2: *c_val = LIBXL_CONSOLE_TYPE_PV; break;
+	    case 3: *c_val = LIBXL_CONSOLE_TYPE_VUART; break;
 	    default: failwith_xl(ERROR_FAIL, "cannot convert value to libxl_console_type"); break;
 	}
 	CAMLreturn(0);
@@ -238,6 +239,7 @@ static value Val_console_type (libxl_console_type console_type_c)
 	    case LIBXL_CONSOLE_TYPE_UNKNOWN: console_type_ocaml = Val_int(0); break;
 	    case LIBXL_CONSOLE_TYPE_SERIAL: console_type_ocaml = Val_int(1); break;
 	    case LIBXL_CONSOLE_TYPE_PV: console_type_ocaml = Val_int(2); break;
+	    case LIBXL_CONSOLE_TYPE_VUART: console_type_ocaml = Val_int(3); break;
 	    default: failwith_xl(ERROR_FAIL, "cannot convert value from libxl_console_type"); break;
 	}
 	CAMLreturn(console_type_ocaml);
@@ -255,6 +257,7 @@ static int disk_format_val (libxl_ctx *ctx, libxl_disk_format *c_val, value v)
 	    case 3: *c_val = LIBXL_DISK_FORMAT_VHD; break;
 	    case 4: *c_val = LIBXL_DISK_FORMAT_RAW; break;
 	    case 5: *c_val = LIBXL_DISK_FORMAT_EMPTY; break;
+	    case 6: *c_val = LIBXL_DISK_FORMAT_QED; break;
 	    default: failwith_xl(ERROR_FAIL, "cannot convert value to libxl_disk_format"); break;
 	}
 	CAMLreturn(0);
@@ -272,6 +275,7 @@ static value Val_disk_format (libxl_disk_format disk_format_c)
 	    case LIBXL_DISK_FORMAT_VHD: disk_format_ocaml = Val_int(3); break;
 	    case LIBXL_DISK_FORMAT_RAW: disk_format_ocaml = Val_int(4); break;
 	    case LIBXL_DISK_FORMAT_EMPTY: disk_format_ocaml = Val_int(5); break;
+	    case LIBXL_DISK_FORMAT_QED: disk_format_ocaml = Val_int(6); break;
 	    default: failwith_xl(ERROR_FAIL, "cannot convert value from libxl_disk_format"); break;
 	}
 	CAMLreturn(disk_format_ocaml);
@@ -537,6 +541,7 @@ static int scheduler_val (libxl_ctx *ctx, libxl_scheduler *c_val, value v)
 	    case 3: *c_val = LIBXL_SCHEDULER_CREDIT2; break;
 	    case 4: *c_val = LIBXL_SCHEDULER_ARINC653; break;
 	    case 5: *c_val = LIBXL_SCHEDULER_RTDS; break;
+	    case 6: *c_val = LIBXL_SCHEDULER_NULL; break;
 	    default: failwith_xl(ERROR_FAIL, "cannot convert value to libxl_scheduler"); break;
 	}
 	CAMLreturn(0);
@@ -554,6 +559,7 @@ static value Val_scheduler (libxl_scheduler scheduler_c)
 	    case LIBXL_SCHEDULER_CREDIT2: scheduler_ocaml = Val_int(3); break;
 	    case LIBXL_SCHEDULER_ARINC653: scheduler_ocaml = Val_int(4); break;
 	    case LIBXL_SCHEDULER_RTDS: scheduler_ocaml = Val_int(5); break;
+	    case LIBXL_SCHEDULER_NULL: scheduler_ocaml = Val_int(6); break;
 	    default: failwith_xl(ERROR_FAIL, "cannot convert value from libxl_scheduler"); break;
 	}
 	CAMLreturn(scheduler_ocaml);
@@ -665,6 +671,7 @@ static int viridian_enlightenment_val (libxl_ctx *ctx, libxl_viridian_enlightenm
 	    case 3: *c_val = LIBXL_VIRIDIAN_ENLIGHTENMENT_REFERENCE_TSC; break;
 	    case 4: *c_val = LIBXL_VIRIDIAN_ENLIGHTENMENT_HCALL_REMOTE_TLB_FLUSH; break;
 	    case 5: *c_val = LIBXL_VIRIDIAN_ENLIGHTENMENT_APIC_ASSIST; break;
+	    case 6: *c_val = LIBXL_VIRIDIAN_ENLIGHTENMENT_CRASH_CTL; break;
 	    default: failwith_xl(ERROR_FAIL, "cannot convert value to libxl_viridian_enlightenment"); break;
 	}
 	CAMLreturn(0);
@@ -682,6 +689,7 @@ static value Val_viridian_enlightenment (libxl_viridian_enlightenment viridian_e
 	    case LIBXL_VIRIDIAN_ENLIGHTENMENT_REFERENCE_TSC: viridian_enlightenment_ocaml = Val_int(3); break;
 	    case LIBXL_VIRIDIAN_ENLIGHTENMENT_HCALL_REMOTE_TLB_FLUSH: viridian_enlightenment_ocaml = Val_int(4); break;
 	    case LIBXL_VIRIDIAN_ENLIGHTENMENT_APIC_ASSIST: viridian_enlightenment_ocaml = Val_int(5); break;
+	    case LIBXL_VIRIDIAN_ENLIGHTENMENT_CRASH_CTL: viridian_enlightenment_ocaml = Val_int(6); break;
 	    default: failwith_xl(ERROR_FAIL, "cannot convert value from libxl_viridian_enlightenment"); break;
 	}
 	CAMLreturn(viridian_enlightenment_ocaml);
@@ -739,6 +747,32 @@ static value Val_checkpointed_stream (libxl_checkpointed_stream checkpointed_str
 	    default: failwith_xl(ERROR_FAIL, "cannot convert value from libxl_checkpointed_stream"); break;
 	}
 	CAMLreturn(checkpointed_stream_ocaml);
+}
+
+/* Convert caml value to vuart_type */
+static int vuart_type_val (libxl_ctx *ctx, libxl_vuart_type *c_val, value v)
+{
+	CAMLparam1(v);
+
+	switch(Int_val(v)) {
+	    case 0: *c_val = LIBXL_VUART_TYPE_UNKNOWN; break;
+	    case 1: *c_val = LIBXL_VUART_TYPE_SBSA_UART; break;
+	    default: failwith_xl(ERROR_FAIL, "cannot convert value to libxl_vuart_type"); break;
+	}
+	CAMLreturn(0);
+}
+
+/* Convert vuart_type to a caml value */
+static value Val_vuart_type (libxl_vuart_type vuart_type_c)
+{
+	CAMLparam0();
+	CAMLlocal1(vuart_type_ocaml);
+	switch(vuart_type_c) {
+	    case LIBXL_VUART_TYPE_UNKNOWN: vuart_type_ocaml = Val_int(0); break;
+	    case LIBXL_VUART_TYPE_SBSA_UART: vuart_type_ocaml = Val_int(1); break;
+	    default: failwith_xl(ERROR_FAIL, "cannot convert value from libxl_vuart_type"); break;
+	}
+	CAMLreturn(vuart_type_ocaml);
 }
 
 /* Convert caml value to ioport_range */
@@ -1340,8 +1374,7 @@ static int domain_create_info_val (libxl_ctx *ctx, libxl_domain_create_info *c_v
 	c_val->poolid = Int32_val(Field(v, 9));
 	c_val->pool_name = String_option_val(Field(v, 10));
 	c_val->run_hotplug_scripts = Defbool_val(Field(v, 11));
-	c_val->pvh = Defbool_val(Field(v, 12));
-	c_val->driver_domain = Defbool_val(Field(v, 13));
+	c_val->driver_domain = Defbool_val(Field(v, 12));
 	
 	CAMLreturn(0);
 }
@@ -1354,7 +1387,7 @@ static value Val_domain_create_info (libxl_domain_create_info *domain_create_inf
 	{
 		CAMLlocal1(domain_create_info_field);
 	
-		domain_create_info_ocaml = caml_alloc_tuple(14);
+		domain_create_info_ocaml = caml_alloc_tuple(13);
 	
 		domain_create_info_field = Val_domain_type(domain_create_info_c->type);
 		Store_field(domain_create_info_ocaml, 0, domain_create_info_field);
@@ -1392,11 +1425,8 @@ static value Val_domain_create_info (libxl_domain_create_info *domain_create_inf
 		domain_create_info_field = Val_defbool(domain_create_info_c->run_hotplug_scripts);
 		Store_field(domain_create_info_ocaml, 11, domain_create_info_field);
 	
-		domain_create_info_field = Val_defbool(domain_create_info_c->pvh);
-		Store_field(domain_create_info_ocaml, 12, domain_create_info_field);
-	
 		domain_create_info_field = Val_defbool(domain_create_info_c->driver_domain);
-		Store_field(domain_create_info_ocaml, 13, domain_create_info_field);
+		Store_field(domain_create_info_ocaml, 12, domain_create_info_field);
 	}
 	CAMLreturn(domain_create_info_ocaml);
 }
@@ -1421,6 +1451,7 @@ static int domain_restore_params_val (libxl_ctx *ctx, libxl_domain_restore_param
 	c_val->checkpointed_stream = Int_val(Field(v, 0));
 	c_val->stream_version = Int32_val(Field(v, 1));
 	c_val->colo_proxy_script = String_option_val(Field(v, 2));
+	c_val->userspace_colo_proxy = Defbool_val(Field(v, 3));
 	
 	CAMLreturn(0);
 }
@@ -1433,7 +1464,7 @@ static value Val_domain_restore_params (libxl_domain_restore_params *domain_rest
 	{
 		CAMLlocal1(domain_restore_params_field);
 	
-		domain_restore_params_ocaml = caml_alloc_tuple(3);
+		domain_restore_params_ocaml = caml_alloc_tuple(4);
 	
 		domain_restore_params_field = Val_int(domain_restore_params_c->checkpointed_stream);
 		Store_field(domain_restore_params_ocaml, 0, domain_restore_params_field);
@@ -1443,6 +1474,9 @@ static value Val_domain_restore_params (libxl_domain_restore_params *domain_rest
 	
 		domain_restore_params_field = Val_string_option(domain_restore_params_c->colo_proxy_script);
 		Store_field(domain_restore_params_ocaml, 2, domain_restore_params_field);
+	
+		domain_restore_params_field = Val_defbool(domain_restore_params_c->userspace_colo_proxy);
+		Store_field(domain_restore_params_ocaml, 3, domain_restore_params_field);
 	}
 	CAMLreturn(domain_restore_params_ocaml);
 }
@@ -1585,9 +1619,9 @@ static int domain_sched_params_val (libxl_ctx *ctx, libxl_domain_sched_params *c
 	c_val->cap = Int_val(Field(v, 2));
 	c_val->period = Int_val(Field(v, 3));
 	c_val->budget = Int_val(Field(v, 4));
-	c_val->slice = Int_val(Field(v, 5));
-	c_val->latency = Int_val(Field(v, 6));
-	c_val->extratime = Int_val(Field(v, 7));
+	c_val->extratime = Int_val(Field(v, 5));
+	c_val->slice = Int_val(Field(v, 6));
+	c_val->latency = Int_val(Field(v, 7));
 	
 	CAMLreturn(0);
 }
@@ -1617,13 +1651,13 @@ static value Val_domain_sched_params (libxl_domain_sched_params *domain_sched_pa
 		domain_sched_params_field = Val_int(domain_sched_params_c->budget);
 		Store_field(domain_sched_params_ocaml, 4, domain_sched_params_field);
 	
-		domain_sched_params_field = Val_int(domain_sched_params_c->slice);
+		domain_sched_params_field = Val_int(domain_sched_params_c->extratime);
 		Store_field(domain_sched_params_ocaml, 5, domain_sched_params_field);
 	
-		domain_sched_params_field = Val_int(domain_sched_params_c->latency);
+		domain_sched_params_field = Val_int(domain_sched_params_c->slice);
 		Store_field(domain_sched_params_ocaml, 6, domain_sched_params_field);
 	
-		domain_sched_params_field = Val_int(domain_sched_params_c->extratime);
+		domain_sched_params_field = Val_int(domain_sched_params_c->latency);
 		Store_field(domain_sched_params_ocaml, 7, domain_sched_params_field);
 	}
 	CAMLreturn(domain_sched_params_ocaml);
@@ -1781,6 +1815,36 @@ value stub_libxl_rdm_reserve_init(value ctx, value unit)
 	CAMLreturn(val);
 }
 
+/* Convert caml value to altp2m_mode */
+static int altp2m_mode_val (libxl_ctx *ctx, libxl_altp2m_mode *c_val, value v)
+{
+	CAMLparam1(v);
+
+	switch(Int_val(v)) {
+	    case 0: *c_val = LIBXL_ALTP2M_MODE_DISABLED; break;
+	    case 1: *c_val = LIBXL_ALTP2M_MODE_MIXED; break;
+	    case 2: *c_val = LIBXL_ALTP2M_MODE_EXTERNAL; break;
+	    case 3: *c_val = LIBXL_ALTP2M_MODE_LIMITED; break;
+	    default: failwith_xl(ERROR_FAIL, "cannot convert value to libxl_altp2m_mode"); break;
+	}
+	CAMLreturn(0);
+}
+
+/* Convert altp2m_mode to a caml value */
+static value Val_altp2m_mode (libxl_altp2m_mode altp2m_mode_c)
+{
+	CAMLparam0();
+	CAMLlocal1(altp2m_mode_ocaml);
+	switch(altp2m_mode_c) {
+	    case LIBXL_ALTP2M_MODE_DISABLED: altp2m_mode_ocaml = Val_int(0); break;
+	    case LIBXL_ALTP2M_MODE_MIXED: altp2m_mode_ocaml = Val_int(1); break;
+	    case LIBXL_ALTP2M_MODE_EXTERNAL: altp2m_mode_ocaml = Val_int(2); break;
+	    case LIBXL_ALTP2M_MODE_LIMITED: altp2m_mode_ocaml = Val_int(3); break;
+	    default: failwith_xl(ERROR_FAIL, "cannot convert value from libxl_altp2m_mode"); break;
+	}
+	CAMLreturn(altp2m_mode_ocaml);
+}
+
 /* Convert caml value to domain_build_info */
 static int domain_build_info_val (libxl_ctx *ctx, libxl_domain_build_info *c_val, value v)
 {
@@ -1830,122 +1894,141 @@ static int domain_build_info_val (libxl_ctx *ctx, libxl_domain_build_info *c_val
 		}
 	}
 	
-	device_model_version_val(ctx, &c_val->device_model_version, Field(v, 20));
-	c_val->device_model_stubdomain = Defbool_val(Field(v, 21));
-	c_val->device_model = String_option_val(Field(v, 22));
-	c_val->device_model_ssidref = Int32_val(Field(v, 23));
-	c_val->device_model_ssid_label = String_option_val(Field(v, 24));
-	c_val->device_model_user = String_option_val(Field(v, 25));
-	libxl_string_list_val(&c_val->extra, Field(v, 26));
-	libxl_string_list_val(&c_val->extra_pv, Field(v, 27));
-	libxl_string_list_val(&c_val->extra_hvm, Field(v, 28));
-	domain_sched_params_val(ctx, &c_val->sched_params, Field(v, 29));
+	c_val->max_grant_frames = Int32_val(Field(v, 20));
+	c_val->max_maptrack_frames = Int32_val(Field(v, 21));
+	device_model_version_val(ctx, &c_val->device_model_version, Field(v, 22));
+	c_val->device_model_stubdomain = Defbool_val(Field(v, 23));
+	c_val->device_model = String_option_val(Field(v, 24));
+	c_val->device_model_ssidref = Int32_val(Field(v, 25));
+	c_val->device_model_ssid_label = String_option_val(Field(v, 26));
+	c_val->device_model_user = String_option_val(Field(v, 27));
+	libxl_string_list_val(&c_val->extra, Field(v, 28));
+	libxl_string_list_val(&c_val->extra_pv, Field(v, 29));
+	libxl_string_list_val(&c_val->extra_hvm, Field(v, 30));
+	domain_sched_params_val(ctx, &c_val->sched_params, Field(v, 31));
 	{
 		int i;
-		c_val->num_ioports = Wosize_val(Field(v, 30));
+		c_val->num_ioports = Wosize_val(Field(v, 32));
 		c_val->ioports = (libxl_ioport_range *) calloc(c_val->num_ioports, sizeof(*c_val->ioports));
 		for(i=0; i<c_val->num_ioports; i++) {
-			ioport_range_val(ctx, &c_val->ioports[i], Field(Field(v, 30), i));
+			ioport_range_val(ctx, &c_val->ioports[i], Field(Field(v, 32), i));
 		}
 	}
 	
 	{
 		int i;
-		c_val->num_irqs = Wosize_val(Field(v, 31));
+		c_val->num_irqs = Wosize_val(Field(v, 33));
 		c_val->irqs = (uint32_t *) calloc(c_val->num_irqs, sizeof(*c_val->irqs));
 		for(i=0; i<c_val->num_irqs; i++) {
-			c_val->irqs[i] = Int32_val(Field(Field(v, 31), i));
+			c_val->irqs[i] = Int32_val(Field(Field(v, 33), i));
 		}
 	}
 	
 	{
 		int i;
-		c_val->num_iomem = Wosize_val(Field(v, 32));
+		c_val->num_iomem = Wosize_val(Field(v, 34));
 		c_val->iomem = (libxl_iomem_range *) calloc(c_val->num_iomem, sizeof(*c_val->iomem));
 		for(i=0; i<c_val->num_iomem; i++) {
-			iomem_range_val(ctx, &c_val->iomem[i], Field(Field(v, 32), i));
+			iomem_range_val(ctx, &c_val->iomem[i], Field(Field(v, 34), i));
 		}
 	}
 	
-	c_val->claim_mode = Defbool_val(Field(v, 33));
-	c_val->event_channels = Int32_val(Field(v, 34));
-	c_val->kernel = String_option_val(Field(v, 35));
-	c_val->cmdline = String_option_val(Field(v, 36));
-	c_val->ramdisk = String_option_val(Field(v, 37));
-	c_val->device_tree = String_option_val(Field(v, 38));
-	c_val->acpi = Defbool_val(Field(v, 39));
+	c_val->claim_mode = Defbool_val(Field(v, 35));
+	c_val->event_channels = Int32_val(Field(v, 36));
+	c_val->kernel = String_option_val(Field(v, 37));
+	c_val->cmdline = String_option_val(Field(v, 38));
+	c_val->ramdisk = String_option_val(Field(v, 39));
+	c_val->device_tree = String_option_val(Field(v, 40));
+	c_val->acpi = Defbool_val(Field(v, 41));
+	c_val->bootloader = String_option_val(Field(v, 42));
+	libxl_string_list_val(&c_val->bootloader_args, Field(v, 43));
+	timer_mode_val(ctx, &c_val->timer_mode, Field(v, 44));
+	c_val->nested_hvm = Defbool_val(Field(v, 45));
+	c_val->apic = Defbool_val(Field(v, 46));
+	c_val->dm_restrict = Defbool_val(Field(v, 47));
 	{
-		if(Is_long(Field(v, 40))) {
-			switch(Int_val(Field(v, 40))) {
+		if(Is_long(Field(v, 48))) {
+			switch(Int_val(Field(v, 48))) {
 			    case 0: c_val->type = LIBXL_DOMAIN_TYPE_INVALID; break;
 			    default: failwith_xl(ERROR_FAIL, "variant handling bug c_val->type (long)"); break;
 			}
 		} else {
 			/* Is block... */
-			switch(Tag_val(Field(v, 40))) {
+			switch(Tag_val(Field(v, 48))) {
 			    case 0:
 			        c_val->type = LIBXL_DOMAIN_TYPE_HVM;
-			        c_val->u.hvm.firmware = String_option_val(Field(Field(Field(v, 40), 0), 0));
-			        bios_type_val(ctx, &c_val->u.hvm.bios, Field(Field(Field(v, 40), 0), 1));
-			        c_val->u.hvm.pae = Defbool_val(Field(Field(Field(v, 40), 0), 2));
-			        c_val->u.hvm.apic = Defbool_val(Field(Field(Field(v, 40), 0), 3));
-			        c_val->u.hvm.acpi = Defbool_val(Field(Field(Field(v, 40), 0), 4));
-			        c_val->u.hvm.acpi_s3 = Defbool_val(Field(Field(Field(v, 40), 0), 5));
-			        c_val->u.hvm.acpi_s4 = Defbool_val(Field(Field(Field(v, 40), 0), 6));
-			        c_val->u.hvm.nx = Defbool_val(Field(Field(Field(v, 40), 0), 7));
-			        c_val->u.hvm.viridian = Defbool_val(Field(Field(Field(v, 40), 0), 8));
-			        Bitmap_val(ctx, &c_val->u.hvm.viridian_enable, Field(Field(Field(v, 40), 0), 9));
-			        Bitmap_val(ctx, &c_val->u.hvm.viridian_disable, Field(Field(Field(v, 40), 0), 10));
-			        c_val->u.hvm.timeoffset = String_option_val(Field(Field(Field(v, 40), 0), 11));
-			        c_val->u.hvm.hpet = Defbool_val(Field(Field(Field(v, 40), 0), 12));
-			        c_val->u.hvm.vpt_align = Defbool_val(Field(Field(Field(v, 40), 0), 13));
-			        c_val->u.hvm.mmio_hole_memkb = Int64_val(Field(Field(Field(v, 40), 0), 14));
-			        timer_mode_val(ctx, &c_val->u.hvm.timer_mode, Field(Field(Field(v, 40), 0), 15));
-			        c_val->u.hvm.nested_hvm = Defbool_val(Field(Field(Field(v, 40), 0), 16));
-			        c_val->u.hvm.altp2m = Defbool_val(Field(Field(Field(v, 40), 0), 17));
-			        c_val->u.hvm.system_firmware = String_option_val(Field(Field(Field(v, 40), 0), 18));
-			        c_val->u.hvm.smbios_firmware = String_option_val(Field(Field(Field(v, 40), 0), 19));
-			        c_val->u.hvm.acpi_firmware = String_option_val(Field(Field(Field(v, 40), 0), 20));
-			        hdtype_val(ctx, &c_val->u.hvm.hdtype, Field(Field(Field(v, 40), 0), 21));
-			        c_val->u.hvm.nographic = Defbool_val(Field(Field(Field(v, 40), 0), 22));
-			        vga_interface_info_val(ctx, &c_val->u.hvm.vga, Field(Field(Field(v, 40), 0), 23));
-			        vnc_info_val(ctx, &c_val->u.hvm.vnc, Field(Field(Field(v, 40), 0), 24));
-			        c_val->u.hvm.keymap = String_option_val(Field(Field(Field(v, 40), 0), 25));
-			        sdl_info_val(ctx, &c_val->u.hvm.sdl, Field(Field(Field(v, 40), 0), 26));
-			        spice_info_val(ctx, &c_val->u.hvm.spice, Field(Field(Field(v, 40), 0), 27));
-			        c_val->u.hvm.gfx_passthru = Defbool_val(Field(Field(Field(v, 40), 0), 28));
-			        gfx_passthru_kind_val(ctx, &c_val->u.hvm.gfx_passthru_kind, Field(Field(Field(v, 40), 0), 29));
-			        c_val->u.hvm.serial = String_option_val(Field(Field(Field(v, 40), 0), 30));
-			        c_val->u.hvm.boot = String_option_val(Field(Field(Field(v, 40), 0), 31));
-			        c_val->u.hvm.usb = Defbool_val(Field(Field(Field(v, 40), 0), 32));
-			        c_val->u.hvm.usbversion = Int_val(Field(Field(Field(v, 40), 0), 33));
-			        c_val->u.hvm.usbdevice = String_option_val(Field(Field(Field(v, 40), 0), 34));
-			        c_val->u.hvm.soundhw = String_option_val(Field(Field(Field(v, 40), 0), 35));
-			        c_val->u.hvm.xen_platform_pci = Defbool_val(Field(Field(Field(v, 40), 0), 36));
-			        libxl_string_list_val(&c_val->u.hvm.usbdevice_list, Field(Field(Field(v, 40), 0), 37));
-			        vendor_device_val(ctx, &c_val->u.hvm.vendor_device, Field(Field(Field(v, 40), 0), 38));
-			        Ms_vm_genid_val(&c_val->u.hvm.ms_vm_genid, Field(Field(Field(v, 40), 0), 39));
-			        libxl_string_list_val(&c_val->u.hvm.serial_list, Field(Field(Field(v, 40), 0), 40));
-			        rdm_reserve_val(ctx, &c_val->u.hvm.rdm, Field(Field(Field(v, 40), 0), 41));
-			        c_val->u.hvm.rdm_mem_boundary_memkb = Int64_val(Field(Field(Field(v, 40), 0), 42));
+			        c_val->u.hvm.firmware = String_option_val(Field(Field(Field(v, 48), 0), 0));
+			        bios_type_val(ctx, &c_val->u.hvm.bios, Field(Field(Field(v, 48), 0), 1));
+			        c_val->u.hvm.pae = Defbool_val(Field(Field(Field(v, 48), 0), 2));
+			        c_val->u.hvm.apic = Defbool_val(Field(Field(Field(v, 48), 0), 3));
+			        c_val->u.hvm.acpi = Defbool_val(Field(Field(Field(v, 48), 0), 4));
+			        c_val->u.hvm.acpi_s3 = Defbool_val(Field(Field(Field(v, 48), 0), 5));
+			        c_val->u.hvm.acpi_s4 = Defbool_val(Field(Field(Field(v, 48), 0), 6));
+			        c_val->u.hvm.acpi_laptop_slate = Defbool_val(Field(Field(Field(v, 48), 0), 7));
+			        c_val->u.hvm.nx = Defbool_val(Field(Field(Field(v, 48), 0), 8));
+			        c_val->u.hvm.viridian = Defbool_val(Field(Field(Field(v, 48), 0), 9));
+			        Bitmap_val(ctx, &c_val->u.hvm.viridian_enable, Field(Field(Field(v, 48), 0), 10));
+			        Bitmap_val(ctx, &c_val->u.hvm.viridian_disable, Field(Field(Field(v, 48), 0), 11));
+			        c_val->u.hvm.timeoffset = String_option_val(Field(Field(Field(v, 48), 0), 12));
+			        c_val->u.hvm.hpet = Defbool_val(Field(Field(Field(v, 48), 0), 13));
+			        c_val->u.hvm.vpt_align = Defbool_val(Field(Field(Field(v, 48), 0), 14));
+			        c_val->u.hvm.mmio_hole_memkb = Int64_val(Field(Field(Field(v, 48), 0), 15));
+			        timer_mode_val(ctx, &c_val->u.hvm.timer_mode, Field(Field(Field(v, 48), 0), 16));
+			        c_val->u.hvm.nested_hvm = Defbool_val(Field(Field(Field(v, 48), 0), 17));
+			        c_val->u.hvm.altp2m = Defbool_val(Field(Field(Field(v, 48), 0), 18));
+			        c_val->u.hvm.system_firmware = String_option_val(Field(Field(Field(v, 48), 0), 19));
+			        c_val->u.hvm.smbios_firmware = String_option_val(Field(Field(Field(v, 48), 0), 20));
+			        c_val->u.hvm.acpi_firmware = String_option_val(Field(Field(Field(v, 48), 0), 21));
+			        hdtype_val(ctx, &c_val->u.hvm.hdtype, Field(Field(Field(v, 48), 0), 22));
+			        c_val->u.hvm.nographic = Defbool_val(Field(Field(Field(v, 48), 0), 23));
+			        vga_interface_info_val(ctx, &c_val->u.hvm.vga, Field(Field(Field(v, 48), 0), 24));
+			        vnc_info_val(ctx, &c_val->u.hvm.vnc, Field(Field(Field(v, 48), 0), 25));
+			        c_val->u.hvm.keymap = String_option_val(Field(Field(Field(v, 48), 0), 26));
+			        sdl_info_val(ctx, &c_val->u.hvm.sdl, Field(Field(Field(v, 48), 0), 27));
+			        spice_info_val(ctx, &c_val->u.hvm.spice, Field(Field(Field(v, 48), 0), 28));
+			        c_val->u.hvm.gfx_passthru = Defbool_val(Field(Field(Field(v, 48), 0), 29));
+			        gfx_passthru_kind_val(ctx, &c_val->u.hvm.gfx_passthru_kind, Field(Field(Field(v, 48), 0), 30));
+			        c_val->u.hvm.serial = String_option_val(Field(Field(Field(v, 48), 0), 31));
+			        c_val->u.hvm.boot = String_option_val(Field(Field(Field(v, 48), 0), 32));
+			        c_val->u.hvm.usb = Defbool_val(Field(Field(Field(v, 48), 0), 33));
+			        c_val->u.hvm.usbversion = Int_val(Field(Field(Field(v, 48), 0), 34));
+			        c_val->u.hvm.usbdevice = String_option_val(Field(Field(Field(v, 48), 0), 35));
+			        c_val->u.hvm.soundhw = String_option_val(Field(Field(Field(v, 48), 0), 36));
+			        c_val->u.hvm.xen_platform_pci = Defbool_val(Field(Field(Field(v, 48), 0), 37));
+			        libxl_string_list_val(&c_val->u.hvm.usbdevice_list, Field(Field(Field(v, 48), 0), 38));
+			        vendor_device_val(ctx, &c_val->u.hvm.vendor_device, Field(Field(Field(v, 48), 0), 39));
+			        Ms_vm_genid_val(&c_val->u.hvm.ms_vm_genid, Field(Field(Field(v, 48), 0), 40));
+			        libxl_string_list_val(&c_val->u.hvm.serial_list, Field(Field(Field(v, 48), 0), 41));
+			        rdm_reserve_val(ctx, &c_val->u.hvm.rdm, Field(Field(Field(v, 48), 0), 42));
+			        c_val->u.hvm.rdm_mem_boundary_memkb = Int64_val(Field(Field(Field(v, 48), 0), 43));
+			        c_val->u.hvm.mca_caps = Int64_val(Field(Field(Field(v, 48), 0), 44));
 			        break;
 			    case 1:
 			        c_val->type = LIBXL_DOMAIN_TYPE_PV;
-			        c_val->u.pv.kernel = String_option_val(Field(Field(Field(v, 40), 0), 0));
-			        c_val->u.pv.slack_memkb = Int64_val(Field(Field(Field(v, 40), 0), 1));
-			        c_val->u.pv.bootloader = String_option_val(Field(Field(Field(v, 40), 0), 2));
-			        libxl_string_list_val(&c_val->u.pv.bootloader_args, Field(Field(Field(v, 40), 0), 3));
-			        c_val->u.pv.cmdline = String_option_val(Field(Field(Field(v, 40), 0), 4));
-			        c_val->u.pv.ramdisk = String_option_val(Field(Field(Field(v, 40), 0), 5));
-			        c_val->u.pv.features = String_option_val(Field(Field(Field(v, 40), 0), 6));
-			        c_val->u.pv.e820_host = Defbool_val(Field(Field(Field(v, 40), 0), 7));
+			        c_val->u.pv.kernel = String_option_val(Field(Field(Field(v, 48), 0), 0));
+			        c_val->u.pv.slack_memkb = Int64_val(Field(Field(Field(v, 48), 0), 1));
+			        c_val->u.pv.bootloader = String_option_val(Field(Field(Field(v, 48), 0), 2));
+			        libxl_string_list_val(&c_val->u.pv.bootloader_args, Field(Field(Field(v, 48), 0), 3));
+			        c_val->u.pv.cmdline = String_option_val(Field(Field(Field(v, 48), 0), 4));
+			        c_val->u.pv.ramdisk = String_option_val(Field(Field(Field(v, 48), 0), 5));
+			        c_val->u.pv.features = String_option_val(Field(Field(Field(v, 48), 0), 6));
+			        c_val->u.pv.e820_host = Defbool_val(Field(Field(Field(v, 48), 0), 7));
+			        break;
+			    case 2:
+			        c_val->type = LIBXL_DOMAIN_TYPE_PVH;
+			        c_val->u.pvh.pvshim = Defbool_val(Field(Field(Field(v, 48), 0), 0));
+			        c_val->u.pvh.pvshim_path = String_option_val(Field(Field(Field(v, 48), 0), 1));
+			        c_val->u.pvh.pvshim_cmdline = String_option_val(Field(Field(Field(v, 48), 0), 2));
+			        c_val->u.pvh.pvshim_extra = String_option_val(Field(Field(Field(v, 48), 0), 3));
 			        break;
 			    default: failwith_xl(ERROR_FAIL, "variant handling bug c_val->type (block)"); break;
 			}
 		}
 	}
-	gic_version_val(ctx, &c_val->arch_arm.gic_version, Field(Field(v, 41), 0));
+	gic_version_val(ctx, &c_val->arch_arm.gic_version, Field(Field(v, 49), 0));
+	vuart_type_val(ctx, &c_val->arch_arm.vuart, Field(Field(v, 49), 1));
 	
+	altp2m_mode_val(ctx, &c_val->altp2m, Field(v, 50));
 	
 	CAMLreturn(0);
 }
@@ -1958,7 +2041,7 @@ static value Val_domain_build_info (libxl_domain_build_info *domain_build_info_c
 	{
 		CAMLlocal1(domain_build_info_field);
 	
-		domain_build_info_ocaml = caml_alloc_tuple(42);
+		domain_build_info_ocaml = caml_alloc_tuple(51);
 	
 		domain_build_info_field = Val_int(domain_build_info_c->max_vcpus);
 		Store_field(domain_build_info_ocaml, 0, domain_build_info_field);
@@ -2044,35 +2127,41 @@ static value Val_domain_build_info (libxl_domain_build_info *domain_build_info_c
 		}
 		Store_field(domain_build_info_ocaml, 19, domain_build_info_field);
 	
-		domain_build_info_field = Val_device_model_version(domain_build_info_c->device_model_version);
+		domain_build_info_field = caml_copy_int32(domain_build_info_c->max_grant_frames);
 		Store_field(domain_build_info_ocaml, 20, domain_build_info_field);
 	
-		domain_build_info_field = Val_defbool(domain_build_info_c->device_model_stubdomain);
+		domain_build_info_field = caml_copy_int32(domain_build_info_c->max_maptrack_frames);
 		Store_field(domain_build_info_ocaml, 21, domain_build_info_field);
 	
-		domain_build_info_field = Val_string_option(domain_build_info_c->device_model);
+		domain_build_info_field = Val_device_model_version(domain_build_info_c->device_model_version);
 		Store_field(domain_build_info_ocaml, 22, domain_build_info_field);
 	
-		domain_build_info_field = caml_copy_int32(domain_build_info_c->device_model_ssidref);
+		domain_build_info_field = Val_defbool(domain_build_info_c->device_model_stubdomain);
 		Store_field(domain_build_info_ocaml, 23, domain_build_info_field);
 	
-		domain_build_info_field = Val_string_option(domain_build_info_c->device_model_ssid_label);
+		domain_build_info_field = Val_string_option(domain_build_info_c->device_model);
 		Store_field(domain_build_info_ocaml, 24, domain_build_info_field);
 	
-		domain_build_info_field = Val_string_option(domain_build_info_c->device_model_user);
+		domain_build_info_field = caml_copy_int32(domain_build_info_c->device_model_ssidref);
 		Store_field(domain_build_info_ocaml, 25, domain_build_info_field);
 	
-		domain_build_info_field = Val_string_list(&domain_build_info_c->extra);
+		domain_build_info_field = Val_string_option(domain_build_info_c->device_model_ssid_label);
 		Store_field(domain_build_info_ocaml, 26, domain_build_info_field);
 	
-		domain_build_info_field = Val_string_list(&domain_build_info_c->extra_pv);
+		domain_build_info_field = Val_string_option(domain_build_info_c->device_model_user);
 		Store_field(domain_build_info_ocaml, 27, domain_build_info_field);
 	
-		domain_build_info_field = Val_string_list(&domain_build_info_c->extra_hvm);
+		domain_build_info_field = Val_string_list(&domain_build_info_c->extra);
 		Store_field(domain_build_info_ocaml, 28, domain_build_info_field);
 	
-		domain_build_info_field = Val_domain_sched_params(&domain_build_info_c->sched_params);
+		domain_build_info_field = Val_string_list(&domain_build_info_c->extra_pv);
 		Store_field(domain_build_info_ocaml, 29, domain_build_info_field);
+	
+		domain_build_info_field = Val_string_list(&domain_build_info_c->extra_hvm);
+		Store_field(domain_build_info_ocaml, 30, domain_build_info_field);
+	
+		domain_build_info_field = Val_domain_sched_params(&domain_build_info_c->sched_params);
+		Store_field(domain_build_info_ocaml, 31, domain_build_info_field);
 	
 		{
 		    int i;
@@ -2083,7 +2172,7 @@ static value Val_domain_build_info (libxl_domain_build_info *domain_build_info_c
 		        Store_field(domain_build_info_field, i, array_elem);
 		    }
 		}
-		Store_field(domain_build_info_ocaml, 30, domain_build_info_field);
+		Store_field(domain_build_info_ocaml, 32, domain_build_info_field);
 	
 		{
 		    int i;
@@ -2094,7 +2183,7 @@ static value Val_domain_build_info (libxl_domain_build_info *domain_build_info_c
 		        Store_field(domain_build_info_field, i, array_elem);
 		    }
 		}
-		Store_field(domain_build_info_ocaml, 31, domain_build_info_field);
+		Store_field(domain_build_info_ocaml, 33, domain_build_info_field);
 	
 		{
 		    int i;
@@ -2105,28 +2194,46 @@ static value Val_domain_build_info (libxl_domain_build_info *domain_build_info_c
 		        Store_field(domain_build_info_field, i, array_elem);
 		    }
 		}
-		Store_field(domain_build_info_ocaml, 32, domain_build_info_field);
-	
-		domain_build_info_field = Val_defbool(domain_build_info_c->claim_mode);
-		Store_field(domain_build_info_ocaml, 33, domain_build_info_field);
-	
-		domain_build_info_field = caml_copy_int32(domain_build_info_c->event_channels);
 		Store_field(domain_build_info_ocaml, 34, domain_build_info_field);
 	
-		domain_build_info_field = Val_string_option(domain_build_info_c->kernel);
+		domain_build_info_field = Val_defbool(domain_build_info_c->claim_mode);
 		Store_field(domain_build_info_ocaml, 35, domain_build_info_field);
 	
-		domain_build_info_field = Val_string_option(domain_build_info_c->cmdline);
+		domain_build_info_field = caml_copy_int32(domain_build_info_c->event_channels);
 		Store_field(domain_build_info_ocaml, 36, domain_build_info_field);
 	
-		domain_build_info_field = Val_string_option(domain_build_info_c->ramdisk);
+		domain_build_info_field = Val_string_option(domain_build_info_c->kernel);
 		Store_field(domain_build_info_ocaml, 37, domain_build_info_field);
 	
-		domain_build_info_field = Val_string_option(domain_build_info_c->device_tree);
+		domain_build_info_field = Val_string_option(domain_build_info_c->cmdline);
 		Store_field(domain_build_info_ocaml, 38, domain_build_info_field);
 	
-		domain_build_info_field = Val_defbool(domain_build_info_c->acpi);
+		domain_build_info_field = Val_string_option(domain_build_info_c->ramdisk);
 		Store_field(domain_build_info_ocaml, 39, domain_build_info_field);
+	
+		domain_build_info_field = Val_string_option(domain_build_info_c->device_tree);
+		Store_field(domain_build_info_ocaml, 40, domain_build_info_field);
+	
+		domain_build_info_field = Val_defbool(domain_build_info_c->acpi);
+		Store_field(domain_build_info_ocaml, 41, domain_build_info_field);
+	
+		domain_build_info_field = Val_string_option(domain_build_info_c->bootloader);
+		Store_field(domain_build_info_ocaml, 42, domain_build_info_field);
+	
+		domain_build_info_field = Val_string_list(&domain_build_info_c->bootloader_args);
+		Store_field(domain_build_info_ocaml, 43, domain_build_info_field);
+	
+		domain_build_info_field = Val_timer_mode(domain_build_info_c->timer_mode);
+		Store_field(domain_build_info_ocaml, 44, domain_build_info_field);
+	
+		domain_build_info_field = Val_defbool(domain_build_info_c->nested_hvm);
+		Store_field(domain_build_info_ocaml, 45, domain_build_info_field);
+	
+		domain_build_info_field = Val_defbool(domain_build_info_c->apic);
+		Store_field(domain_build_info_ocaml, 46, domain_build_info_field);
+	
+		domain_build_info_field = Val_defbool(domain_build_info_c->dm_restrict);
+		Store_field(domain_build_info_ocaml, 47, domain_build_info_field);
 	
 		switch(domain_build_info_c->type) {
 		    case LIBXL_DOMAIN_TYPE_HVM:
@@ -2137,7 +2244,7 @@ static value Val_domain_build_info (libxl_domain_build_info *domain_build_info_c
 			        {
 			        	CAMLlocal1(anon_field);
 			        
-			        	tmp = caml_alloc_tuple(43);
+			        	tmp = caml_alloc_tuple(45);
 			        
 			        	anon_field = Val_string_option(domain_build_info_c->u.hvm.firmware);
 			        	Store_field(tmp, 0, anon_field);
@@ -2160,113 +2267,119 @@ static value Val_domain_build_info (libxl_domain_build_info *domain_build_info_c
 			        	anon_field = Val_defbool(domain_build_info_c->u.hvm.acpi_s4);
 			        	Store_field(tmp, 6, anon_field);
 			        
-			        	anon_field = Val_defbool(domain_build_info_c->u.hvm.nx);
+			        	anon_field = Val_defbool(domain_build_info_c->u.hvm.acpi_laptop_slate);
 			        	Store_field(tmp, 7, anon_field);
 			        
-			        	anon_field = Val_defbool(domain_build_info_c->u.hvm.viridian);
+			        	anon_field = Val_defbool(domain_build_info_c->u.hvm.nx);
 			        	Store_field(tmp, 8, anon_field);
 			        
-			        	anon_field = Val_bitmap(&domain_build_info_c->u.hvm.viridian_enable);
+			        	anon_field = Val_defbool(domain_build_info_c->u.hvm.viridian);
 			        	Store_field(tmp, 9, anon_field);
 			        
-			        	anon_field = Val_bitmap(&domain_build_info_c->u.hvm.viridian_disable);
+			        	anon_field = Val_bitmap(&domain_build_info_c->u.hvm.viridian_enable);
 			        	Store_field(tmp, 10, anon_field);
 			        
-			        	anon_field = Val_string_option(domain_build_info_c->u.hvm.timeoffset);
+			        	anon_field = Val_bitmap(&domain_build_info_c->u.hvm.viridian_disable);
 			        	Store_field(tmp, 11, anon_field);
 			        
-			        	anon_field = Val_defbool(domain_build_info_c->u.hvm.hpet);
+			        	anon_field = Val_string_option(domain_build_info_c->u.hvm.timeoffset);
 			        	Store_field(tmp, 12, anon_field);
 			        
-			        	anon_field = Val_defbool(domain_build_info_c->u.hvm.vpt_align);
+			        	anon_field = Val_defbool(domain_build_info_c->u.hvm.hpet);
 			        	Store_field(tmp, 13, anon_field);
 			        
-			        	anon_field = caml_copy_int64(domain_build_info_c->u.hvm.mmio_hole_memkb);
+			        	anon_field = Val_defbool(domain_build_info_c->u.hvm.vpt_align);
 			        	Store_field(tmp, 14, anon_field);
 			        
-			        	anon_field = Val_timer_mode(domain_build_info_c->u.hvm.timer_mode);
+			        	anon_field = caml_copy_int64(domain_build_info_c->u.hvm.mmio_hole_memkb);
 			        	Store_field(tmp, 15, anon_field);
 			        
-			        	anon_field = Val_defbool(domain_build_info_c->u.hvm.nested_hvm);
+			        	anon_field = Val_timer_mode(domain_build_info_c->u.hvm.timer_mode);
 			        	Store_field(tmp, 16, anon_field);
 			        
-			        	anon_field = Val_defbool(domain_build_info_c->u.hvm.altp2m);
+			        	anon_field = Val_defbool(domain_build_info_c->u.hvm.nested_hvm);
 			        	Store_field(tmp, 17, anon_field);
 			        
-			        	anon_field = Val_string_option(domain_build_info_c->u.hvm.system_firmware);
+			        	anon_field = Val_defbool(domain_build_info_c->u.hvm.altp2m);
 			        	Store_field(tmp, 18, anon_field);
 			        
-			        	anon_field = Val_string_option(domain_build_info_c->u.hvm.smbios_firmware);
+			        	anon_field = Val_string_option(domain_build_info_c->u.hvm.system_firmware);
 			        	Store_field(tmp, 19, anon_field);
 			        
-			        	anon_field = Val_string_option(domain_build_info_c->u.hvm.acpi_firmware);
+			        	anon_field = Val_string_option(domain_build_info_c->u.hvm.smbios_firmware);
 			        	Store_field(tmp, 20, anon_field);
 			        
-			        	anon_field = Val_hdtype(domain_build_info_c->u.hvm.hdtype);
+			        	anon_field = Val_string_option(domain_build_info_c->u.hvm.acpi_firmware);
 			        	Store_field(tmp, 21, anon_field);
 			        
-			        	anon_field = Val_defbool(domain_build_info_c->u.hvm.nographic);
+			        	anon_field = Val_hdtype(domain_build_info_c->u.hvm.hdtype);
 			        	Store_field(tmp, 22, anon_field);
 			        
-			        	anon_field = Val_vga_interface_info(&domain_build_info_c->u.hvm.vga);
+			        	anon_field = Val_defbool(domain_build_info_c->u.hvm.nographic);
 			        	Store_field(tmp, 23, anon_field);
 			        
-			        	anon_field = Val_vnc_info(&domain_build_info_c->u.hvm.vnc);
+			        	anon_field = Val_vga_interface_info(&domain_build_info_c->u.hvm.vga);
 			        	Store_field(tmp, 24, anon_field);
 			        
-			        	anon_field = Val_string_option(domain_build_info_c->u.hvm.keymap);
+			        	anon_field = Val_vnc_info(&domain_build_info_c->u.hvm.vnc);
 			        	Store_field(tmp, 25, anon_field);
 			        
-			        	anon_field = Val_sdl_info(&domain_build_info_c->u.hvm.sdl);
+			        	anon_field = Val_string_option(domain_build_info_c->u.hvm.keymap);
 			        	Store_field(tmp, 26, anon_field);
 			        
-			        	anon_field = Val_spice_info(&domain_build_info_c->u.hvm.spice);
+			        	anon_field = Val_sdl_info(&domain_build_info_c->u.hvm.sdl);
 			        	Store_field(tmp, 27, anon_field);
 			        
-			        	anon_field = Val_defbool(domain_build_info_c->u.hvm.gfx_passthru);
+			        	anon_field = Val_spice_info(&domain_build_info_c->u.hvm.spice);
 			        	Store_field(tmp, 28, anon_field);
 			        
-			        	anon_field = Val_gfx_passthru_kind(domain_build_info_c->u.hvm.gfx_passthru_kind);
+			        	anon_field = Val_defbool(domain_build_info_c->u.hvm.gfx_passthru);
 			        	Store_field(tmp, 29, anon_field);
 			        
-			        	anon_field = Val_string_option(domain_build_info_c->u.hvm.serial);
+			        	anon_field = Val_gfx_passthru_kind(domain_build_info_c->u.hvm.gfx_passthru_kind);
 			        	Store_field(tmp, 30, anon_field);
 			        
-			        	anon_field = Val_string_option(domain_build_info_c->u.hvm.boot);
+			        	anon_field = Val_string_option(domain_build_info_c->u.hvm.serial);
 			        	Store_field(tmp, 31, anon_field);
 			        
-			        	anon_field = Val_defbool(domain_build_info_c->u.hvm.usb);
+			        	anon_field = Val_string_option(domain_build_info_c->u.hvm.boot);
 			        	Store_field(tmp, 32, anon_field);
 			        
-			        	anon_field = Val_int(domain_build_info_c->u.hvm.usbversion);
+			        	anon_field = Val_defbool(domain_build_info_c->u.hvm.usb);
 			        	Store_field(tmp, 33, anon_field);
 			        
-			        	anon_field = Val_string_option(domain_build_info_c->u.hvm.usbdevice);
+			        	anon_field = Val_int(domain_build_info_c->u.hvm.usbversion);
 			        	Store_field(tmp, 34, anon_field);
 			        
-			        	anon_field = Val_string_option(domain_build_info_c->u.hvm.soundhw);
+			        	anon_field = Val_string_option(domain_build_info_c->u.hvm.usbdevice);
 			        	Store_field(tmp, 35, anon_field);
 			        
-			        	anon_field = Val_defbool(domain_build_info_c->u.hvm.xen_platform_pci);
+			        	anon_field = Val_string_option(domain_build_info_c->u.hvm.soundhw);
 			        	Store_field(tmp, 36, anon_field);
 			        
-			        	anon_field = Val_string_list(&domain_build_info_c->u.hvm.usbdevice_list);
+			        	anon_field = Val_defbool(domain_build_info_c->u.hvm.xen_platform_pci);
 			        	Store_field(tmp, 37, anon_field);
 			        
-			        	anon_field = Val_vendor_device(domain_build_info_c->u.hvm.vendor_device);
+			        	anon_field = Val_string_list(&domain_build_info_c->u.hvm.usbdevice_list);
 			        	Store_field(tmp, 38, anon_field);
 			        
-			        	anon_field = Val_ms_vm_genid(&domain_build_info_c->u.hvm.ms_vm_genid);
+			        	anon_field = Val_vendor_device(domain_build_info_c->u.hvm.vendor_device);
 			        	Store_field(tmp, 39, anon_field);
 			        
-			        	anon_field = Val_string_list(&domain_build_info_c->u.hvm.serial_list);
+			        	anon_field = Val_ms_vm_genid(&domain_build_info_c->u.hvm.ms_vm_genid);
 			        	Store_field(tmp, 40, anon_field);
 			        
-			        	anon_field = Val_rdm_reserve(&domain_build_info_c->u.hvm.rdm);
+			        	anon_field = Val_string_list(&domain_build_info_c->u.hvm.serial_list);
 			        	Store_field(tmp, 41, anon_field);
 			        
-			        	anon_field = caml_copy_int64(domain_build_info_c->u.hvm.rdm_mem_boundary_memkb);
+			        	anon_field = Val_rdm_reserve(&domain_build_info_c->u.hvm.rdm);
 			        	Store_field(tmp, 42, anon_field);
+			        
+			        	anon_field = caml_copy_int64(domain_build_info_c->u.hvm.rdm_mem_boundary_memkb);
+			        	Store_field(tmp, 43, anon_field);
+			        
+			        	anon_field = caml_copy_int64(domain_build_info_c->u.hvm.mca_caps);
+			        	Store_field(tmp, 44, anon_field);
 			        }
 			        Store_field(domain_build_info_field, 0, tmp);
 		        }
@@ -2308,23 +2421,54 @@ static value Val_domain_build_info (libxl_domain_build_info *domain_build_info_c
 			        Store_field(domain_build_info_field, 0, tmp);
 		        }
 		        break;
+		    case LIBXL_DOMAIN_TYPE_PVH:
+		        /* 2: Block */
+		        {
+			        CAMLlocal1(tmp);
+			        domain_build_info_field = caml_alloc(1,2);
+			        {
+			        	CAMLlocal1(anon_field);
+			        
+			        	tmp = caml_alloc_tuple(4);
+			        
+			        	anon_field = Val_defbool(domain_build_info_c->u.pvh.pvshim);
+			        	Store_field(tmp, 0, anon_field);
+			        
+			        	anon_field = Val_string_option(domain_build_info_c->u.pvh.pvshim_path);
+			        	Store_field(tmp, 1, anon_field);
+			        
+			        	anon_field = Val_string_option(domain_build_info_c->u.pvh.pvshim_cmdline);
+			        	Store_field(tmp, 2, anon_field);
+			        
+			        	anon_field = Val_string_option(domain_build_info_c->u.pvh.pvshim_extra);
+			        	Store_field(tmp, 3, anon_field);
+			        }
+			        Store_field(domain_build_info_field, 0, tmp);
+		        }
+		        break;
 		    case LIBXL_DOMAIN_TYPE_INVALID:
 		        /* 0: None */
 		        domain_build_info_field = Val_long(0);
 		        break;
 		    default: failwith_xl(ERROR_FAIL, "cannot convert value from None"); break;
 		}
-		Store_field(domain_build_info_ocaml, 40, domain_build_info_field);
+		Store_field(domain_build_info_ocaml, 48, domain_build_info_field);
 	
 		{
 		CAMLlocal1(anon_field);
 	
-		domain_build_info_field = caml_alloc_tuple(1);
+		domain_build_info_field = caml_alloc_tuple(2);
 	
 		anon_field = Val_gic_version(domain_build_info_c->arch_arm.gic_version);
 		Store_field(domain_build_info_field, 0, anon_field);
+	
+		anon_field = Val_vuart_type(domain_build_info_c->arch_arm.vuart);
+		Store_field(domain_build_info_field, 1, anon_field);
 	}
-		Store_field(domain_build_info_ocaml, 41, domain_build_info_field);
+		Store_field(domain_build_info_ocaml, 49, domain_build_info_field);
+	
+		domain_build_info_field = Val_altp2m_mode(domain_build_info_c->altp2m);
+		Store_field(domain_build_info_ocaml, 50, domain_build_info_field);
 	}
 	CAMLreturn(domain_build_info_ocaml);
 }
@@ -2598,6 +2742,54 @@ static int device_nic_val (libxl_ctx *ctx, libxl_device_nic *c_val, value v)
 	c_val->rate_interval_usecs = Int32_val(Field(v, 12));
 	c_val->gatewaydev = String_option_val(Field(v, 13));
 	c_val->coloft_forwarddev = String_option_val(Field(v, 14));
+	c_val->colo_sock_mirror_id = String_option_val(Field(v, 15));
+	c_val->colo_sock_mirror_ip = String_option_val(Field(v, 16));
+	c_val->colo_sock_mirror_port = String_option_val(Field(v, 17));
+	c_val->colo_sock_compare_pri_in_id = String_option_val(Field(v, 18));
+	c_val->colo_sock_compare_pri_in_ip = String_option_val(Field(v, 19));
+	c_val->colo_sock_compare_pri_in_port = String_option_val(Field(v, 20));
+	c_val->colo_sock_compare_sec_in_id = String_option_val(Field(v, 21));
+	c_val->colo_sock_compare_sec_in_ip = String_option_val(Field(v, 22));
+	c_val->colo_sock_compare_sec_in_port = String_option_val(Field(v, 23));
+	c_val->colo_sock_compare_notify_id = String_option_val(Field(v, 24));
+	c_val->colo_sock_compare_notify_ip = String_option_val(Field(v, 25));
+	c_val->colo_sock_compare_notify_port = String_option_val(Field(v, 26));
+	c_val->colo_sock_redirector0_id = String_option_val(Field(v, 27));
+	c_val->colo_sock_redirector0_ip = String_option_val(Field(v, 28));
+	c_val->colo_sock_redirector0_port = String_option_val(Field(v, 29));
+	c_val->colo_sock_redirector1_id = String_option_val(Field(v, 30));
+	c_val->colo_sock_redirector1_ip = String_option_val(Field(v, 31));
+	c_val->colo_sock_redirector1_port = String_option_val(Field(v, 32));
+	c_val->colo_sock_redirector2_id = String_option_val(Field(v, 33));
+	c_val->colo_sock_redirector2_ip = String_option_val(Field(v, 34));
+	c_val->colo_sock_redirector2_port = String_option_val(Field(v, 35));
+	c_val->colo_filter_mirror_queue = String_option_val(Field(v, 36));
+	c_val->colo_filter_mirror_outdev = String_option_val(Field(v, 37));
+	c_val->colo_filter_redirector0_queue = String_option_val(Field(v, 38));
+	c_val->colo_filter_redirector0_indev = String_option_val(Field(v, 39));
+	c_val->colo_filter_redirector0_outdev = String_option_val(Field(v, 40));
+	c_val->colo_filter_redirector1_queue = String_option_val(Field(v, 41));
+	c_val->colo_filter_redirector1_indev = String_option_val(Field(v, 42));
+	c_val->colo_filter_redirector1_outdev = String_option_val(Field(v, 43));
+	c_val->colo_compare_pri_in = String_option_val(Field(v, 44));
+	c_val->colo_compare_sec_in = String_option_val(Field(v, 45));
+	c_val->colo_compare_out = String_option_val(Field(v, 46));
+	c_val->colo_compare_notify_dev = String_option_val(Field(v, 47));
+	c_val->colo_sock_sec_redirector0_id = String_option_val(Field(v, 48));
+	c_val->colo_sock_sec_redirector0_ip = String_option_val(Field(v, 49));
+	c_val->colo_sock_sec_redirector0_port = String_option_val(Field(v, 50));
+	c_val->colo_sock_sec_redirector1_id = String_option_val(Field(v, 51));
+	c_val->colo_sock_sec_redirector1_ip = String_option_val(Field(v, 52));
+	c_val->colo_sock_sec_redirector1_port = String_option_val(Field(v, 53));
+	c_val->colo_filter_sec_redirector0_queue = String_option_val(Field(v, 54));
+	c_val->colo_filter_sec_redirector0_indev = String_option_val(Field(v, 55));
+	c_val->colo_filter_sec_redirector0_outdev = String_option_val(Field(v, 56));
+	c_val->colo_filter_sec_redirector1_queue = String_option_val(Field(v, 57));
+	c_val->colo_filter_sec_redirector1_indev = String_option_val(Field(v, 58));
+	c_val->colo_filter_sec_redirector1_outdev = String_option_val(Field(v, 59));
+	c_val->colo_filter_sec_rewriter0_queue = String_option_val(Field(v, 60));
+	c_val->colo_checkpoint_host = String_option_val(Field(v, 61));
+	c_val->colo_checkpoint_port = String_option_val(Field(v, 62));
 	
 	CAMLreturn(0);
 }
@@ -2610,7 +2802,7 @@ static value Val_device_nic (libxl_device_nic *device_nic_c)
 	{
 		CAMLlocal1(device_nic_field);
 	
-		device_nic_ocaml = caml_alloc_tuple(15);
+		device_nic_ocaml = caml_alloc_tuple(63);
 	
 		device_nic_field = Val_int(device_nic_c->backend_domid);
 		Store_field(device_nic_ocaml, 0, device_nic_field);
@@ -2656,6 +2848,150 @@ static value Val_device_nic (libxl_device_nic *device_nic_c)
 	
 		device_nic_field = Val_string_option(device_nic_c->coloft_forwarddev);
 		Store_field(device_nic_ocaml, 14, device_nic_field);
+	
+		device_nic_field = Val_string_option(device_nic_c->colo_sock_mirror_id);
+		Store_field(device_nic_ocaml, 15, device_nic_field);
+	
+		device_nic_field = Val_string_option(device_nic_c->colo_sock_mirror_ip);
+		Store_field(device_nic_ocaml, 16, device_nic_field);
+	
+		device_nic_field = Val_string_option(device_nic_c->colo_sock_mirror_port);
+		Store_field(device_nic_ocaml, 17, device_nic_field);
+	
+		device_nic_field = Val_string_option(device_nic_c->colo_sock_compare_pri_in_id);
+		Store_field(device_nic_ocaml, 18, device_nic_field);
+	
+		device_nic_field = Val_string_option(device_nic_c->colo_sock_compare_pri_in_ip);
+		Store_field(device_nic_ocaml, 19, device_nic_field);
+	
+		device_nic_field = Val_string_option(device_nic_c->colo_sock_compare_pri_in_port);
+		Store_field(device_nic_ocaml, 20, device_nic_field);
+	
+		device_nic_field = Val_string_option(device_nic_c->colo_sock_compare_sec_in_id);
+		Store_field(device_nic_ocaml, 21, device_nic_field);
+	
+		device_nic_field = Val_string_option(device_nic_c->colo_sock_compare_sec_in_ip);
+		Store_field(device_nic_ocaml, 22, device_nic_field);
+	
+		device_nic_field = Val_string_option(device_nic_c->colo_sock_compare_sec_in_port);
+		Store_field(device_nic_ocaml, 23, device_nic_field);
+	
+		device_nic_field = Val_string_option(device_nic_c->colo_sock_compare_notify_id);
+		Store_field(device_nic_ocaml, 24, device_nic_field);
+	
+		device_nic_field = Val_string_option(device_nic_c->colo_sock_compare_notify_ip);
+		Store_field(device_nic_ocaml, 25, device_nic_field);
+	
+		device_nic_field = Val_string_option(device_nic_c->colo_sock_compare_notify_port);
+		Store_field(device_nic_ocaml, 26, device_nic_field);
+	
+		device_nic_field = Val_string_option(device_nic_c->colo_sock_redirector0_id);
+		Store_field(device_nic_ocaml, 27, device_nic_field);
+	
+		device_nic_field = Val_string_option(device_nic_c->colo_sock_redirector0_ip);
+		Store_field(device_nic_ocaml, 28, device_nic_field);
+	
+		device_nic_field = Val_string_option(device_nic_c->colo_sock_redirector0_port);
+		Store_field(device_nic_ocaml, 29, device_nic_field);
+	
+		device_nic_field = Val_string_option(device_nic_c->colo_sock_redirector1_id);
+		Store_field(device_nic_ocaml, 30, device_nic_field);
+	
+		device_nic_field = Val_string_option(device_nic_c->colo_sock_redirector1_ip);
+		Store_field(device_nic_ocaml, 31, device_nic_field);
+	
+		device_nic_field = Val_string_option(device_nic_c->colo_sock_redirector1_port);
+		Store_field(device_nic_ocaml, 32, device_nic_field);
+	
+		device_nic_field = Val_string_option(device_nic_c->colo_sock_redirector2_id);
+		Store_field(device_nic_ocaml, 33, device_nic_field);
+	
+		device_nic_field = Val_string_option(device_nic_c->colo_sock_redirector2_ip);
+		Store_field(device_nic_ocaml, 34, device_nic_field);
+	
+		device_nic_field = Val_string_option(device_nic_c->colo_sock_redirector2_port);
+		Store_field(device_nic_ocaml, 35, device_nic_field);
+	
+		device_nic_field = Val_string_option(device_nic_c->colo_filter_mirror_queue);
+		Store_field(device_nic_ocaml, 36, device_nic_field);
+	
+		device_nic_field = Val_string_option(device_nic_c->colo_filter_mirror_outdev);
+		Store_field(device_nic_ocaml, 37, device_nic_field);
+	
+		device_nic_field = Val_string_option(device_nic_c->colo_filter_redirector0_queue);
+		Store_field(device_nic_ocaml, 38, device_nic_field);
+	
+		device_nic_field = Val_string_option(device_nic_c->colo_filter_redirector0_indev);
+		Store_field(device_nic_ocaml, 39, device_nic_field);
+	
+		device_nic_field = Val_string_option(device_nic_c->colo_filter_redirector0_outdev);
+		Store_field(device_nic_ocaml, 40, device_nic_field);
+	
+		device_nic_field = Val_string_option(device_nic_c->colo_filter_redirector1_queue);
+		Store_field(device_nic_ocaml, 41, device_nic_field);
+	
+		device_nic_field = Val_string_option(device_nic_c->colo_filter_redirector1_indev);
+		Store_field(device_nic_ocaml, 42, device_nic_field);
+	
+		device_nic_field = Val_string_option(device_nic_c->colo_filter_redirector1_outdev);
+		Store_field(device_nic_ocaml, 43, device_nic_field);
+	
+		device_nic_field = Val_string_option(device_nic_c->colo_compare_pri_in);
+		Store_field(device_nic_ocaml, 44, device_nic_field);
+	
+		device_nic_field = Val_string_option(device_nic_c->colo_compare_sec_in);
+		Store_field(device_nic_ocaml, 45, device_nic_field);
+	
+		device_nic_field = Val_string_option(device_nic_c->colo_compare_out);
+		Store_field(device_nic_ocaml, 46, device_nic_field);
+	
+		device_nic_field = Val_string_option(device_nic_c->colo_compare_notify_dev);
+		Store_field(device_nic_ocaml, 47, device_nic_field);
+	
+		device_nic_field = Val_string_option(device_nic_c->colo_sock_sec_redirector0_id);
+		Store_field(device_nic_ocaml, 48, device_nic_field);
+	
+		device_nic_field = Val_string_option(device_nic_c->colo_sock_sec_redirector0_ip);
+		Store_field(device_nic_ocaml, 49, device_nic_field);
+	
+		device_nic_field = Val_string_option(device_nic_c->colo_sock_sec_redirector0_port);
+		Store_field(device_nic_ocaml, 50, device_nic_field);
+	
+		device_nic_field = Val_string_option(device_nic_c->colo_sock_sec_redirector1_id);
+		Store_field(device_nic_ocaml, 51, device_nic_field);
+	
+		device_nic_field = Val_string_option(device_nic_c->colo_sock_sec_redirector1_ip);
+		Store_field(device_nic_ocaml, 52, device_nic_field);
+	
+		device_nic_field = Val_string_option(device_nic_c->colo_sock_sec_redirector1_port);
+		Store_field(device_nic_ocaml, 53, device_nic_field);
+	
+		device_nic_field = Val_string_option(device_nic_c->colo_filter_sec_redirector0_queue);
+		Store_field(device_nic_ocaml, 54, device_nic_field);
+	
+		device_nic_field = Val_string_option(device_nic_c->colo_filter_sec_redirector0_indev);
+		Store_field(device_nic_ocaml, 55, device_nic_field);
+	
+		device_nic_field = Val_string_option(device_nic_c->colo_filter_sec_redirector0_outdev);
+		Store_field(device_nic_ocaml, 56, device_nic_field);
+	
+		device_nic_field = Val_string_option(device_nic_c->colo_filter_sec_redirector1_queue);
+		Store_field(device_nic_ocaml, 57, device_nic_field);
+	
+		device_nic_field = Val_string_option(device_nic_c->colo_filter_sec_redirector1_indev);
+		Store_field(device_nic_ocaml, 58, device_nic_field);
+	
+		device_nic_field = Val_string_option(device_nic_c->colo_filter_sec_redirector1_outdev);
+		Store_field(device_nic_ocaml, 59, device_nic_field);
+	
+		device_nic_field = Val_string_option(device_nic_c->colo_filter_sec_rewriter0_queue);
+		Store_field(device_nic_ocaml, 60, device_nic_field);
+	
+		device_nic_field = Val_string_option(device_nic_c->colo_checkpoint_host);
+		Store_field(device_nic_ocaml, 61, device_nic_field);
+	
+		device_nic_field = Val_string_option(device_nic_c->colo_checkpoint_port);
+		Store_field(device_nic_ocaml, 62, device_nic_field);
 	}
 	CAMLreturn(device_nic_ocaml);
 }
@@ -3100,6 +3436,110 @@ value stub_libxl_device_vtpm_init(value ctx, value unit)
 	CAMLreturn(val);
 }
 
+/* Convert caml value to device_p9 */
+static int device_p9_val (libxl_ctx *ctx, libxl_device_p9 *c_val, value v)
+{
+	CAMLparam1(v);
+
+	c_val->backend_domid = Int_val(Field(v, 0));
+	c_val->backend_domname = String_option_val(Field(v, 1));
+	c_val->tag = String_option_val(Field(v, 2));
+	c_val->path = String_option_val(Field(v, 3));
+	c_val->security_model = String_option_val(Field(v, 4));
+	c_val->devid = Int_val(Field(v, 5));
+	
+	CAMLreturn(0);
+}
+
+/* Convert device_p9 to a caml value */
+static value Val_device_p9 (libxl_device_p9 *device_p9_c)
+{
+	CAMLparam0();
+	CAMLlocal1(device_p9_ocaml);
+	{
+		CAMLlocal1(device_p9_field);
+	
+		device_p9_ocaml = caml_alloc_tuple(6);
+	
+		device_p9_field = Val_int(device_p9_c->backend_domid);
+		Store_field(device_p9_ocaml, 0, device_p9_field);
+	
+		device_p9_field = Val_string_option(device_p9_c->backend_domname);
+		Store_field(device_p9_ocaml, 1, device_p9_field);
+	
+		device_p9_field = Val_string_option(device_p9_c->tag);
+		Store_field(device_p9_ocaml, 2, device_p9_field);
+	
+		device_p9_field = Val_string_option(device_p9_c->path);
+		Store_field(device_p9_ocaml, 3, device_p9_field);
+	
+		device_p9_field = Val_string_option(device_p9_c->security_model);
+		Store_field(device_p9_ocaml, 4, device_p9_field);
+	
+		device_p9_field = Val_int(device_p9_c->devid);
+		Store_field(device_p9_ocaml, 5, device_p9_field);
+	}
+	CAMLreturn(device_p9_ocaml);
+}
+
+/* Get the defaults for device_p9 */
+value stub_libxl_device_p9_init(value ctx, value unit)
+{
+	CAMLparam2(ctx, unit);
+	CAMLlocal1(val);
+	libxl_device_p9 c_val;
+	libxl_device_p9_init(&c_val);
+	val = Val_device_p9(&c_val);
+	libxl_device_p9_dispose(&c_val);
+	CAMLreturn(val);
+}
+
+/* Convert caml value to device_pvcallsif */
+static int device_pvcallsif_val (libxl_ctx *ctx, libxl_device_pvcallsif *c_val, value v)
+{
+	CAMLparam1(v);
+
+	c_val->backend_domid = Int_val(Field(v, 0));
+	c_val->backend_domname = String_option_val(Field(v, 1));
+	c_val->devid = Int_val(Field(v, 2));
+	
+	CAMLreturn(0);
+}
+
+/* Convert device_pvcallsif to a caml value */
+static value Val_device_pvcallsif (libxl_device_pvcallsif *device_pvcallsif_c)
+{
+	CAMLparam0();
+	CAMLlocal1(device_pvcallsif_ocaml);
+	{
+		CAMLlocal1(device_pvcallsif_field);
+	
+		device_pvcallsif_ocaml = caml_alloc_tuple(3);
+	
+		device_pvcallsif_field = Val_int(device_pvcallsif_c->backend_domid);
+		Store_field(device_pvcallsif_ocaml, 0, device_pvcallsif_field);
+	
+		device_pvcallsif_field = Val_string_option(device_pvcallsif_c->backend_domname);
+		Store_field(device_pvcallsif_ocaml, 1, device_pvcallsif_field);
+	
+		device_pvcallsif_field = Val_int(device_pvcallsif_c->devid);
+		Store_field(device_pvcallsif_ocaml, 2, device_pvcallsif_field);
+	}
+	CAMLreturn(device_pvcallsif_ocaml);
+}
+
+/* Get the defaults for device_pvcallsif */
+value stub_libxl_device_pvcallsif_init(value ctx, value unit)
+{
+	CAMLparam2(ctx, unit);
+	CAMLlocal1(val);
+	libxl_device_pvcallsif c_val;
+	libxl_device_pvcallsif_init(&c_val);
+	val = Val_device_pvcallsif(&c_val);
+	libxl_device_pvcallsif_dispose(&c_val);
+	CAMLreturn(val);
+}
+
 /* Convert caml value to device_channel */
 static int device_channel_val (libxl_ctx *ctx, libxl_device_channel *c_val, value v)
 {
@@ -3202,6 +3642,122 @@ value stub_libxl_device_channel_init(value ctx, value connection, value unit)
 	CAMLreturn(val);
 }
 
+/* Convert caml value to connector_param */
+static int connector_param_val (libxl_ctx *ctx, libxl_connector_param *c_val, value v)
+{
+	CAMLparam1(v);
+
+	c_val->id = String_option_val(Field(v, 0));
+	c_val->width = Int32_val(Field(v, 1));
+	c_val->height = Int32_val(Field(v, 2));
+	
+	CAMLreturn(0);
+}
+
+/* Convert connector_param to a caml value */
+static value Val_connector_param (libxl_connector_param *connector_param_c)
+{
+	CAMLparam0();
+	CAMLlocal1(connector_param_ocaml);
+	{
+		CAMLlocal1(connector_param_field);
+	
+		connector_param_ocaml = caml_alloc_tuple(3);
+	
+		connector_param_field = Val_string_option(connector_param_c->id);
+		Store_field(connector_param_ocaml, 0, connector_param_field);
+	
+		connector_param_field = caml_copy_int32(connector_param_c->width);
+		Store_field(connector_param_ocaml, 1, connector_param_field);
+	
+		connector_param_field = caml_copy_int32(connector_param_c->height);
+		Store_field(connector_param_ocaml, 2, connector_param_field);
+	}
+	CAMLreturn(connector_param_ocaml);
+}
+
+/* Get the defaults for connector_param */
+value stub_libxl_connector_param_init(value ctx, value unit)
+{
+	CAMLparam2(ctx, unit);
+	CAMLlocal1(val);
+	libxl_connector_param c_val;
+	libxl_connector_param_init(&c_val);
+	val = Val_connector_param(&c_val);
+	libxl_connector_param_dispose(&c_val);
+	CAMLreturn(val);
+}
+
+/* Convert caml value to device_vdispl */
+static int device_vdispl_val (libxl_ctx *ctx, libxl_device_vdispl *c_val, value v)
+{
+	CAMLparam1(v);
+
+	c_val->backend_domid = Int_val(Field(v, 0));
+	c_val->backend_domname = String_option_val(Field(v, 1));
+	c_val->devid = Int_val(Field(v, 2));
+	c_val->be_alloc = Bool_val(Field(v, 3));
+	{
+		int i;
+		c_val->num_connectors = Wosize_val(Field(v, 4));
+		c_val->connectors = (libxl_connector_param *) calloc(c_val->num_connectors, sizeof(*c_val->connectors));
+		for(i=0; i<c_val->num_connectors; i++) {
+			connector_param_val(ctx, &c_val->connectors[i], Field(Field(v, 4), i));
+		}
+	}
+	
+	
+	CAMLreturn(0);
+}
+
+/* Convert device_vdispl to a caml value */
+static value Val_device_vdispl (libxl_device_vdispl *device_vdispl_c)
+{
+	CAMLparam0();
+	CAMLlocal1(device_vdispl_ocaml);
+	{
+		CAMLlocal1(device_vdispl_field);
+	
+		device_vdispl_ocaml = caml_alloc_tuple(5);
+	
+		device_vdispl_field = Val_int(device_vdispl_c->backend_domid);
+		Store_field(device_vdispl_ocaml, 0, device_vdispl_field);
+	
+		device_vdispl_field = Val_string_option(device_vdispl_c->backend_domname);
+		Store_field(device_vdispl_ocaml, 1, device_vdispl_field);
+	
+		device_vdispl_field = Val_int(device_vdispl_c->devid);
+		Store_field(device_vdispl_ocaml, 2, device_vdispl_field);
+	
+		device_vdispl_field = Val_bool(device_vdispl_c->be_alloc);
+		Store_field(device_vdispl_ocaml, 3, device_vdispl_field);
+	
+		{
+		    int i;
+		    CAMLlocal1(array_elem);
+		    device_vdispl_field = caml_alloc(device_vdispl_c->num_connectors,0);
+		    for(i=0; i<device_vdispl_c->num_connectors; i++) {
+		        array_elem = Val_connector_param(&device_vdispl_c->connectors[i]);
+		        Store_field(device_vdispl_field, i, array_elem);
+		    }
+		}
+		Store_field(device_vdispl_ocaml, 4, device_vdispl_field);
+	}
+	CAMLreturn(device_vdispl_ocaml);
+}
+
+/* Get the defaults for device_vdispl */
+value stub_libxl_device_vdispl_init(value ctx, value unit)
+{
+	CAMLparam2(ctx, unit);
+	CAMLlocal1(val);
+	libxl_device_vdispl c_val;
+	libxl_device_vdispl_init(&c_val);
+	val = Val_device_vdispl(&c_val);
+	libxl_device_vdispl_dispose(&c_val);
+	CAMLreturn(val);
+}
+
 /* Convert caml value to domain_config */
 static int domain_config_val (libxl_ctx *ctx, libxl_domain_config *c_val, value v)
 {
@@ -3283,36 +3839,63 @@ static int domain_config_val (libxl_ctx *ctx, libxl_domain_config *c_val, value 
 	
 	{
 		int i;
-		c_val->num_channels = Wosize_val(Field(v, 10));
+		c_val->num_p9s = Wosize_val(Field(v, 10));
+		c_val->p9s = (libxl_device_p9 *) calloc(c_val->num_p9s, sizeof(*c_val->p9s));
+		for(i=0; i<c_val->num_p9s; i++) {
+			device_p9_val(ctx, &c_val->p9s[i], Field(Field(v, 10), i));
+		}
+	}
+	
+	{
+		int i;
+		c_val->num_pvcallsifs = Wosize_val(Field(v, 11));
+		c_val->pvcallsifs = (libxl_device_pvcallsif *) calloc(c_val->num_pvcallsifs, sizeof(*c_val->pvcallsifs));
+		for(i=0; i<c_val->num_pvcallsifs; i++) {
+			device_pvcallsif_val(ctx, &c_val->pvcallsifs[i], Field(Field(v, 11), i));
+		}
+	}
+	
+	{
+		int i;
+		c_val->num_vdispls = Wosize_val(Field(v, 12));
+		c_val->vdispls = (libxl_device_vdispl *) calloc(c_val->num_vdispls, sizeof(*c_val->vdispls));
+		for(i=0; i<c_val->num_vdispls; i++) {
+			device_vdispl_val(ctx, &c_val->vdispls[i], Field(Field(v, 12), i));
+		}
+	}
+	
+	{
+		int i;
+		c_val->num_channels = Wosize_val(Field(v, 13));
 		c_val->channels = (libxl_device_channel *) calloc(c_val->num_channels, sizeof(*c_val->channels));
 		for(i=0; i<c_val->num_channels; i++) {
-			device_channel_val(ctx, &c_val->channels[i], Field(Field(v, 10), i));
+			device_channel_val(ctx, &c_val->channels[i], Field(Field(v, 13), i));
 		}
 	}
 	
 	{
 		int i;
-		c_val->num_usbctrls = Wosize_val(Field(v, 11));
+		c_val->num_usbctrls = Wosize_val(Field(v, 14));
 		c_val->usbctrls = (libxl_device_usbctrl *) calloc(c_val->num_usbctrls, sizeof(*c_val->usbctrls));
 		for(i=0; i<c_val->num_usbctrls; i++) {
-			device_usbctrl_val(ctx, &c_val->usbctrls[i], Field(Field(v, 11), i));
+			device_usbctrl_val(ctx, &c_val->usbctrls[i], Field(Field(v, 14), i));
 		}
 	}
 	
 	{
 		int i;
-		c_val->num_usbdevs = Wosize_val(Field(v, 12));
+		c_val->num_usbdevs = Wosize_val(Field(v, 15));
 		c_val->usbdevs = (libxl_device_usbdev *) calloc(c_val->num_usbdevs, sizeof(*c_val->usbdevs));
 		for(i=0; i<c_val->num_usbdevs; i++) {
-			device_usbdev_val(ctx, &c_val->usbdevs[i], Field(Field(v, 12), i));
+			device_usbdev_val(ctx, &c_val->usbdevs[i], Field(Field(v, 15), i));
 		}
 	}
 	
-	action_on_shutdown_val(ctx, &c_val->on_poweroff, Field(v, 13));
-	action_on_shutdown_val(ctx, &c_val->on_reboot, Field(v, 14));
-	action_on_shutdown_val(ctx, &c_val->on_watchdog, Field(v, 15));
-	action_on_shutdown_val(ctx, &c_val->on_crash, Field(v, 16));
-	action_on_shutdown_val(ctx, &c_val->on_soft_reset, Field(v, 17));
+	action_on_shutdown_val(ctx, &c_val->on_poweroff, Field(v, 16));
+	action_on_shutdown_val(ctx, &c_val->on_reboot, Field(v, 17));
+	action_on_shutdown_val(ctx, &c_val->on_watchdog, Field(v, 18));
+	action_on_shutdown_val(ctx, &c_val->on_crash, Field(v, 19));
+	action_on_shutdown_val(ctx, &c_val->on_soft_reset, Field(v, 20));
 	
 	CAMLreturn(0);
 }
@@ -3325,7 +3908,7 @@ static value Val_domain_config (libxl_domain_config *domain_config_c)
 	{
 		CAMLlocal1(domain_config_field);
 	
-		domain_config_ocaml = caml_alloc_tuple(18);
+		domain_config_ocaml = caml_alloc_tuple(21);
 	
 		domain_config_field = Val_domain_create_info(&domain_config_c->c_info);
 		Store_field(domain_config_ocaml, 0, domain_config_field);
@@ -3424,13 +4007,46 @@ static value Val_domain_config (libxl_domain_config *domain_config_c)
 		{
 		    int i;
 		    CAMLlocal1(array_elem);
+		    domain_config_field = caml_alloc(domain_config_c->num_p9s,0);
+		    for(i=0; i<domain_config_c->num_p9s; i++) {
+		        array_elem = Val_device_p9(&domain_config_c->p9s[i]);
+		        Store_field(domain_config_field, i, array_elem);
+		    }
+		}
+		Store_field(domain_config_ocaml, 10, domain_config_field);
+	
+		{
+		    int i;
+		    CAMLlocal1(array_elem);
+		    domain_config_field = caml_alloc(domain_config_c->num_pvcallsifs,0);
+		    for(i=0; i<domain_config_c->num_pvcallsifs; i++) {
+		        array_elem = Val_device_pvcallsif(&domain_config_c->pvcallsifs[i]);
+		        Store_field(domain_config_field, i, array_elem);
+		    }
+		}
+		Store_field(domain_config_ocaml, 11, domain_config_field);
+	
+		{
+		    int i;
+		    CAMLlocal1(array_elem);
+		    domain_config_field = caml_alloc(domain_config_c->num_vdispls,0);
+		    for(i=0; i<domain_config_c->num_vdispls; i++) {
+		        array_elem = Val_device_vdispl(&domain_config_c->vdispls[i]);
+		        Store_field(domain_config_field, i, array_elem);
+		    }
+		}
+		Store_field(domain_config_ocaml, 12, domain_config_field);
+	
+		{
+		    int i;
+		    CAMLlocal1(array_elem);
 		    domain_config_field = caml_alloc(domain_config_c->num_channels,0);
 		    for(i=0; i<domain_config_c->num_channels; i++) {
 		        array_elem = Val_device_channel(&domain_config_c->channels[i]);
 		        Store_field(domain_config_field, i, array_elem);
 		    }
 		}
-		Store_field(domain_config_ocaml, 10, domain_config_field);
+		Store_field(domain_config_ocaml, 13, domain_config_field);
 	
 		{
 		    int i;
@@ -3441,7 +4057,7 @@ static value Val_domain_config (libxl_domain_config *domain_config_c)
 		        Store_field(domain_config_field, i, array_elem);
 		    }
 		}
-		Store_field(domain_config_ocaml, 11, domain_config_field);
+		Store_field(domain_config_ocaml, 14, domain_config_field);
 	
 		{
 		    int i;
@@ -3452,22 +4068,22 @@ static value Val_domain_config (libxl_domain_config *domain_config_c)
 		        Store_field(domain_config_field, i, array_elem);
 		    }
 		}
-		Store_field(domain_config_ocaml, 12, domain_config_field);
-	
-		domain_config_field = Val_action_on_shutdown(domain_config_c->on_poweroff);
-		Store_field(domain_config_ocaml, 13, domain_config_field);
-	
-		domain_config_field = Val_action_on_shutdown(domain_config_c->on_reboot);
-		Store_field(domain_config_ocaml, 14, domain_config_field);
-	
-		domain_config_field = Val_action_on_shutdown(domain_config_c->on_watchdog);
 		Store_field(domain_config_ocaml, 15, domain_config_field);
 	
-		domain_config_field = Val_action_on_shutdown(domain_config_c->on_crash);
+		domain_config_field = Val_action_on_shutdown(domain_config_c->on_poweroff);
 		Store_field(domain_config_ocaml, 16, domain_config_field);
 	
-		domain_config_field = Val_action_on_shutdown(domain_config_c->on_soft_reset);
+		domain_config_field = Val_action_on_shutdown(domain_config_c->on_reboot);
 		Store_field(domain_config_ocaml, 17, domain_config_field);
+	
+		domain_config_field = Val_action_on_shutdown(domain_config_c->on_watchdog);
+		Store_field(domain_config_ocaml, 18, domain_config_field);
+	
+		domain_config_field = Val_action_on_shutdown(domain_config_c->on_crash);
+		Store_field(domain_config_ocaml, 19, domain_config_field);
+	
+		domain_config_field = Val_action_on_shutdown(domain_config_c->on_soft_reset);
+		Store_field(domain_config_ocaml, 20, domain_config_field);
 	}
 	CAMLreturn(domain_config_ocaml);
 }
@@ -3706,7 +4322,7 @@ static value Val_physinfo (libxl_physinfo *physinfo_c)
 	{
 		CAMLlocal1(physinfo_field);
 	
-		physinfo_ocaml = caml_alloc_tuple(15);
+		physinfo_ocaml = caml_alloc_tuple(16);
 	
 		physinfo_field = caml_copy_int32(physinfo_c->threads_per_core);
 		Store_field(physinfo_ocaml, 0, physinfo_field);
@@ -3741,17 +4357,20 @@ static value Val_physinfo (libxl_physinfo *physinfo_c)
 		physinfo_field = caml_copy_int64(physinfo_c->sharing_used_frames);
 		Store_field(physinfo_ocaml, 10, physinfo_field);
 	
-		physinfo_field = caml_copy_int32(physinfo_c->nr_nodes);
+		physinfo_field = caml_copy_int64(physinfo_c->max_possible_mfn);
 		Store_field(physinfo_ocaml, 11, physinfo_field);
 	
-		physinfo_field = Val_hwcap(&physinfo_c->hw_cap);
+		physinfo_field = caml_copy_int32(physinfo_c->nr_nodes);
 		Store_field(physinfo_ocaml, 12, physinfo_field);
 	
-		physinfo_field = Val_bool(physinfo_c->cap_hvm);
+		physinfo_field = Val_hwcap(&physinfo_c->hw_cap);
 		Store_field(physinfo_ocaml, 13, physinfo_field);
 	
-		physinfo_field = Val_bool(physinfo_c->cap_hvm_directio);
+		physinfo_field = Val_bool(physinfo_c->cap_hvm);
 		Store_field(physinfo_ocaml, 14, physinfo_field);
+	
+		physinfo_field = Val_bool(physinfo_c->cap_hvm_directio);
+		Store_field(physinfo_ocaml, 15, physinfo_field);
 	}
 	CAMLreturn(physinfo_ocaml);
 }
@@ -3768,6 +4387,109 @@ value stub_libxl_physinfo_init(value ctx, value unit)
 	libxl_physinfo_init(&c_val);
 	val = Val_physinfo(&c_val);
 	libxl_physinfo_dispose(&c_val);
+	CAMLreturn(val);
+}
+
+/* Convert connectorinfo to a caml value */
+static value Val_connectorinfo (libxl_connectorinfo *connectorinfo_c)
+{
+	CAMLparam0();
+	CAMLlocal1(connectorinfo_ocaml);
+	{
+		CAMLlocal1(connectorinfo_field);
+	
+		connectorinfo_ocaml = caml_alloc_tuple(7);
+	
+		connectorinfo_field = Val_string_option(connectorinfo_c->id);
+		Store_field(connectorinfo_ocaml, 0, connectorinfo_field);
+	
+		connectorinfo_field = caml_copy_int32(connectorinfo_c->width);
+		Store_field(connectorinfo_ocaml, 1, connectorinfo_field);
+	
+		connectorinfo_field = caml_copy_int32(connectorinfo_c->height);
+		Store_field(connectorinfo_ocaml, 2, connectorinfo_field);
+	
+		connectorinfo_field = Val_int(connectorinfo_c->req_evtch);
+		Store_field(connectorinfo_ocaml, 3, connectorinfo_field);
+	
+		connectorinfo_field = Val_int(connectorinfo_c->req_rref);
+		Store_field(connectorinfo_ocaml, 4, connectorinfo_field);
+	
+		connectorinfo_field = Val_int(connectorinfo_c->evt_evtch);
+		Store_field(connectorinfo_ocaml, 5, connectorinfo_field);
+	
+		connectorinfo_field = Val_int(connectorinfo_c->evt_rref);
+		Store_field(connectorinfo_ocaml, 6, connectorinfo_field);
+	}
+	CAMLreturn(connectorinfo_ocaml);
+}
+
+/* Get the defaults for connectorinfo */
+value stub_libxl_connectorinfo_init(value ctx, value unit)
+{
+	CAMLparam2(ctx, unit);
+	CAMLlocal1(val);
+	libxl_connectorinfo c_val;
+	libxl_connectorinfo_init(&c_val);
+	val = Val_connectorinfo(&c_val);
+	libxl_connectorinfo_dispose(&c_val);
+	CAMLreturn(val);
+}
+
+/* Convert vdisplinfo to a caml value */
+static value Val_vdisplinfo (libxl_vdisplinfo *vdisplinfo_c)
+{
+	CAMLparam0();
+	CAMLlocal1(vdisplinfo_ocaml);
+	{
+		CAMLlocal1(vdisplinfo_field);
+	
+		vdisplinfo_ocaml = caml_alloc_tuple(8);
+	
+		vdisplinfo_field = Val_string_option(vdisplinfo_c->backend);
+		Store_field(vdisplinfo_ocaml, 0, vdisplinfo_field);
+	
+		vdisplinfo_field = caml_copy_int32(vdisplinfo_c->backend_id);
+		Store_field(vdisplinfo_ocaml, 1, vdisplinfo_field);
+	
+		vdisplinfo_field = Val_string_option(vdisplinfo_c->frontend);
+		Store_field(vdisplinfo_ocaml, 2, vdisplinfo_field);
+	
+		vdisplinfo_field = caml_copy_int32(vdisplinfo_c->frontend_id);
+		Store_field(vdisplinfo_ocaml, 3, vdisplinfo_field);
+	
+		vdisplinfo_field = Val_int(vdisplinfo_c->devid);
+		Store_field(vdisplinfo_ocaml, 4, vdisplinfo_field);
+	
+		vdisplinfo_field = Val_int(vdisplinfo_c->state);
+		Store_field(vdisplinfo_ocaml, 5, vdisplinfo_field);
+	
+		vdisplinfo_field = Val_bool(vdisplinfo_c->be_alloc);
+		Store_field(vdisplinfo_ocaml, 6, vdisplinfo_field);
+	
+		{
+		    int i;
+		    CAMLlocal1(array_elem);
+		    vdisplinfo_field = caml_alloc(vdisplinfo_c->num_connectors,0);
+		    for(i=0; i<vdisplinfo_c->num_connectors; i++) {
+		        array_elem = Val_connectorinfo(&vdisplinfo_c->connectors[i]);
+		        Store_field(vdisplinfo_field, i, array_elem);
+		    }
+		}
+		Store_field(vdisplinfo_ocaml, 7, vdisplinfo_field);
+	}
+	CAMLreturn(vdisplinfo_ocaml);
+}
+
+/* Get the defaults for vdisplinfo */
+value stub_libxl_vdisplinfo_init(value ctx, value unit)
+{
+	CAMLparam2(ctx, unit);
+	CAMLlocal1(val);
+	libxl_vdisplinfo c_val;
+	libxl_vdisplinfo_init(&c_val);
+	val = Val_vdisplinfo(&c_val);
+	libxl_vdisplinfo_dispose(&c_val);
 	CAMLreturn(val);
 }
 
@@ -3894,6 +4616,7 @@ static int sched_credit_params_val (libxl_ctx *ctx, libxl_sched_credit_params *c
 
 	c_val->tslice_ms = Int_val(Field(v, 0));
 	c_val->ratelimit_us = Int_val(Field(v, 1));
+	c_val->vcpu_migr_delay_us = Int_val(Field(v, 2));
 	
 	CAMLreturn(0);
 }
@@ -3906,13 +4629,16 @@ static value Val_sched_credit_params (libxl_sched_credit_params *sched_credit_pa
 	{
 		CAMLlocal1(sched_credit_params_field);
 	
-		sched_credit_params_ocaml = caml_alloc_tuple(2);
+		sched_credit_params_ocaml = caml_alloc_tuple(3);
 	
 		sched_credit_params_field = Val_int(sched_credit_params_c->tslice_ms);
 		Store_field(sched_credit_params_ocaml, 0, sched_credit_params_field);
 	
 		sched_credit_params_field = Val_int(sched_credit_params_c->ratelimit_us);
 		Store_field(sched_credit_params_ocaml, 1, sched_credit_params_field);
+	
+		sched_credit_params_field = Val_int(sched_credit_params_c->vcpu_migr_delay_us);
+		Store_field(sched_credit_params_ocaml, 2, sched_credit_params_field);
 	}
 	CAMLreturn(sched_credit_params_ocaml);
 }
@@ -3978,6 +4704,7 @@ static int domain_remus_info_val (libxl_ctx *ctx, libxl_domain_remus_info *c_val
 	c_val->netbufscript = String_option_val(Field(v, 5));
 	c_val->diskbuf = Defbool_val(Field(v, 6));
 	c_val->colo = Defbool_val(Field(v, 7));
+	c_val->userspace_colo_proxy = Defbool_val(Field(v, 8));
 	
 	CAMLreturn(0);
 }
@@ -3990,7 +4717,7 @@ static value Val_domain_remus_info (libxl_domain_remus_info *domain_remus_info_c
 	{
 		CAMLlocal1(domain_remus_info_field);
 	
-		domain_remus_info_ocaml = caml_alloc_tuple(8);
+		domain_remus_info_ocaml = caml_alloc_tuple(9);
 	
 		domain_remus_info_field = Val_int(domain_remus_info_c->interval);
 		Store_field(domain_remus_info_ocaml, 0, domain_remus_info_field);
@@ -4015,6 +4742,9 @@ static value Val_domain_remus_info (libxl_domain_remus_info *domain_remus_info_c
 	
 		domain_remus_info_field = Val_defbool(domain_remus_info_c->colo);
 		Store_field(domain_remus_info_ocaml, 7, domain_remus_info_field);
+	
+		domain_remus_info_field = Val_defbool(domain_remus_info_c->userspace_colo_proxy);
+		Store_field(domain_remus_info_ocaml, 8, domain_remus_info_field);
 	}
 	CAMLreturn(domain_remus_info_ocaml);
 }
@@ -4243,6 +4973,8 @@ static int psr_cbm_type_val (libxl_ctx *ctx, libxl_psr_cbm_type *c_val, value v)
 	    case 1: *c_val = LIBXL_PSR_CBM_TYPE_L3_CBM; break;
 	    case 2: *c_val = LIBXL_PSR_CBM_TYPE_L3_CBM_CODE; break;
 	    case 3: *c_val = LIBXL_PSR_CBM_TYPE_L3_CBM_DATA; break;
+	    case 4: *c_val = LIBXL_PSR_CBM_TYPE_L2_CBM; break;
+	    case 5: *c_val = LIBXL_PSR_CBM_TYPE_MBA_THRTL; break;
 	    default: failwith_xl(ERROR_FAIL, "cannot convert value to libxl_psr_cbm_type"); break;
 	}
 	CAMLreturn(0);
@@ -4258,6 +4990,8 @@ static value Val_psr_cbm_type (libxl_psr_cbm_type psr_cbm_type_c)
 	    case LIBXL_PSR_CBM_TYPE_L3_CBM: psr_cbm_type_ocaml = Val_int(1); break;
 	    case LIBXL_PSR_CBM_TYPE_L3_CBM_CODE: psr_cbm_type_ocaml = Val_int(2); break;
 	    case LIBXL_PSR_CBM_TYPE_L3_CBM_DATA: psr_cbm_type_ocaml = Val_int(3); break;
+	    case LIBXL_PSR_CBM_TYPE_L2_CBM: psr_cbm_type_ocaml = Val_int(4); break;
+	    case LIBXL_PSR_CBM_TYPE_MBA_THRTL: psr_cbm_type_ocaml = Val_int(5); break;
 	    default: failwith_xl(ERROR_FAIL, "cannot convert value from libxl_psr_cbm_type"); break;
 	}
 	CAMLreturn(psr_cbm_type_ocaml);
@@ -4310,6 +5044,114 @@ value stub_libxl_psr_cat_info_init(value ctx, value unit)
 	libxl_psr_cat_info_init(&c_val);
 	val = Val_psr_cat_info(&c_val);
 	libxl_psr_cat_info_dispose(&c_val);
+	CAMLreturn(val);
+}
+
+/* Convert caml value to psr_feat_type */
+static int psr_feat_type_val (libxl_ctx *ctx, libxl_psr_feat_type *c_val, value v)
+{
+	CAMLparam1(v);
+
+	switch(Int_val(v)) {
+	    case 0: *c_val = LIBXL_PSR_FEAT_TYPE_CAT; break;
+	    case 1: *c_val = LIBXL_PSR_FEAT_TYPE_MBA; break;
+	    default: failwith_xl(ERROR_FAIL, "cannot convert value to libxl_psr_feat_type"); break;
+	}
+	CAMLreturn(0);
+}
+
+/* Convert psr_feat_type to a caml value */
+static value Val_psr_feat_type (libxl_psr_feat_type psr_feat_type_c)
+{
+	CAMLparam0();
+	CAMLlocal1(psr_feat_type_ocaml);
+	switch(psr_feat_type_c) {
+	    case LIBXL_PSR_FEAT_TYPE_CAT: psr_feat_type_ocaml = Val_int(0); break;
+	    case LIBXL_PSR_FEAT_TYPE_MBA: psr_feat_type_ocaml = Val_int(1); break;
+	    default: failwith_xl(ERROR_FAIL, "cannot convert value from libxl_psr_feat_type"); break;
+	}
+	CAMLreturn(psr_feat_type_ocaml);
+}
+
+/* Convert psr_hw_info to a caml value */
+static value Val_psr_hw_info (libxl_psr_hw_info *psr_hw_info_c)
+{
+	CAMLparam0();
+	CAMLlocal1(psr_hw_info_ocaml);
+	{
+		CAMLlocal1(psr_hw_info_field);
+	
+		psr_hw_info_ocaml = caml_alloc_tuple(2);
+	
+		psr_hw_info_field = caml_copy_int32(psr_hw_info_c->id);
+		Store_field(psr_hw_info_ocaml, 0, psr_hw_info_field);
+	
+		switch(psr_hw_info_c->type) {
+		    case LIBXL_PSR_FEAT_TYPE_CAT:
+		        /* 0: Block */
+		        {
+			        CAMLlocal1(tmp);
+			        psr_hw_info_field = caml_alloc(1,0);
+			        {
+			        	CAMLlocal1(anon_field);
+			        
+			        	tmp = caml_alloc_tuple(3);
+			        
+			        	anon_field = caml_copy_int32(psr_hw_info_c->u.cat.cos_max);
+			        	Store_field(tmp, 0, anon_field);
+			        
+			        	anon_field = caml_copy_int32(psr_hw_info_c->u.cat.cbm_len);
+			        	Store_field(tmp, 1, anon_field);
+			        
+			        	anon_field = Val_bool(psr_hw_info_c->u.cat.cdp_enabled);
+			        	Store_field(tmp, 2, anon_field);
+			        }
+			        Store_field(psr_hw_info_field, 0, tmp);
+		        }
+		        break;
+		    case LIBXL_PSR_FEAT_TYPE_MBA:
+		        /* 1: Block */
+		        {
+			        CAMLlocal1(tmp);
+			        psr_hw_info_field = caml_alloc(1,1);
+			        {
+			        	CAMLlocal1(anon_field);
+			        
+			        	tmp = caml_alloc_tuple(3);
+			        
+			        	anon_field = caml_copy_int32(psr_hw_info_c->u.mba.cos_max);
+			        	Store_field(tmp, 0, anon_field);
+			        
+			        	anon_field = caml_copy_int32(psr_hw_info_c->u.mba.thrtl_max);
+			        	Store_field(tmp, 1, anon_field);
+			        
+			        	anon_field = Val_bool(psr_hw_info_c->u.mba.linear);
+			        	Store_field(tmp, 2, anon_field);
+			        }
+			        Store_field(psr_hw_info_field, 0, tmp);
+		        }
+		        break;
+		    default: failwith_xl(ERROR_FAIL, "cannot convert value from None"); break;
+		}
+		Store_field(psr_hw_info_ocaml, 1, psr_hw_info_field);
+	}
+	CAMLreturn(psr_hw_info_ocaml);
+}
+
+/* Get the defaults for psr_hw_info */
+value stub_libxl_psr_hw_info_init(value ctx, value type, value unit)
+{
+	CAMLparam3(ctx, type, unit);
+	CAMLlocal1(val);
+	libxl_psr_hw_info c_val;
+	libxl_psr_hw_info_init(&c_val);
+	if (type != Val_none) {
+		libxl_psr_feat_type c = 0;
+		psr_feat_type_val(CTX, &c, Some_val(type));
+		libxl_psr_hw_info_init_type(&c_val, c);
+	}
+	val = Val_psr_hw_info(&c_val);
+	libxl_psr_hw_info_dispose(&c_val);
 	CAMLreturn(val);
 }
 

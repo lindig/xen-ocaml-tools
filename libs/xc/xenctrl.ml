@@ -28,6 +28,34 @@ type vcpuinfo =
 	cpumap: int32;
 }
 
+type xen_arm_arch_domainconfig =
+{
+	gic_version: int;
+	nr_spis: int;
+	clock_frequency: int32;
+}
+
+type x86_arch_emulation_flags =
+	| X86_EMU_LAPIC
+	| X86_EMU_HPET
+	| X86_EMU_PM
+	| X86_EMU_RTC
+	| X86_EMU_IOAPIC
+	| X86_EMU_PIC
+	| X86_EMU_VGA
+	| X86_EMU_IOMMU
+	| X86_EMU_PIT
+	| X86_EMU_USE_PIRQ
+
+type xen_x86_arch_domainconfig =
+{
+	emulation_flags: x86_arch_emulation_flags list;
+}
+
+type arch_domainconfig =
+	| ARM of xen_arm_arch_domainconfig
+	| X86 of xen_x86_arch_domainconfig
+
 type domaininfo =
 {
 	domid             : domid;
@@ -46,6 +74,7 @@ type domaininfo =
 	max_vcpu_id       : int;
 	ssidref           : int32;
 	handle            : int array;
+	arch_config       : arch_domainconfig;
 }
 
 type sched_control =
@@ -106,7 +135,7 @@ let with_intf f =
 	interface_close xc;
 	r
 
-external _domain_create: handle -> int32 -> domain_create_flag list -> int array -> domid
+external _domain_create: handle -> int32 -> domain_create_flag list -> int array -> arch_domainconfig -> domid
        = "stub_xc_domain_create"
 
 let int_array_of_uuid_string s =
@@ -210,15 +239,10 @@ external domain_cpuid_set: handle -> domid -> (int64 * (int64 option))
        = "stub_xc_domain_cpuid_set"
 external domain_cpuid_apply_policy: handle -> domid -> unit
        = "stub_xc_domain_cpuid_apply_policy"
-external cpuid_check: handle -> (int64 * (int64 option)) -> string option array -> (bool * string option array)
-       = "stub_xc_cpuid_check"
 
 external map_foreign_range: handle -> domid -> int
                          -> nativeint -> Xenmmap.mmap_interface
        = "stub_map_foreign_range"
-
-external domain_get_pfn_list: handle -> domid -> nativeint -> nativeint array
-       = "stub_xc_domain_get_pfn_list"
 
 external domain_assign_device: handle -> domid -> (int * int * int * int) -> unit
        = "stub_xc_domain_assign_device"

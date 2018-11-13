@@ -22,6 +22,33 @@ type vcpuinfo = {
   cputime : int64;
   cpumap : int32;
 }
+
+type xen_arm_arch_domainconfig = {
+  gic_version: int;
+  nr_spis: int;
+  clock_frequency: int32;
+}
+
+type x86_arch_emulation_flags =
+  | X86_EMU_LAPIC
+  | X86_EMU_HPET
+  | X86_EMU_PM
+  | X86_EMU_RTC
+  | X86_EMU_IOAPIC
+  | X86_EMU_PIC
+  | X86_EMU_VGA
+  | X86_EMU_IOMMU
+  | X86_EMU_PIT
+  | X86_EMU_USE_PIRQ
+
+type xen_x86_arch_domainconfig = {
+  emulation_flags: x86_arch_emulation_flags list;
+}
+
+type arch_domainconfig =
+  | ARM of xen_arm_arch_domainconfig
+  | X86 of xen_x86_arch_domainconfig
+
 type domaininfo = {
   domid : domid;
   dying : bool;
@@ -39,6 +66,7 @@ type domaininfo = {
   max_vcpu_id : int;
   ssidref : int32;
   handle : int array;
+  arch_config : arch_domainconfig;
 }
 type sched_control = { weight : int; cap : int; }
 type physinfo_cap_flag = CAP_HVM | CAP_DirectIO
@@ -70,7 +98,7 @@ type handle
 external interface_open : unit -> handle = "stub_xc_interface_open"
 external interface_close : handle -> unit = "stub_xc_interface_close"
 val with_intf : (handle -> 'a) -> 'a
-val domain_create : handle -> int32 -> domain_create_flag list -> string -> domid
+val domain_create : handle -> int32 -> domain_create_flag list -> string -> arch_domainconfig -> domid
 val domain_sethandle : handle -> domid -> string -> unit
 external domain_max_vcpus : handle -> domid -> int -> unit
   = "stub_xc_domain_max_vcpus"
@@ -126,9 +154,6 @@ external domain_memory_increase_reservation :
 external map_foreign_range :
   handle -> domid -> int -> nativeint -> Xenmmap.mmap_interface
   = "stub_map_foreign_range"
-external domain_get_pfn_list :
-  handle -> domid -> nativeint -> nativeint array
-  = "stub_xc_domain_get_pfn_list"
 
 external domain_assign_device: handle -> domid -> (int * int * int * int) -> unit
        = "stub_xc_domain_assign_device"
@@ -163,6 +188,3 @@ external domain_cpuid_set: handle -> domid -> (int64 * (int64 option))
        = "stub_xc_domain_cpuid_set"
 external domain_cpuid_apply_policy: handle -> domid -> unit
        = "stub_xc_domain_cpuid_apply_policy"
-external cpuid_check: handle -> (int64 * (int64 option)) -> string option array -> (bool * string option array)
-       = "stub_xc_cpuid_check"
-
