@@ -1,7 +1,8 @@
 language: c
 sudo: required
 service: docker
-script: bash -ex
+install: wget https://raw.githubusercontent.com/ocaml/ocaml-ci-scripts/master/.travis-docker.sh
+script: bash -ex .travis-docker.sh
     - OCAML_VERSION="4.07"
     - PACKAGE=xenstored
     - PINS="xen:. xenstored:."
