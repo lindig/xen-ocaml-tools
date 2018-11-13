@@ -19,7 +19,7 @@ clean:
 
 docker: tools/Dockerfile
 	docker build -t $(NAME) -f tools/Dockerfile .
-	docker run --rm -tv $(PWD):/mnt $(NAME) bash -c "cd /mnt; make"
+	docker run --rm -tv $(PWD):/mnt $(NAME) bash -c "cd /mnt; opam exec -- make"
 
 
 

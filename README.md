@@ -12,8 +12,7 @@ part of [Xen] independently using jbuilder/[dune] and [Opam]. Goals are:
 * provide two [Opam] packages: [xen.opam](xen.opam) for library bindings
   and [xenstored.opam](xenstored.opam) for the xenstore daemon.
 
-The master branch is derived from Xen 4.8.4 plus backports for
-safe-string compatibility.
+The master branch is derived from Xen 4.11.0.
 
 ## Building
 
