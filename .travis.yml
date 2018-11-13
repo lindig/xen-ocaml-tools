@@ -6,4 +6,4 @@ script: bash -ex
     - PACKAGE=xenstored
     - PINS="xen:. xenstored:."
   matrix:
-    - DISTRO="debian-unstable"
+    - DISTRO="debian-testing"
