@@ -14,8 +14,6 @@
  *)
 
 open Printf
-open Random
-open Callback
 
 (* @@XTL_LEVELS@@ *)
 (* AUTO-GENERATED FILE DO NOT EDIT *)

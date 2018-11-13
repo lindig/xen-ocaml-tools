@@ -1,4 +1,3 @@
-open Arg
 open Printf
 open Xentoollog
 
