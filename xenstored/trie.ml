@@ -21,7 +21,7 @@ struct
 		children: ('a,'b) t list;
 	}
 
-	let create key value = {
+	let _create key value = {
 		key = key;
 		value = Some value;
 		children = [];
@@ -33,20 +33,20 @@ struct
 		children = []
 	}
 
-	let get_key node = node.key
+	let _get_key node = node.key
 	let get_value node = 
 		match node.value with
 		| None       -> raise Not_found
 		| Some value -> value
 
-	let get_children node = node.children
+	let _get_children node = node.children
 
 	let set_value node value =
 		{ node with value = Some value }
 	let set_children node children =
 		{ node with children = children }
 
-	let add_child node child = 
+	let _add_child node child = 
 		{ node with children = child :: node.children }
 end
 
