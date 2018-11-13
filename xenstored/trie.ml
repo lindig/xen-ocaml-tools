@@ -77,14 +77,14 @@ let remove_node nodes key =
 let create () = []
 
 let rec iter f tree = 
-	let rec aux node =
+	let aux node =
 		f node.Node.key node.Node.value; 
 		iter f node.Node.children
 	in
 	List.iter aux tree
 
 let rec map f tree =
-	let rec aux node =
+	let aux node =
 		let value = 
 			match node.Node.value with
 			| None       -> None
@@ -95,7 +95,7 @@ let rec map f tree =
 	List.filter (fun n -> n.Node.value <> None || n.Node.children <> []) (List.map aux tree)
 
 let rec fold f tree acc =
-	let rec aux accu node =
+	let aux accu node =
 		fold f node.Node.children (f node.Node.key node.Node.value accu)
 	in
 	List.fold_left aux acc tree 
