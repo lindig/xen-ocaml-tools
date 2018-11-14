@@ -9,6 +9,9 @@ NAME = lindig/xen-tools
 .PHONY: all clean docker
 
 all:
+	dune build --profile=release
+
+build:
 	dune build --profile=dev
 
 profile:
