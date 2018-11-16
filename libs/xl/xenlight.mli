@@ -356,8 +356,8 @@ module Dominfo : sig
 		domain_type : domain_type;
 	}
 	val default : ctx -> unit -> t
-	external list : ctx -> t list = "stub_xl_dominfo_list"
-	external get : ctx -> domid -> t = "stub_xl_dominfo_get"
+	val list : ctx -> t list 
+	val get : ctx -> domid -> t 
 end
 
 (* libxl_channelinfo interface *)
@@ -487,8 +487,8 @@ module Domain_sched_params : sig
 		extratime : int;
 	}
 	val default : ctx -> unit -> t
-	external get : ctx -> domid -> t = "stub_xl_domain_sched_params_get"
-	external set : ctx -> domid -> t -> unit = "stub_xl_domain_sched_params_set"
+	val get : ctx -> domid -> t 
+	val set : ctx -> domid -> t -> unit 
 end
 
 (* libxl_vnode_info interface *)
@@ -648,9 +648,9 @@ module Device_vfb : sig
 		keymap : string option;
 	}
 	val default : ctx -> unit -> t
-	external add : ctx -> t -> domid -> ?async:'a -> unit -> unit = "stub_xl_device_vfb_add"
-	external remove : ctx -> t -> domid -> ?async:'a -> unit -> unit = "stub_xl_device_vfb_remove"
-	external destroy : ctx -> t -> domid -> ?async:'a -> unit -> unit = "stub_xl_device_vfb_destroy"
+	val add : ctx -> t -> domid -> ?async:'a -> unit -> unit 
+	val remove : ctx -> t -> domid -> ?async:'a -> unit -> unit 
+	val destroy : ctx -> t -> domid -> ?async:'a -> unit -> unit 
 end
 
 (* libxl_device_vkb interface *)
@@ -662,9 +662,9 @@ module Device_vkb : sig
 		devid : devid;
 	}
 	val default : ctx -> unit -> t
-	external add : ctx -> t -> domid -> ?async:'a -> unit -> unit = "stub_xl_device_vkb_add"
-	external remove : ctx -> t -> domid -> ?async:'a -> unit -> unit = "stub_xl_device_vkb_remove"
-	external destroy : ctx -> t -> domid -> ?async:'a -> unit -> unit = "stub_xl_device_vkb_destroy"
+	val add : ctx -> t -> domid -> ?async:'a -> unit -> unit 
+	val remove : ctx -> t -> domid -> ?async:'a -> unit -> unit 
+	val destroy : ctx -> t -> domid -> ?async:'a -> unit -> unit 
 end
 
 (* libxl_device_disk interface *)
@@ -692,12 +692,12 @@ module Device_disk : sig
 		hidden_disk : string option;
 	}
 	val default : ctx -> unit -> t
-	external add : ctx -> t -> domid -> ?async:'a -> unit -> unit = "stub_xl_device_disk_add"
-	external remove : ctx -> t -> domid -> ?async:'a -> unit -> unit = "stub_xl_device_disk_remove"
-	external destroy : ctx -> t -> domid -> ?async:'a -> unit -> unit = "stub_xl_device_disk_destroy"
-	external list : ctx -> domid -> t list = "stub_xl_device_disk_list"
-	external insert : ctx -> t -> domid -> ?async:'a -> unit -> unit = "stub_xl_device_disk_insert"
-	external of_vdev : ctx -> domid -> string -> t = "stub_xl_device_disk_of_vdev"
+	val add : ctx -> t -> domid -> ?async:'a -> unit -> unit 
+	val remove : ctx -> t -> domid -> ?async:'a -> unit -> unit 
+	val destroy : ctx -> t -> domid -> ?async:'a -> unit -> unit 
+	val list : ctx -> domid -> t list 
+	val insert : ctx -> t -> domid -> ?async:'a -> unit -> unit 
+	val of_vdev : ctx -> domid -> string -> t 
 end
 
 (* libxl_device_nic interface *)
@@ -721,11 +721,11 @@ module Device_nic : sig
 		coloft_forwarddev : string option;
 	}
 	val default : ctx -> unit -> t
-	external add : ctx -> t -> domid -> ?async:'a -> unit -> unit = "stub_xl_device_nic_add"
-	external remove : ctx -> t -> domid -> ?async:'a -> unit -> unit = "stub_xl_device_nic_remove"
-	external destroy : ctx -> t -> domid -> ?async:'a -> unit -> unit = "stub_xl_device_nic_destroy"
-	external list : ctx -> domid -> t list = "stub_xl_device_nic_list"
-	external of_devid : ctx -> domid -> int -> t = "stub_xl_device_nic_of_devid"
+	val add : ctx -> t -> domid -> ?async:'a -> unit -> unit 
+	val remove : ctx -> t -> domid -> ?async:'a -> unit -> unit 
+	val destroy : ctx -> t -> domid -> ?async:'a -> unit -> unit 
+	val list : ctx -> domid -> t list 
+	val of_devid : ctx -> domid -> int -> t 
 end
 
 (* libxl_device_pci interface *)
@@ -745,13 +745,13 @@ module Device_pci : sig
 		rdm_policy : rdm_reserve_policy;
 	}
 	val default : ctx -> unit -> t
-	external add : ctx -> t -> domid -> ?async:'a -> unit -> unit = "stub_xl_device_pci_add"
-	external remove : ctx -> t -> domid -> ?async:'a -> unit -> unit = "stub_xl_device_pci_remove"
-	external destroy : ctx -> t -> domid -> ?async:'a -> unit -> unit = "stub_xl_device_pci_destroy"
-	external list : ctx -> domid -> t list = "stub_xl_device_pci_list"
-	external assignable_add : ctx -> t -> bool -> unit = "stub_xl_device_pci_assignable_add"
-	external assignable_remove : ctx -> t -> bool -> unit = "stub_xl_device_pci_assignable_remove"
-	external assignable_list : ctx -> t list = "stub_xl_device_pci_assignable_list"
+	val add : ctx -> t -> domid -> ?async:'a -> unit -> unit 
+	val remove : ctx -> t -> domid -> ?async:'a -> unit -> unit 
+	val destroy : ctx -> t -> domid -> ?async:'a -> unit -> unit 
+	val list : ctx -> domid -> t list 
+	val assignable_add : ctx -> t -> bool -> unit 
+	val assignable_remove : ctx -> t -> bool -> unit 
+	val assignable_list : ctx -> t list 
 end
 
 (* libxl_device_rdm interface *)
@@ -973,7 +973,7 @@ module Physinfo : sig
 		cap_hvm_directio : bool;
 	}
 	val default : ctx -> unit -> t
-	external get : ctx -> t = "stub_xl_physinfo_get"
+	val get : ctx -> t 
 end
 
 (* libxl_numainfo interface *)
@@ -996,7 +996,7 @@ module Cputopology : sig
 		node : int32;
 	}
 	val default : ctx -> unit -> t
-	external get : ctx -> t array = "stub_xl_cputopology_get"
+	val get : ctx -> t array 
 end
 
 (* libxl_pcitopology interface *)
@@ -1113,9 +1113,9 @@ exception Error of (error * string)
 
 val register_exceptions: unit -> unit
 
-external ctx_alloc: Xentoollog.handle -> ctx = "stub_libxl_ctx_alloc"
+val ctx_alloc: Xentoollog.handle -> ctx 
 
-external test_raise_exception: unit -> unit = "stub_raise_exception"
+val test_raise_exception: unit -> unit 
 
 type event =
 	| POLLIN (* There is data to read *)
@@ -1126,29 +1126,29 @@ type event =
 	| POLLNVAL (* Invalid request: fd not open (revents only). *)
 
 module Domain : sig
-	external create_new : ctx -> Domain_config.t -> ?async:'a -> unit -> domid = "stub_libxl_domain_create_new"
-	external create_restore : ctx -> Domain_config.t -> (Unix.file_descr * Domain_restore_params.t) ->
-		?async:'a -> unit -> domid = "stub_libxl_domain_create_restore"
-	external shutdown : ctx -> domid -> unit = "stub_libxl_domain_shutdown"
-	external reboot : ctx -> domid -> unit = "stub_libxl_domain_reboot"
-	external destroy : ctx -> domid -> ?async:'a -> unit -> unit = "stub_libxl_domain_destroy"
-	external suspend : ctx -> domid -> Unix.file_descr -> ?async:'a -> unit -> unit = "stub_libxl_domain_suspend"
-	external pause : ctx -> domid -> unit = "stub_libxl_domain_pause"
-	external unpause : ctx -> domid -> unit = "stub_libxl_domain_unpause"
+	val create_new : ctx -> Domain_config.t -> ?async:'a -> unit -> domid 
+	val create_restore : ctx -> Domain_config.t -> (Unix.file_descr * Domain_restore_params.t) ->
+		?async:'a -> unit -> domid 
+	val shutdown : ctx -> domid -> unit 
+	val reboot : ctx -> domid -> unit 
+	val destroy : ctx -> domid -> ?async:'a -> unit -> unit 
+	val suspend : ctx -> domid -> Unix.file_descr -> ?async:'a -> unit -> unit 
+	val pause : ctx -> domid -> unit 
+	val unpause : ctx -> domid -> unit 
 
-	external send_trigger : ctx -> domid -> trigger -> int -> unit = "stub_xl_send_trigger"
-	external send_sysrq : ctx -> domid -> char -> unit = "stub_xl_send_sysrq"
+	val send_trigger : ctx -> domid -> trigger -> int -> unit 
+	val send_sysrq : ctx -> domid -> char -> unit 
 end
 
 module Host : sig
 	type console_reader
 	exception End_of_file
 
-	external xen_console_read_start : ctx -> int -> console_reader  = "stub_libxl_xen_console_read_start"
-	external xen_console_read_line : ctx -> console_reader -> string = "stub_libxl_xen_console_read_line"
-	external xen_console_read_finish : ctx -> console_reader -> unit = "stub_libxl_xen_console_read_finish"
+	val xen_console_read_start : ctx -> int -> console_reader  
+	val xen_console_read_line : ctx -> console_reader -> string 
+	val xen_console_read_finish : ctx -> console_reader -> unit 
 
-	external send_debug_keys : ctx -> string -> unit = "stub_xl_send_debug_keys"
+	val send_debug_keys : ctx -> string -> unit 
 end
 
 module Async : sig
@@ -1165,14 +1165,14 @@ module Async : sig
 		timeout_fire_now:('a -> 'c -> 'c) ->
 		osevent_hooks
 
-	external osevent_occurred_fd : ctx -> for_libxl -> Unix.file_descr -> event list -> event list -> unit = "stub_libxl_osevent_occurred_fd"
-	external osevent_occurred_timeout : ctx -> for_libxl -> unit = "stub_libxl_osevent_occurred_timeout"
+	val osevent_occurred_fd : ctx -> for_libxl -> Unix.file_descr -> event list -> event list -> unit 
+	val osevent_occurred_timeout : ctx -> for_libxl -> unit 
 
 	val async_register_callback :
 		async_callback:(result:error option -> user:'a -> unit) ->
 		unit
 
-	external evenable_domain_death : ctx -> domid -> int -> unit = "stub_libxl_evenable_domain_death"
+	val evenable_domain_death : ctx -> domid -> int -> unit 
 
 	val event_register_callbacks : ctx ->
 		user:'a ->

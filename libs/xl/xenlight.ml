@@ -377,7 +377,7 @@ module Ioport_range = struct
 		first : int32;
 		number : int32;
 	}
-	external default : ctx -> unit -> t = "stub_libxl_ioport_range_init"
+	external default : ctx -> unit -> t = "mock2"
 end
 
 (* libxl_iomem_range implementation *)
@@ -388,7 +388,7 @@ module Iomem_range = struct
 		number : int64;
 		gfn : int64;
 	}
-	external default : ctx -> unit -> t = "stub_libxl_iomem_range_init"
+	external default : ctx -> unit -> t = "mock2"
 end
 
 (* libxl_vga_interface_info implementation *)
@@ -397,7 +397,7 @@ module Vga_interface_info = struct
 	{
 		kind : vga_interface_type;
 	}
-	external default : ctx -> unit -> t = "stub_libxl_vga_interface_info_init"
+	external default : ctx -> unit -> t = "mock2"
 end
 
 (* libxl_vnc_info implementation *)
@@ -410,7 +410,7 @@ module Vnc_info = struct
 		display : int;
 		findunused : bool option;
 	}
-	external default : ctx -> unit -> t = "stub_libxl_vnc_info_init"
+	external default : ctx -> unit -> t = "mock2"
 end
 
 (* libxl_spice_info implementation *)
@@ -430,7 +430,7 @@ module Spice_info = struct
 		image_compression : string option;
 		streaming_video : string option;
 	}
-	external default : ctx -> unit -> t = "stub_libxl_spice_info_init"
+	external default : ctx -> unit -> t = "mock2"
 end
 
 (* libxl_sdl_info implementation *)
@@ -442,7 +442,7 @@ module Sdl_info = struct
 		display : string option;
 		xauthority : string option;
 	}
-	external default : ctx -> unit -> t = "stub_libxl_sdl_info_init"
+	external default : ctx -> unit -> t = "mock2"
 end
 
 (* libxl_dominfo implementation *)
@@ -471,9 +471,9 @@ module Dominfo = struct
 		cpupool : int32;
 		domain_type : domain_type;
 	}
-	external default : ctx -> unit -> t = "stub_libxl_dominfo_init"
-	external list : ctx -> t list = "stub_xl_dominfo_list"
-	external get : ctx -> domid -> t = "stub_xl_dominfo_get"
+	external default : ctx -> unit -> t = "mock2"
+	external list : ctx -> t list = "mock2"
+	external get : ctx -> domid -> t = "mock2"
 end
 
 (* libxl_channelinfo implementation *)
@@ -498,7 +498,7 @@ module Channelinfo = struct
 		rref : int;
 		connection : connection__union;
 	}
-	external default : ctx -> ?connection:channel_connection -> unit -> t = "stub_libxl_channelinfo_init"
+	external default : ctx -> ?connection:channel_connection -> unit -> t = "mock3"
 end
 
 (* libxl_vminfo implementation *)
@@ -508,7 +508,7 @@ module Vminfo = struct
 		uuid : int array;
 		domid : domid;
 	}
-	external default : ctx -> unit -> t = "stub_libxl_vminfo_init"
+	external default : ctx -> unit -> t = "mock2"
 end
 
 (* libxl_version_info implementation *)
@@ -529,7 +529,7 @@ module Version_info = struct
 		commandline : string option;
 		build_id : string option;
 	}
-	external default : ctx -> unit -> t = "stub_libxl_version_info_init"
+	external default : ctx -> unit -> t = "mock2"
 end
 
 (* libxl_domain_create_info implementation *)
@@ -551,7 +551,7 @@ module Domain_create_info = struct
 		pvh : bool option;
 		driver_domain : bool option;
 	}
-	external default : ctx -> unit -> t = "stub_libxl_domain_create_info_init"
+	external default : ctx -> unit -> t = "mock2"
 end
 
 (* libxl_domain_restore_params implementation *)
@@ -562,7 +562,7 @@ module Domain_restore_params = struct
 		stream_version : int32;
 		colo_proxy_script : string option;
 	}
-	external default : ctx -> unit -> t = "stub_libxl_domain_restore_params_init"
+	external default : ctx -> unit -> t = "mock2"
 end
 
 (* libxl_sched_params implementation *)
@@ -576,7 +576,7 @@ module Sched_params = struct
 		extratime : int;
 		budget : int;
 	}
-	external default : ctx -> unit -> t = "stub_libxl_sched_params_init"
+	external default : ctx -> unit -> t = "mock2"
 end
 
 (* libxl_vcpu_sched_params implementation *)
@@ -586,7 +586,7 @@ module Vcpu_sched_params = struct
 		sched : scheduler;
 		vcpus : Sched_params.t array;
 	}
-	external default : ctx -> unit -> t = "stub_libxl_vcpu_sched_params_init"
+	external default : ctx -> unit -> t = "mock2"
 end
 
 (* libxl_domain_sched_params implementation *)
@@ -602,9 +602,9 @@ module Domain_sched_params = struct
 		latency : int;
 		extratime : int;
 	}
-	external default : ctx -> unit -> t = "stub_libxl_domain_sched_params_init"
-	external get : ctx -> domid -> t = "stub_xl_domain_sched_params_get"
-	external set : ctx -> domid -> t -> unit = "stub_xl_domain_sched_params_set"
+	external default : ctx -> unit -> t = "mock2"
+	external get : ctx -> domid -> t = "mock2"
+	external set : ctx -> domid -> t -> unit = "mock3"
 end
 
 (* libxl_vnode_info implementation *)
@@ -616,7 +616,7 @@ module Vnode_info = struct
 		pnode : int32;
 		vcpus : bool array;
 	}
-	external default : ctx -> unit -> t = "stub_libxl_vnode_info_init"
+	external default : ctx -> unit -> t = "mock2"
 end
 
 (* libxl_gic_version implementation *)
@@ -637,7 +637,7 @@ module Rdm_reserve = struct
 		strategy : rdm_reserve_strategy;
 		policy : rdm_reserve_policy;
 	}
-	external default : ctx -> unit -> t = "stub_libxl_rdm_reserve_init"
+	external default : ctx -> unit -> t = "mock2"
 end
 
 (* libxl_domain_build_info implementation *)
@@ -752,7 +752,7 @@ module Domain_build_info = struct
 		xl_type : type__union;
 		arch_arm : arch_arm__anon;
 	}
-	external default : ctx -> ?xl_type:domain_type -> unit -> t = "stub_libxl_domain_build_info_init"
+	external default : ctx -> ?xl_type:domain_type -> unit -> t = "mock3"
 end
 
 (* libxl_device_vfb implementation *)
@@ -766,10 +766,10 @@ module Device_vfb = struct
 		sdl : Sdl_info.t;
 		keymap : string option;
 	}
-	external default : ctx -> unit -> t = "stub_libxl_device_vfb_init"
-	external add : ctx -> t -> domid -> ?async:'a -> unit -> unit = "stub_xl_device_vfb_add"
-	external remove : ctx -> t -> domid -> ?async:'a -> unit -> unit = "stub_xl_device_vfb_remove"
-	external destroy : ctx -> t -> domid -> ?async:'a -> unit -> unit = "stub_xl_device_vfb_destroy"
+	external default : ctx -> unit -> t = "mock2"
+	external add : ctx -> t -> domid -> ?async:'a -> unit -> unit = "mock5"
+	external remove : ctx -> t -> domid -> ?async:'a -> unit -> unit = "mock5"
+	external destroy : ctx -> t -> domid -> ?async:'a -> unit -> unit = "mock5"
 end
 
 (* libxl_device_vkb implementation *)
@@ -780,10 +780,10 @@ module Device_vkb = struct
 		backend_domname : string option;
 		devid : devid;
 	}
-	external default : ctx -> unit -> t = "stub_libxl_device_vkb_init"
-	external add : ctx -> t -> domid -> ?async:'a -> unit -> unit = "stub_xl_device_vkb_add"
-	external remove : ctx -> t -> domid -> ?async:'a -> unit -> unit = "stub_xl_device_vkb_remove"
-	external destroy : ctx -> t -> domid -> ?async:'a -> unit -> unit = "stub_xl_device_vkb_destroy"
+	external default : ctx -> unit -> t = "mock2"
+	external add : ctx -> t -> domid -> ?async:'a -> unit -> unit = "mock5"
+	external remove : ctx -> t -> domid -> ?async:'a -> unit -> unit = "mock5"
+	external destroy : ctx -> t -> domid -> ?async:'a -> unit -> unit = "mock5"
 end
 
 (* libxl_device_disk implementation *)
@@ -810,13 +810,13 @@ module Device_disk = struct
 		active_disk : string option;
 		hidden_disk : string option;
 	}
-	external default : ctx -> unit -> t = "stub_libxl_device_disk_init"
-	external add : ctx -> t -> domid -> ?async:'a -> unit -> unit = "stub_xl_device_disk_add"
-	external remove : ctx -> t -> domid -> ?async:'a -> unit -> unit = "stub_xl_device_disk_remove"
-	external destroy : ctx -> t -> domid -> ?async:'a -> unit -> unit = "stub_xl_device_disk_destroy"
-	external list : ctx -> domid -> t list = "stub_xl_device_disk_list"
-	external insert : ctx -> t -> domid -> ?async:'a -> unit -> unit = "stub_xl_device_disk_insert"
-	external of_vdev : ctx -> domid -> string -> t = "stub_xl_device_disk_of_vdev"
+	external default : ctx -> unit -> t = "mock2"
+	external add : ctx -> t -> domid -> ?async:'a -> unit -> unit = "mock5"
+	external remove : ctx -> t -> domid -> ?async:'a -> unit -> unit = "mock5"
+	external destroy : ctx -> t -> domid -> ?async:'a -> unit -> unit = "mock5"
+	external list : ctx -> domid -> t list = "mock2"
+	external insert : ctx -> t -> domid -> ?async:'a -> unit -> unit = "mock5"
+	external of_vdev : ctx -> domid -> string -> t = "mock3"
 end
 
 (* libxl_device_nic implementation *)
@@ -839,12 +839,12 @@ module Device_nic = struct
 		gatewaydev : string option;
 		coloft_forwarddev : string option;
 	}
-	external default : ctx -> unit -> t = "stub_libxl_device_nic_init"
-	external add : ctx -> t -> domid -> ?async:'a -> unit -> unit = "stub_xl_device_nic_add"
-	external remove : ctx -> t -> domid -> ?async:'a -> unit -> unit = "stub_xl_device_nic_remove"
-	external destroy : ctx -> t -> domid -> ?async:'a -> unit -> unit = "stub_xl_device_nic_destroy"
-	external list : ctx -> domid -> t list = "stub_xl_device_nic_list"
-	external of_devid : ctx -> domid -> int -> t = "stub_xl_device_nic_of_devid"
+	external default : ctx -> unit -> t = "mock2"
+	external add : ctx -> t -> domid -> ?async:'a -> unit -> unit = "mock5"
+	external remove : ctx -> t -> domid -> ?async:'a -> unit -> unit = "mock5"
+	external destroy : ctx -> t -> domid -> ?async:'a -> unit -> unit = "mock5"
+	external list : ctx -> domid -> t list = "mock2"
+	external of_devid : ctx -> domid -> int -> t = "mock3"
 end
 
 (* libxl_device_pci implementation *)
@@ -863,14 +863,14 @@ module Device_pci = struct
 		seize : bool;
 		rdm_policy : rdm_reserve_policy;
 	}
-	external default : ctx -> unit -> t = "stub_libxl_device_pci_init"
-	external add : ctx -> t -> domid -> ?async:'a -> unit -> unit = "stub_xl_device_pci_add"
-	external remove : ctx -> t -> domid -> ?async:'a -> unit -> unit = "stub_xl_device_pci_remove"
-	external destroy : ctx -> t -> domid -> ?async:'a -> unit -> unit = "stub_xl_device_pci_destroy"
-	external list : ctx -> domid -> t list = "stub_xl_device_pci_list"
-	external assignable_add : ctx -> t -> bool -> unit = "stub_xl_device_pci_assignable_add"
-	external assignable_remove : ctx -> t -> bool -> unit = "stub_xl_device_pci_assignable_remove"
-	external assignable_list : ctx -> t list = "stub_xl_device_pci_assignable_list"
+	external default : ctx -> unit -> t = "mock2"
+	external add : ctx -> t -> domid -> ?async:'a -> unit -> unit = "mock5"
+	external remove : ctx -> t -> domid -> ?async:'a -> unit -> unit = "mock5"
+	external destroy : ctx -> t -> domid -> ?async:'a -> unit -> unit = "mock5"
+	external list : ctx -> domid -> t list = "mock2"
+	external assignable_add : ctx -> t -> bool -> unit = "mock3"
+	external assignable_remove : ctx -> t -> bool -> unit = "mock3"
+	external assignable_list : ctx -> t list = "mock1"
 end
 
 (* libxl_device_rdm implementation *)
@@ -881,7 +881,7 @@ module Device_rdm = struct
 		size : int64;
 		policy : rdm_reserve_policy;
 	}
-	external default : ctx -> unit -> t = "stub_libxl_device_rdm_init"
+	external default : ctx -> unit -> t = "mock2"
 end
 
 (* libxl_usbctrl_type implementation *)
@@ -915,7 +915,7 @@ module Device_usbctrl = struct
 		backend_domid : domid;
 		backend_domname : string option;
 	}
-	external default : ctx -> unit -> t = "stub_libxl_device_usbctrl_init"
+	external default : ctx -> unit -> t = "mock2"
 end
 
 (* libxl_device_usbdev implementation *)
@@ -935,7 +935,7 @@ module Device_usbdev = struct
 		port : int;
 		xl_type : type__union;
 	}
-	external default : ctx -> ?xl_type:usbdev_type -> unit -> t = "stub_libxl_device_usbdev_init"
+	external default : ctx -> ?xl_type:usbdev_type -> unit -> t = "mock3"
 end
 
 (* libxl_device_dtdev implementation *)
@@ -944,7 +944,7 @@ module Device_dtdev = struct
 	{
 		path : string option;
 	}
-	external default : ctx -> unit -> t = "stub_libxl_device_dtdev_init"
+	external default : ctx -> unit -> t = "mock2"
 end
 
 (* libxl_device_vtpm implementation *)
@@ -956,7 +956,7 @@ module Device_vtpm = struct
 		devid : devid;
 		uuid : int array;
 	}
-	external default : ctx -> unit -> t = "stub_libxl_device_vtpm_init"
+	external default : ctx -> unit -> t = "mock2"
 end
 
 (* libxl_device_channel implementation *)
@@ -977,7 +977,7 @@ module Device_channel = struct
 		name : string option;
 		connection : connection__union;
 	}
-	external default : ctx -> ?connection:channel_connection -> unit -> t = "stub_libxl_device_channel_init"
+	external default : ctx -> ?connection:channel_connection -> unit -> t = "mock3"
 end
 
 (* libxl_domain_config implementation *)
@@ -1003,7 +1003,7 @@ module Domain_config = struct
 		on_crash : action_on_shutdown;
 		on_soft_reset : action_on_shutdown;
 	}
-	external default : ctx -> unit -> t = "stub_libxl_domain_config_init"
+	external default : ctx -> unit -> t = "mock2"
 end
 
 (* libxl_diskinfo implementation *)
@@ -1019,7 +1019,7 @@ module Diskinfo = struct
 		evtch : int;
 		rref : int;
 	}
-	external default : ctx -> unit -> t = "stub_libxl_diskinfo_init"
+	external default : ctx -> unit -> t = "mock2"
 end
 
 (* libxl_nicinfo implementation *)
@@ -1036,7 +1036,7 @@ module Nicinfo = struct
 		rref_tx : int;
 		rref_rx : int;
 	}
-	external default : ctx -> unit -> t = "stub_libxl_nicinfo_init"
+	external default : ctx -> unit -> t = "mock2"
 end
 
 (* libxl_vtpminfo implementation *)
@@ -1053,7 +1053,7 @@ module Vtpminfo = struct
 		rref : int;
 		uuid : int array;
 	}
-	external default : ctx -> unit -> t = "stub_libxl_vtpminfo_init"
+	external default : ctx -> unit -> t = "mock2"
 end
 
 (* libxl_usbctrlinfo implementation *)
@@ -1073,7 +1073,7 @@ module Usbctrlinfo = struct
 		ref_urb : int;
 		ref_conn : int;
 	}
-	external default : ctx -> unit -> t = "stub_libxl_usbctrlinfo_init"
+	external default : ctx -> unit -> t = "mock2"
 end
 
 (* libxl_physinfo implementation *)
@@ -1096,8 +1096,8 @@ module Physinfo = struct
 		cap_hvm : bool;
 		cap_hvm_directio : bool;
 	}
-	external default : ctx -> unit -> t = "stub_libxl_physinfo_init"
-	external get : ctx -> t = "stub_xl_physinfo_get"
+	external default : ctx -> unit -> t = "mock2"
+	external get : ctx -> t = "mock1"
 end
 
 (* libxl_numainfo implementation *)
@@ -1108,7 +1108,7 @@ module Numainfo = struct
 		free : int64;
 		dists : int32 array;
 	}
-	external default : ctx -> unit -> t = "stub_libxl_numainfo_init"
+	external default : ctx -> unit -> t = "mock2"
 end
 
 (* libxl_cputopology implementation *)
@@ -1119,8 +1119,8 @@ module Cputopology = struct
 		socket : int32;
 		node : int32;
 	}
-	external default : ctx -> unit -> t = "stub_libxl_cputopology_init"
-	external get : ctx -> t array = "stub_xl_cputopology_get"
+	external default : ctx -> unit -> t = "mock2"
+	external get : ctx -> t array = "mock1"
 end
 
 (* libxl_pcitopology implementation *)
@@ -1132,7 +1132,7 @@ module Pcitopology = struct
 		devfn : int;
 		node : int32;
 	}
-	external default : ctx -> unit -> t = "stub_libxl_pcitopology_init"
+	external default : ctx -> unit -> t = "mock2"
 end
 
 (* libxl_sched_credit_params implementation *)
@@ -1142,7 +1142,7 @@ module Sched_credit_params = struct
 		tslice_ms : int;
 		ratelimit_us : int;
 	}
-	external default : ctx -> unit -> t = "stub_libxl_sched_credit_params_init"
+	external default : ctx -> unit -> t = "mock2"
 end
 
 (* libxl_domain_remus_info implementation *)
@@ -1158,7 +1158,7 @@ module Domain_remus_info = struct
 		diskbuf : bool option;
 		colo : bool option;
 	}
-	external default : ctx -> unit -> t = "stub_libxl_domain_remus_info_init"
+	external default : ctx -> unit -> t = "mock2"
 end
 
 (* libxl_event_type implementation *)
@@ -1204,7 +1204,7 @@ module Event = struct
 		for_user : int64;
 		xl_type : type__union;
 	}
-	external default : ctx -> ?xl_type:event_type -> unit -> t = "stub_libxl_event_init"
+	external default : ctx -> ?xl_type:event_type -> unit -> t = "mock3"
 end
 
 (* libxl_psr_cmt_type implementation *)
@@ -1240,16 +1240,16 @@ module Psr_cat_info = struct
 		cbm_len : int32;
 		cdp_enabled : bool;
 	}
-	external default : ctx -> unit -> t = "stub_libxl_psr_cat_info_init"
+	external default : ctx -> unit -> t = "mock2"
 end
 
 (* END OF AUTO-GENERATED CODE *)
 
 exception Error of (error * string)
 
-external ctx_alloc: Xentoollog.handle -> ctx = "stub_libxl_ctx_alloc"
+external ctx_alloc: Xentoollog.handle -> ctx = "mock2"
 
-external test_raise_exception: unit -> unit = "stub_raise_exception"
+external test_raise_exception: unit -> unit = "mock2"
 
 type event =
 	| POLLIN (* There is data to read *)
@@ -1260,29 +1260,29 @@ type event =
 	| POLLNVAL (* Invalid request: fd not open (revents only). *)
 
 module Domain = struct
-	external create_new : ctx -> Domain_config.t -> ?async:'a -> unit -> domid = "stub_libxl_domain_create_new"
+	external create_new : ctx -> Domain_config.t -> ?async:'a -> unit -> domid = "mock2"
 	external create_restore : ctx -> Domain_config.t -> (Unix.file_descr * Domain_restore_params.t) ->
-		?async:'a -> unit -> domid = "stub_libxl_domain_create_restore"
-	external shutdown : ctx -> domid -> unit = "stub_libxl_domain_shutdown"
-	external reboot : ctx -> domid -> unit = "stub_libxl_domain_reboot"
-	external destroy : ctx -> domid -> ?async:'a -> unit -> unit = "stub_libxl_domain_destroy"
-	external suspend : ctx -> domid -> Unix.file_descr -> ?async:'a -> unit -> unit = "stub_libxl_domain_suspend"
-	external pause : ctx -> domid -> unit = "stub_libxl_domain_pause"
-	external unpause : ctx -> domid -> unit = "stub_libxl_domain_unpause"
+		?async:'a -> unit -> domid = "mock2"
+	external shutdown : ctx -> domid -> unit = "mock2"
+	external reboot : ctx -> domid -> unit = "mock2"
+	external destroy : ctx -> domid -> ?async:'a -> unit -> unit = "mock2"
+	external suspend : ctx -> domid -> Unix.file_descr -> ?async:'a -> unit -> unit = "mock2"
+	external pause : ctx -> domid -> unit = "mock2"
+	external unpause : ctx -> domid -> unit = "mock2"
 
-	external send_trigger : ctx -> domid -> trigger -> int -> unit = "stub_xl_send_trigger"
-	external send_sysrq : ctx -> domid -> char -> unit = "stub_xl_send_sysrq"
+	external send_trigger : ctx -> domid -> trigger -> int -> unit = "mock2"
+	external send_sysrq : ctx -> domid -> char -> unit = "mock2"
 end
 
 module Host = struct
 	type console_reader
 	exception End_of_file
 
-	external xen_console_read_start : ctx -> int -> console_reader  = "stub_libxl_xen_console_read_start"
-	external xen_console_read_line : ctx -> console_reader -> string = "stub_libxl_xen_console_read_line"
-	external xen_console_read_finish : ctx -> console_reader -> unit = "stub_libxl_xen_console_read_finish"
+	external xen_console_read_start : ctx -> int -> console_reader  = "mock2"
+	external xen_console_read_line : ctx -> console_reader -> string = "mock2"
+	external xen_console_read_finish : ctx -> console_reader -> unit = "mock2"
 
-	external send_debug_keys : ctx -> string -> unit = "stub_xl_send_debug_keys"
+	external send_debug_keys : ctx -> string -> unit = "mock2"
 end
 
 module Async = struct
@@ -1290,9 +1290,9 @@ module Async = struct
 	type event_hooks
 	type osevent_hooks
 
-	external osevent_register_hooks' : ctx -> 'a -> osevent_hooks = "stub_libxl_osevent_register_hooks"
-	external osevent_occurred_fd : ctx -> for_libxl -> Unix.file_descr -> event list -> event list -> unit = "stub_libxl_osevent_occurred_fd"
-	external osevent_occurred_timeout : ctx -> for_libxl -> unit = "stub_libxl_osevent_occurred_timeout"
+	external osevent_register_hooks' : ctx -> 'a -> osevent_hooks = "mock2"
+	external osevent_occurred_fd : ctx -> for_libxl -> Unix.file_descr -> event list -> event list -> unit = "mock2"
+	external osevent_occurred_timeout : ctx -> for_libxl -> unit = "mock2"
 
 	let osevent_register_hooks ctx ~user ~fd_register ~fd_modify ~fd_deregister ~timeout_register ~timeout_fire_now =
 		Callback.register "libxl_fd_register" fd_register;
@@ -1305,8 +1305,8 @@ module Async = struct
 	let async_register_callback ~async_callback =
 		Callback.register "libxl_async_callback" async_callback
 
-	external evenable_domain_death : ctx -> domid -> int -> unit = "stub_libxl_evenable_domain_death"
-	external event_register_callbacks' : ctx -> 'a -> event_hooks = "stub_libxl_event_register_callbacks"
+	external evenable_domain_death : ctx -> domid -> int -> unit = "mock2"
+	external event_register_callbacks' : ctx -> 'a -> event_hooks = "mock2"
 
 	let event_register_callbacks ctx ~user ~event_occurs_callback ~event_disaster_callback =
 		Callback.register "libxl_event_occurs_callback" event_occurs_callback;
