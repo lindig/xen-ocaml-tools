@@ -51,7 +51,7 @@ xenstored/domains.ml
 xenstored/event.ml
 xenstored/history.ml
 xenstored/logging.ml
-xenstored/oxenstored.conf
+xenstored/oxenstored.conf.in
 xenstored/packet.ml
 xenstored/parse_arg.ml
 xenstored/perms.ml

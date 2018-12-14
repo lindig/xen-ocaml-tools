@@ -68,7 +68,7 @@ let process_domains store cons domains =
 let sigusr1_handler store =
 	try
 		let channel = open_out_gen [ Open_wronly; Open_creat; Open_trunc; ]
-		                           0o600 "/var/run/xenstored/db.debug" in
+		                           0o600 (Paths.xen_run_stored ^ "/db.debug") in
 		finally (fun () -> Store.dump store channel)
 			(fun () -> close_out channel)
 	with _ ->
@@ -83,7 +83,7 @@ let config_filename cf =
 	| Some name -> name
 	| None      -> Define.default_config_dir ^ "/oxenstored.conf"
 
-let default_pidfile = "/var/run/xenstored.pid"
+let default_pidfile = Paths.xen_run_dir ^ "/xenstored.pid"
 
 let ring_scan_interval = ref 20
 
@@ -118,7 +118,9 @@ let parse_config filename =
 		("access-log-special-ops", Config.Set_bool Logging.access_log_special_ops);
 		("allow-debug", Config.Set_bool Process.allow_debug);
 		("ring-scan-interval", Config.Set_int ring_scan_interval);
-		("pid-file", Config.Set_string pidfile); ] in
+		("pid-file", Config.Set_string pidfile);
+		("xenstored-kva", Config.Set_string Domains.xenstored_kva);
+		("xenstored-port", Config.Set_string Domains.xenstored_port); ] in
 	begin try Config.read filename options (fun _ _ -> raise Not_found)
 	with
 	| Config.Error err -> List.iter (fun (k, e) ->
@@ -175,12 +177,11 @@ let from_channel_f chan domain_f watch_f store_f =
 let from_channel store cons doms chan =
 	(* don't let the permission get on our way, full perm ! *)
 	let op = Store.get_ops store Perms.Connection.full_rights in
-	let xc = Xenctrl.interface_open () in
 
 	let domain_f domid mfn port =
 		let ndom =
 			if domid > 0 then
-				Domains.create xc doms domid mfn port
+				Domains.create doms domid mfn port
 			else
 				Domains.create0 doms
 			in
@@ -194,8 +195,7 @@ let from_channel store cons doms chan =
 		op.Store.write path value;
 		op.Store.setperms path perms
 		in
-	finally (fun () -> from_channel_f chan domain_f watch_f store_f)
-	        (fun () -> Xenctrl.interface_close xc)
+	from_channel_f chan domain_f watch_f store_f
 
 let from_file store cons doms file =
 	let channel = open_in file in
@@ -213,7 +213,7 @@ let to_channel store cons chan =
 	(* dump the store *)
 	Store.dump_fct store (fun path node ->
 		let name, perms, value = Store.Node.unpack node in
-		let fullpath = (Store.Path.to_string path) ^ "/" ^ name in
+		let fullpath = Store.Path.to_string (Store.Path.of_path_and_name path name) in
 		let permstr = Perms.Node.to_string perms in
 		fprintf chan "store,%s,%s,%s\n" (hexify fullpath) (hexify permstr) (hexify value)
 	);
@@ -288,8 +288,11 @@ let _ =
 
 	let quit = ref false in
 
-	if cf.restart then (
-		DB.from_file store domains cons "/var/run/xenstored/db";
+	Logging.init_xenstored_log();
+
+	let filename = Paths.xen_run_stored ^ "/db" in
+	if cf.restart && Sys.file_exists filename then (
+		DB.from_file store domains cons filename;
 		Event.bind_dom_exc_virq eventchn
 	) else (
 		if !Disk.enable then (
@@ -314,9 +317,8 @@ let _ =
 	Sys.set_signal Sys.sigusr1 (Sys.Signal_handle (fun i -> sigusr1_handler store));
 	Sys.set_signal Sys.sigpipe Sys.Signal_ignore;
 
-	Logging.init_xenstored_log();
 	if cf.activate_access_log then begin
-		let post_rotate () = DB.to_file store cons "/var/run/xenstored/db" in
+		let post_rotate () = DB.to_file store cons (Paths.xen_run_stored ^ "/db") in
 		Logging.init_access_log post_rotate
 	end;
 
@@ -325,8 +327,6 @@ let _ =
 		(match ro_sock with None -> [] | Some x -> [ x ]) @
 		(if cf.domain_init then [ Event.fd eventchn ] else [])
 		in
-
-	let xc = Xenctrl.interface_open () in
 
 	let process_special_fds rset =
 		let accept_connection can_write fd =
@@ -338,7 +338,7 @@ let _ =
 			debug "pending port %d" (Xeneventchn.to_int port);
 			finally (fun () ->
 				if Some port = eventchn.Event.virq_port then (
-					let (notify, deaddom) = Domains.cleanup xc domains in
+					let (notify, deaddom) = Domains.cleanup domains in
 					List.iter (Connections.del_domain cons) deaddom;
 					if deaddom <> [] || notify then
 						Connections.fire_spec_watches cons "@releaseDomain"
@@ -474,8 +474,7 @@ let _ =
 		process_domains store cons domains
 		in
 
-	if Systemd.launched_by_systemd () then
-		Systemd.sd_notify_ready ();
+	Systemd.sd_notify_ready ();
 	while not !quit
 	do
 		try
@@ -486,5 +485,5 @@ let _ =
 				raise exc
 	done;
 	info "stopping xenstored";
-	DB.to_file store cons "/var/run/xenstored/db";
+	DB.to_file store cons (Paths.xen_run_stored ^ "/db");
 	()

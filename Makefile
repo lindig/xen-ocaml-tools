@@ -6,8 +6,8 @@
 
 NAME = lindig/xen-tools
 
-XEN_VERSION 	= RELEASE-4.7.6
-PATCHLEVEL   	= v7.0.5
+XEN_VERSION 	= RELEASE-4.11.1
+PATCHLEVEL   	= v7.0.7
 
 PATCHES 	= ssh://git@code.citrite.net/xs/xen.pg.git
 XEN     	= https://xenbits.xen.org/git-http/xen.git

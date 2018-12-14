@@ -54,7 +54,7 @@
 
 static void Noreturn failwith_xc(xc_interface *xch)
 {
-	char error_str[256];
+	char error_str[XC_MAX_ERROR_MSG_LEN + 6];
 	if (xch) {
 		const xc_error *error = xc_get_last_error(xch);
 		if (error->code == XC_ERROR_NONE)
@@ -232,10 +232,10 @@ CAMLprim value stub_xc_domain_shutdown(value xch, value domid, value reason)
 static value alloc_domaininfo(xc_domaininfo_t * info)
 {
 	CAMLparam0();
-	CAMLlocal2(result, tmp);
+	CAMLlocal5(result, tmp, arch_config, x86_arch_config, emul_list);
 	int i;
 
-	result = caml_alloc_tuple(16);
+	result = caml_alloc_tuple(17);
 
 	Store_field(result,  0, Val_int(info->domain));
 	Store_field(result,  1, Val_bool(info->flags & XEN_DOMINF_dying));
@@ -260,6 +260,30 @@ static value alloc_domaininfo(xc_domaininfo_t * info)
 	}
 
 	Store_field(result, 15, tmp);
+
+#if defined(__i386__) || defined(__x86_64__)
+	/* emulation_flags: x86_arch_emulation_flags list; */
+	tmp = emul_list = Val_emptylist;
+	for (i = 0; i < 10; i++) {
+		if ((info->arch_config.emulation_flags >> i) & 1) {
+			tmp = caml_alloc_small(2, Tag_cons);
+			Field(tmp, 0) = Val_int(i);
+			Field(tmp, 1) = emul_list;
+			emul_list = tmp;
+		}
+	}
+
+	/* xen_x86_arch_domainconfig */
+	x86_arch_config = caml_alloc_tuple(1);
+	Store_field(x86_arch_config, 0, emul_list);
+
+	/* arch_config: arch_domainconfig */
+	arch_config = caml_alloc_small(1, 1);
+
+	Store_field(arch_config, 0, x86_arch_config);
+
+	Store_field(result, 16, arch_config);
+#endif
 
 	CAMLreturn(result);
 }
@@ -795,49 +819,6 @@ CAMLprim value stub_xc_domain_cpuid_apply_policy(value xch, value domid)
 	CAMLreturn(Val_unit);
 }
 
-CAMLprim value stub_xc_cpuid_check(value xch, value input, value config)
-{
-	CAMLparam3(xch, input, config);
-	CAMLlocal3(ret, array, tmp);
-#if defined(__i386__) || defined(__x86_64__)
-	int r;
-	unsigned int c_input[2];
-	char *c_config[4], *out_config[4];
-
-	c_config[0] = string_of_option_array(config, 0);
-	c_config[1] = string_of_option_array(config, 1);
-	c_config[2] = string_of_option_array(config, 2);
-	c_config[3] = string_of_option_array(config, 3);
-
-	cpuid_input_of_val(c_input[0], c_input[1], input);
-
-	array = caml_alloc(4, 0);
-	for (r = 0; r < 4; r++) {
-		tmp = Val_none;
-		if (c_config[r]) {
-			tmp = caml_alloc_small(1, 0);
-			Field(tmp, 0) = caml_alloc_string(32);
-		}
-		Store_field(array, r, tmp);
-	}
-
-	for (r = 0; r < 4; r++)
-		out_config[r] = (c_config[r]) ? String_val(Field(Field(array, r), 0)) : NULL;
-
-	r = xc_cpuid_check(_H(xch), c_input, (const char **)c_config, out_config);
-	if (r < 0)
-		failwith_xc(_H(xch));
-
-	ret = caml_alloc_tuple(2);
-	Store_field(ret, 0, Val_bool(r));
-	Store_field(ret, 1, array);
-
-#else
-	caml_failwith("xc_domain_cpuid_check: not implemented");
-#endif
-	CAMLreturn(ret);
-}
-
 CAMLprim value stub_xc_version_version(value xch)
 {
 	CAMLparam1(xch);
@@ -1035,38 +1016,6 @@ CAMLprim value stub_shadow_allocation_set(value xch, value domid,
 		failwith_xc(_H(xch));
 
 	CAMLreturn(Val_unit);
-}
-
-CAMLprim value stub_xc_domain_get_pfn_list(value xch, value domid,
-                                           value nr_pfns)
-{
-	CAMLparam3(xch, domid, nr_pfns);
-	CAMLlocal2(array, v);
-	unsigned long c_nr_pfns;
-	long ret, i;
-	uint64_t *c_array;
-
-	c_nr_pfns = Nativeint_val(nr_pfns);
-
-	c_array = malloc(sizeof(uint64_t) * c_nr_pfns);
-	if (!c_array)
-		caml_raise_out_of_memory();
-
-	ret = xc_get_pfn_list(_H(xch), _D(domid),
-			      c_array, c_nr_pfns);
-	if (ret < 0) {
-		free(c_array);
-		failwith_xc(_H(xch));
-	}
-
-	array = caml_alloc(ret, 0);
-	for (i = 0; i < ret; i++) {
-		v = caml_copy_nativeint(c_array[i]);
-		Store_field(array, i, v);
-	}
-	free(c_array);
-
-	CAMLreturn(array);
 }
 
 CAMLprim value stub_xc_domain_ioport_permission(value xch, value domid,
