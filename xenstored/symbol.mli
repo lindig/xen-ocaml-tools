@@ -20,8 +20,8 @@
     manipulate them through the use of small identifiers that we call symbols. These symbols can be 
     compared in constant time (as opposite to strings) and should help the ocaml GC. *)
 
-type t
 (** The type of symbols. *)
+type t
 
 val of_string : string -> t
 (** Convert a string into a symbol. *)
@@ -37,7 +37,9 @@ val to_string : t -> string
 -     finally, call [garbage] *)
 
 val mark_all_as_unused : unit -> unit
+
 val mark_as_used : t -> unit
+
 val garbage : unit -> unit
 
 (** {6 Statistics } *)
