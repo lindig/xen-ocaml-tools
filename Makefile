@@ -7,7 +7,7 @@
 NAME = lindig/xen-tools
 
 XEN_VERSION 	= RELEASE-4.11.1
-PATCHLEVEL   	= v7.0.7
+PATCHLEVEL   	= v7.0.8
 
 PATCHES 	= ssh://git@code.citrite.net/xs/xen.pg.git
 XEN     	= https://xenbits.xen.org/git-http/xen.git
@@ -33,11 +33,13 @@ docker: tools/Dockerfile
 
 import:
 	test -d xen || git clone $(XEN) xen
+	git -C xen clean -fdx
+	git -C xen reset --hard HEAD
 	git -C xen fetch origin
 	git -C xen checkout $(XEN_VERSION)
 	test -d patches || git clone $(PATCHES) patches
 	git -C patches fetch origin
 	git -C patches checkout $(PATCHLEVEL)
 	cd xen;	sed -e 's/#.*$$//' -e '/^ *$$/d' ../patches/master/series \
-	  | while read f; do  patch -p1 < ../patches/master/$$f; done
+	  | while read f; do  patch -l -p1 < ../patches/master/$$f; done
 	./tools/import.sh xen
