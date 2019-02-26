@@ -6,3 +6,5 @@
   (flags (:standard -g -w -27-32-52-33-34-37-39)))
  (release
   (flags (:standard -w -27-32-52-33-34-37-39))))
+
+(dirs :standard \ patches xen)
